@@ -3,18 +3,16 @@
 Built in stage 2. Setup: `docs/setup-supabase.md`.
 
 ## Sign-in (T7)
-- The person picks **I'm a teacher / I'm a student** on the sign-in screen, then either:
-  - **Email me a sign-in link** (Supabase magic link) → T7b / S0b "Check your email" with a 60-second resend, or
-  - **Continue with school account** (Google OAuth).
+- The person picks **I'm a teacher / I'm a student** on the sign-in screen, then asks for a sign-in link by email (Supabase magic link) → T7b / S0b "Check your email" with a 60-second resend. Email is the only sign-in method (decision #34).
 - Links work for 15 minutes and must be opened on the same device/browser (PKCE).
-- Both land on `/auth/callback`, which exchanges the code for a session, applies the saved theme, and redirects.
+- The link lands on `/auth/callback`, which exchanges the code for a session, applies the saved theme, and redirects.
 
 ## Accounts
 ```
 sign in ──► auth user created ──► trigger creates profile
                                    role = picked role (teacher/student only; never admin)
                                    status = approved (student) | pending (teacher)
-first visit ──► /onboarding/profile: ask for a name (and role, if Google sign-in didn't carry one)
+first visit ──► /onboarding/profile: ask for a name (and role, if the account has none)
 teacher ──► /onboarding/pending (T7d) ── admin approves ──► /teacher
                  └── /onboarding/invite (T7e): valid code ──► approved at once ──► /teacher
 student ──► /student

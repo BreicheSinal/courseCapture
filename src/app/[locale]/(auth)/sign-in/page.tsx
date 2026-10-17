@@ -12,7 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t("metaTitle") };
 }
 
-const knownErrors = new Set(["linkExpired", "oauthFailed"]);
+const knownErrors = new Set(["linkExpired"]);
 
 /** Canvas T7 · Sign in. The form renders instantly; a signed-in visitor is sent home. */
 export default function Page({ searchParams }: PageProps<"/[locale]/sign-in">) {

@@ -77,8 +77,6 @@
       "emailPlaceholder": "nom@ecole.fr",
       "submit": "M’envoyer un lien de connexion",
       "sending": "Envoi du lien…",
-      "or": "ou",
-      "google": "Continuer avec le compte de l’établissement",
       "footTeacher": "Nouveau ? Se connecter crée votre compte enseignant.",
       "footStudent": "Nous ne demandons que votre nom. Jamais de publicité.",
       "notConfigured": "La connexion n’est pas encore configurée. Ajoutez les clés Supabase dans .env.local (docs/setup-supabase.md)."
@@ -183,7 +181,6 @@
       "invalidEmail": "Saisissez une adresse comme nom@ecole.fr.",
       "rateLimited": "Patientez une minute avant de demander un autre lien.",
       "sendFailed": "Impossible d’envoyer le lien. Réessayez dans un instant.",
-      "oauthFailed": "Impossible de lancer la connexion de l’établissement. Utilisez plutôt le lien par e-mail.",
       "linkExpired": "Ce lien a expiré ou a déjà servi. Demandez-en un nouveau.",
       "invalidName": "Saisissez votre nom.",
       "roleRequired": "Choisissez enseignant ou élève.",

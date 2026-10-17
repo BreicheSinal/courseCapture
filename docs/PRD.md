@@ -52,7 +52,7 @@ A user has exactly one role. Choosing the wrong one is handled by the "Wrong acc
 ## 5. User flows (matches the design canvas)
 
 ### 5.1 Sign-in and onboarding
-- **T7 Sign in** — email magic link or Google. → **T7b / S0b Check your email**.
+- **T7 Sign in** — email magic link. → **T7b / S0b Check your email**.
 - First sign-in → choose role (teacher / student).
 - **Teacher path:** if they have a valid **teacher invite code (T7e)** they are approved immediately; otherwise **T7d Pending approval** until an admin approves.
 - **Student path:** approved immediately; lands on **S1 Join**.
@@ -90,7 +90,7 @@ A user has exactly one role. Choosing the wrong one is handled by the "Wrong acc
 ## 6. Functional requirements
 
 ### Accounts
-- FR-1 Sign in with email magic link and Google. School SSO (SAML) is a later addition.
+- FR-1 Sign in with an email magic link. Google and school SSO (SAML) are later additions.
 - FR-2 Role is set once on first sign-in and stored on the profile.
 - FR-3 Teachers start as `pending` unless they redeem a valid invite code; pending teachers can only see T7d.
 - FR-4 Admins can list pending teachers and approve/reject them, and create single-use or limited-use invite codes.

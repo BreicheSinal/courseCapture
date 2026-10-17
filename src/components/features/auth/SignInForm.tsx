@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Field } from "@/components/ui/Field";
 import { Segmented } from "@/components/ui/Segmented";
-import { sendSignInLink, signInWithGoogle, type AuthErrorKey } from "@/lib/auth/actions";
+import { sendSignInLink, type AuthErrorKey } from "@/lib/auth/actions";
 
 type Role = "teacher" | "student";
 
-/** Canvas T7 · Sign in: pick teacher or student, then an email link or school (Google) account. */
+/** Canvas T7 · Sign in: pick teacher or student, then get a sign-in link by email. */
 export function SignInForm({
   initialError,
   configured,
@@ -67,31 +67,13 @@ export function SignInForm({
             placeholder={t("signIn.emailPlaceholder")}
             required
             dir="ltr"
-            error={error && error !== "oauthFailed" ? t(`errors.${error}`) : undefined}
+            error={error ? t(`errors.${error}`) : undefined}
           />
           <Button type="submit" variant="primary" block busy={pending} disabled={!configured}>
             {pending ? t("signIn.sending") : t("signIn.submit")}
           </Button>
         </form>
 
-        <div aria-hidden="true" className="footnote flex items-center gap-3 text-ink-muted">
-          <span className="h-px flex-1 bg-line" />
-          {t("signIn.or")}
-          <span className="h-px flex-1 bg-line" />
-        </div>
-
-        <form action={signInWithGoogle} className="flex flex-col gap-2">
-          <input type="hidden" name="locale" value={locale} />
-          <input type="hidden" name="role" value={role} />
-          <Button type="submit" variant="secondary" block disabled={!configured}>
-            {t("signIn.google")}
-          </Button>
-          {error === "oauthFailed" && (
-            <p role="alert" className="footnote text-danger">
-              {t("errors.oauthFailed")}
-            </p>
-          )}
-        </form>
       </Card>
 
       <p className="footnote mt-auto text-center text-ink-muted">
