@@ -1,5 +1,5 @@
 # Keeps the GitHub Project board (users/BreicheSinal/projects/1) in step with
-# issues and pull requests: Todo → In Progress (label "in progress" or an open PR) → Done (closed or merged).
+# issues and pull requests: Todo/Backlog → In progress (label "in progress") → In review (open PR) → Done.
 # Needs a repository secret PROJECT_TOKEN: a personal access token with project
 # read/write access (GitHub's built-in token can't reach user-owned projects).
 name: Project board
@@ -30,7 +30,7 @@ jobs:
       PROJECT_OWNER: BreicheSinal
       PROJECT_NUMBER: "1"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Check the token is set
         run: |
           if [ -z "$GH_TOKEN" ]; then
