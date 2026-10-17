@@ -60,6 +60,7 @@ export type Database = {
       redeem_teacher_invite: { Args: { p_code: string }; Returns: ProfileRow };
       revoke_teacher_invite: { Args: { p_code: string }; Returns: undefined };
       set_teacher_status: { Args: { p_teacher: string; p_status: AccountStatus }; Returns: ProfileRow };
+      pending_teachers: { Args: Record<string, never>; Returns: ProfileRow[] };
     };
     Enums: { user_role: UserRole; account_status: AccountStatus; theme_pref: ThemePref };
     CompositeTypes: Record<string, never>;

@@ -69,7 +69,7 @@
       "metaTitle": "Sign in",
       "tagline": "Turn papers and slides into courses your class can work through.",
       "title": "Sign in",
-      "roleLabel": "I am a",
+      "roleLabel": "Account type",
       "teacher": "I'm a teacher",
       "student": "I'm a student",
       "emailTeacher": "School email",
@@ -104,7 +104,7 @@
       "intro": "Tell us what to call you. Your teachers and classmates see this name.",
       "nameLabel": "Your name",
       "namePlaceholder": "Nadia Rahme",
-      "roleLabel": "I am a",
+      "roleLabel": "Account type",
       "continue": "Continue",
       "saving": "Saving…"
     },
@@ -143,11 +143,12 @@
       "join": "Join {school}",
       "joining": "Joining…",
       "noCode": "No code? You can keep waiting.",
-      "backToApproval": "Back to approval"
+      "backToApproval": "Back to approval",
+      "differentCode": "Use a different code"
     },
     "wrongAccount": {
       "metaTitle": "Wrong account type",
-      "back": "Back to sign in",
+      "back": "Back",
       "eyebrow": "Account type doesn't match",
       "titleStudent": "This is a student account",
       "titleTeacher": "This is a teacher account",
@@ -159,7 +160,7 @@
       "continueStudent": "Continue as a student",
       "continueTeacher": "Continue as a teacher",
       "continueAdmin": "Go to admin",
-      "differentEmail": "Use a different email",
+      "differentEmail": "Sign out and use a different email",
       "teacherQuestion": "Are you a teacher?",
       "teacherHint": "Teacher accounts use a separate email. Ask your school to invite you, or sign in with your staff email.",
       "studentQuestion": "Are you a student?",
@@ -186,8 +187,8 @@
       "linkExpired": "That sign-in link has expired or was already used. Ask for a new one.",
       "invalidName": "Enter your name.",
       "roleRequired": "Choose teacher or student.",
-      "invalidCode": "Codes are 8 characters, like ABCD-1234.",
-      "codeNotFound": "That code doesn't match. Check it with your admin. Codes expire after 7 days.",
+      "invalidCode": "Enter all 8 characters, like ABCD-1234.",
+      "codeNotFound": "That code doesn't match. Check it with your admin, or ask for a new one if it has expired.",
       "generic": "Something went wrong. Try again."
     }
   },
@@ -204,7 +205,8 @@
       "decidedTitle": "Recently decided",
       "approved": "Approved",
       "rejected": "Rejected",
-      "viaInvite": "Invite code"
+      "viaInvite": "Invite code",
+      "sure": "Sure?"
     },
     "invites": {
       "metaTitle": "Invite codes",
@@ -217,7 +219,6 @@
       "create": "Create code",
       "creating": "Creating…",
       "created": "Code created. Share it with the teacher.",
-      "copy": "Copy code",
       "copied": "Code copied",
       "listTitle": "Codes",
       "emptyTitle": "No invite codes yet",
@@ -231,7 +232,9 @@
       "revoke": "Revoke",
       "sure": "Sure?",
       "invalidSchool": "Enter the school name.",
-      "generic": "Couldn't create the code. Try again."
+      "generic": "Couldn't create the code. Try again.",
+      "copyCode": "Copy code {code}",
+      "copyFailed": "Couldn't copy. Select the code and copy it."
     }
   }
 }

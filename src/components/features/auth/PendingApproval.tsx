@@ -62,13 +62,13 @@ export function PendingApproval({ name, email, rejected }: { name: string; email
               {s.state === "done" ? (
                 <Icon name="checkCircle" width={22} height={22} className="text-success" />
               ) : s.state === "current" ? (
-                <span aria-hidden="true" className="grid size-5.5 place-items-center rounded-pill border-2 border-accent">
+                <span aria-hidden="true" className="grid size-6 place-items-center rounded-pill border-2 border-accent">
                   <span className="size-2 rounded-pill bg-accent" />
                 </span>
               ) : s.state === "rejected" ? (
                 <Icon name="alert" width={22} height={22} className="text-warning" />
               ) : (
-                <span aria-hidden="true" className="size-5.5 rounded-pill border-2 border-line-strong" />
+                <span aria-hidden="true" className="size-6 rounded-pill border-2 border-line-strong" />
               )}
               <span
                 className={cn(
@@ -93,7 +93,7 @@ export function PendingApproval({ name, email, rejected }: { name: string; email
             {!pending && <Icon name="resend" />}
             {pending ? t("checking") : t("checkAgain")}
           </Button>
-          <p role="status" className="footnote min-h-4.5 text-center text-ink-muted">
+          <p role="status" className="footnote min-h-5 text-center text-ink-muted">
             {checkedAt && t("checkedAt", { time: format.dateTime(checkedAt, { hour: "numeric", minute: "2-digit" }) })}
           </p>
         </div>

@@ -14,7 +14,8 @@ export async function GET(request: NextRequest) {
   const url = request.nextUrl;
   const localeParam = url.searchParams.get("locale") ?? "";
   const locale: Locale = (locales as readonly string[]).includes(localeParam) ? (localeParam as Locale) : defaultLocale;
-  const wanted = url.searchParams.get("role");
+  const roleParam = url.searchParams.get("role");
+  const wanted = roleParam === "teacher" || roleParam === "student" ? roleParam : null;
   let theme: string | null = null;
   const to = (path: string) => {
     const res = NextResponse.redirect(new URL(`/${locale}${path}`, url.origin));
@@ -43,10 +44,13 @@ export async function GET(request: NextRequest) {
 
   // Google sign-in can't carry the role into the account, so set it now if
   // the name is known; otherwise onboarding asks (pre-selected).
-  if (profile && profile.role === null && (wanted === "teacher" || wanted === "student")) {
+  if (profile && profile.role === null && wanted) {
     if (profile.full_name.trim()) {
-      await supabase.rpc("complete_onboarding", { p_full_name: profile.full_name, p_role: wanted });
-      return to("");
+      const { error: onboardError } = await supabase.rpc("complete_onboarding", {
+        p_full_name: profile.full_name,
+        p_role: wanted,
+      });
+      if (!onboardError) return to("");
     }
     return to(`/onboarding/profile?role=${wanted}`);
   }

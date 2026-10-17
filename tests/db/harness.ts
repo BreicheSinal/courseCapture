@@ -16,8 +16,10 @@ export type Db = {
   client: Client;
   /** Runs `fn` as an authenticated user (or anon when uid is null), inside a rolled-back transaction. */
   as<T>(uid: string | null, fn: (c: Client) => Promise<T>): Promise<T>;
-  /** Creates an auth user (fires the profile trigger) and returns its id. */
-  createUser(email: string, meta?: Record<string, unknown>): Promise<string>;
+  /** Creates an auth user (fires the profile trigger) and returns its id. Confirmed by default. */
+  createUser(email: string, meta?: Record<string, unknown>, opts?: { confirmed?: boolean }): Promise<string>;
+  /** Runs `fn` as `uid` and commits (for setup that later steps must see). */
+  commitAs<T>(uid: string, fn: (c: Client) => Promise<T>): Promise<T>;
   drop(): Promise<void>;
 };
 
@@ -51,12 +53,25 @@ export async function createTestDb(): Promise<Db> {
         await client.query("rollback");
       }
     },
-    async createUser(email, meta = {}) {
-      const r = await client.query("insert into auth.users (email, raw_user_meta_data) values ($1, $2) returning id", [
-        email,
-        meta,
-      ]);
+    async createUser(email, meta = {}, { confirmed = true } = {}) {
+      const r = await client.query(
+        "insert into auth.users (email, raw_user_meta_data, email_confirmed_at) values ($1, $2, $3) returning id",
+        [email, meta, confirmed ? new Date() : null],
+      );
       return r.rows[0].id as string;
+    },
+    async commitAs(uid, fn) {
+      await client.query("begin");
+      try {
+        await client.query("set local role authenticated");
+        await client.query("select set_config('request.jwt.claim.sub', $1, true)", [uid]);
+        const out = await fn(client);
+        await client.query("commit");
+        return out;
+      } catch (e) {
+        await client.query("rollback");
+        throw e;
+      }
     },
     async drop() {
       await client.end();

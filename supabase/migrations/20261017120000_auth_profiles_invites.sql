@@ -134,6 +134,37 @@ create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function public.handle_new_user();
 
+-- Keep the copied email current when someone changes it.
+create or replace function public.handle_user_email_change()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  update public.profiles set email = coalesce(new.email, '') where id = new.id;
+  return new;
+end;
+$$;
+
+create trigger on_auth_user_email_changed
+  after update of email on auth.users
+  for each row when (old.email is distinct from new.email)
+  execute function public.handle_user_email_change();
+
+-- Has this person clicked their sign-in link at least once?
+-- Requesting a link creates the auth user straight away, so unconfirmed
+-- sign-ups must never reach the approval queue.
+create or replace function public.email_confirmed(p_user uuid)
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select exists (select 1 from auth.users where id = p_user and email_confirmed_at is not null);
+$$;
+
 -- ---------------------------------------------------------------------------
 -- Onboarding: set your name and, once, your role.
 -- ---------------------------------------------------------------------------
@@ -246,6 +277,8 @@ as $$
 $$;
 
 -- Teacher redeems a code (T7e step 2): approves the caller and uses the code once.
+-- Rejected teachers may redeem too: a code from the school admin is proof
+-- they teach there (decision #22).
 create or replace function public.redeem_teacher_invite(p_code text)
 returns public.profiles
 language plpgsql
@@ -316,6 +349,9 @@ begin
   if p_status not in ('approved', 'rejected') then
     raise exception 'invalid_status' using errcode = '22023';
   end if;
+  if not public.email_confirmed(p_teacher) then
+    raise exception 'email_not_confirmed' using errcode = '22023';
+  end if;
 
   update public.profiles
     set status = p_status,
@@ -329,6 +365,21 @@ begin
   end if;
   return v_profile;
 end;
+$$;
+
+-- Admin approval queue: pending teachers who have confirmed their email.
+create or replace function public.pending_teachers()
+returns setof public.profiles
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select p.* from public.profiles p
+  where public.is_admin()
+    and p.role = 'teacher' and p.status = 'pending'
+    and public.email_confirmed(p.id)
+  order by p.created_at;
 $$;
 
 -- ---------------------------------------------------------------------------
@@ -373,6 +424,9 @@ grant select on public.teacher_invites to authenticated;
 
 revoke execute on function public.is_admin() from public, anon;
 revoke execute on function public.handle_new_user() from public, anon, authenticated;
+revoke execute on function public.handle_user_email_change() from public, anon, authenticated;
+revoke execute on function public.email_confirmed(uuid) from public, anon, authenticated;
+revoke execute on function public.pending_teachers() from public, anon;
 revoke execute on function public.complete_onboarding(text, public.user_role) from public, anon;
 revoke execute on function public.create_teacher_invite(text, int, int) from public, anon;
 revoke execute on function public.check_teacher_invite(text) from public, anon;
@@ -387,3 +441,4 @@ grant execute on function public.check_teacher_invite(text) to authenticated;
 grant execute on function public.redeem_teacher_invite(text) to authenticated;
 grant execute on function public.revoke_teacher_invite(text) to authenticated;
 grant execute on function public.set_teacher_status(uuid, public.account_status) to authenticated;
+grant execute on function public.pending_teachers() to authenticated;

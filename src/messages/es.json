@@ -69,7 +69,7 @@
       "metaTitle": "Iniciar sesión",
       "tagline": "Convierte artículos y diapositivas en cursos que tu clase puede seguir.",
       "title": "Iniciar sesión",
-      "roleLabel": "Soy",
+      "roleLabel": "Tipo de cuenta",
       "teacher": "Soy docente",
       "student": "Soy estudiante",
       "emailTeacher": "Correo del centro",
@@ -104,7 +104,7 @@
       "intro": "Dinos cómo llamarte. Tus docentes y compañeros verán este nombre.",
       "nameLabel": "Tu nombre",
       "namePlaceholder": "Nadia Rahme",
-      "roleLabel": "Soy",
+      "roleLabel": "Tipo de cuenta",
       "continue": "Continuar",
       "saving": "Guardando…"
     },
@@ -143,11 +143,12 @@
       "join": "Unirme a {school}",
       "joining": "Uniéndote…",
       "noCode": "¿No tienes código? Puedes seguir esperando.",
-      "backToApproval": "Volver a la aprobación"
+      "backToApproval": "Volver a la aprobación",
+      "differentCode": "Usar otro código"
     },
     "wrongAccount": {
       "metaTitle": "Tipo de cuenta incorrecto",
-      "back": "Volver a iniciar sesión",
+      "back": "Volver",
       "eyebrow": "El tipo de cuenta no coincide",
       "titleStudent": "Esta es una cuenta de estudiante",
       "titleTeacher": "Esta es una cuenta de docente",
@@ -159,7 +160,7 @@
       "continueStudent": "Continuar como estudiante",
       "continueTeacher": "Continuar como docente",
       "continueAdmin": "Ir a administración",
-      "differentEmail": "Usar otro correo",
+      "differentEmail": "Cerrar sesión y usar otro correo",
       "teacherQuestion": "¿Eres docente?",
       "teacherHint": "Las cuentas de docente usan otro correo. Pide una invitación a tu centro o entra con tu correo de personal.",
       "studentQuestion": "¿Eres estudiante?",
@@ -186,8 +187,8 @@
       "linkExpired": "Ese enlace ha caducado o ya se usó. Pide uno nuevo.",
       "invalidName": "Introduce tu nombre.",
       "roleRequired": "Elige docente o estudiante.",
-      "invalidCode": "Los códigos tienen 8 caracteres, como ABCD-1234.",
-      "codeNotFound": "Ese código no coincide. Compruébalo con la administración. Los códigos caducan a los 7 días.",
+      "invalidCode": "Introduce los 8 caracteres, como ABCD-1234.",
+      "codeNotFound": "Ese código no coincide. Compruébalo con la administración o pide uno nuevo si ha caducado.",
       "generic": "Algo salió mal. Inténtalo de nuevo."
     }
   },
@@ -204,7 +205,8 @@
       "decidedTitle": "Decisiones recientes",
       "approved": "Aprobada",
       "rejected": "Rechazada",
-      "viaInvite": "Código de invitación"
+      "viaInvite": "Código de invitación",
+      "sure": "¿Seguro?"
     },
     "invites": {
       "metaTitle": "Códigos de invitación",
@@ -217,7 +219,6 @@
       "create": "Crear código",
       "creating": "Creando…",
       "created": "Código creado. Compártelo con el docente.",
-      "copy": "Copiar código",
       "copied": "Código copiado",
       "listTitle": "Códigos",
       "emptyTitle": "Aún no hay códigos de invitación",
@@ -231,7 +232,9 @@
       "revoke": "Revocar",
       "sure": "¿Seguro?",
       "invalidSchool": "Introduce el nombre del centro.",
-      "generic": "No se pudo crear el código. Inténtalo de nuevo."
+      "generic": "No se pudo crear el código. Inténtalo de nuevo.",
+      "copyCode": "Copiar el código {code}",
+      "copyFailed": "No se pudo copiar. Selecciona el código y cópialo."
     }
   }
 }

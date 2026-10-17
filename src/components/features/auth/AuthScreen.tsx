@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { LanguageSelect } from "@/components/ui/LanguageSelect";
@@ -18,7 +17,6 @@ export function AuthScreen({
   children: ReactNode;
   footer?: ReactNode;
 }) {
-  const t = useTranslations("common");
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-md flex-col px-5 pt-2 pb-6">
       <header className="flex min-h-15 items-center">
@@ -38,7 +36,6 @@ export function AuthScreen({
       <footer className="mt-8 flex flex-col items-center gap-4">
         {footer}
         <LanguageSelect hideLabel className="w-44" />
-        <span className="sr-only">{t("appName")}</span>
       </footer>
     </div>
   );

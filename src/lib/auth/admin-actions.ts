@@ -11,10 +11,12 @@ import { createClient } from "@/lib/supabase/server";
 export type AdminState = { error?: "invalidSchool" | "generic"; createdCode?: string } | undefined;
 
 export async function setTeacherStatus(formData: FormData): Promise<void> {
-  const id = z.string().uuid().parse(formData.get("teacher"));
-  const status = z.enum(["approved", "rejected"]).parse(formData.get("status"));
+  const id = z.string().uuid().safeParse(formData.get("teacher"));
+  const status = z.enum(["approved", "rejected"]).safeParse(formData.get("status"));
+  if (!id.success || !status.success) return;
   const supabase = await createClient();
-  await supabase.rpc("set_teacher_status", { p_teacher: id, p_status: status });
+  // On failure (e.g. not an admin) nothing changes; the refreshed list shows the real state.
+  await supabase.rpc("set_teacher_status", { p_teacher: id.data, p_status: status.data });
   refresh();
 }
 
@@ -36,8 +38,9 @@ export async function createInvite(_prev: AdminState, formData: FormData): Promi
 }
 
 export async function revokeInvite(formData: FormData): Promise<void> {
-  const code = z.string().min(1).max(20).parse(formData.get("code"));
+  const code = z.string().min(1).max(20).safeParse(formData.get("code"));
+  if (!code.success) return;
   const supabase = await createClient();
-  await supabase.rpc("revoke_teacher_invite", { p_code: code });
+  await supabase.rpc("revoke_teacher_invite", { p_code: code.data });
   refresh();
 }

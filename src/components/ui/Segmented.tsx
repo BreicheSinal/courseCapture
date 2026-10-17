@@ -5,8 +5,9 @@ type Option<V extends string> = { value: V; label: ReactNode };
 
 type SegmentedProps<V extends string> = {
   name: string;
-  /** Group label for screen readers (e.g. "I am a"). */
+  /** Group label. Hidden unless `showLegend` (e.g. when nothing else labels the group). */
   legend: string;
+  showLegend?: boolean;
   options: Option<V>[];
   value?: V;
   defaultValue?: V;
@@ -30,11 +31,12 @@ export function Segmented<V extends string>({
   onChange,
   size = "md",
   block,
+  showLegend,
   className,
 }: SegmentedProps<V>) {
   return (
     <fieldset className={cn("m-0 border-0 p-0", className)}>
-      <legend className="sr-only">{legend}</legend>
+      <legend className={showLegend ? "footnote mb-2 p-0 text-ink-muted" : "sr-only"}>{legend}</legend>
       <div className={cn("cc-seg", size !== "md" && `cc-seg--${size}`, block && "cc-seg--block")}>
         {options.map((o) => (
           <label key={o.value} className="cc-seg__opt">

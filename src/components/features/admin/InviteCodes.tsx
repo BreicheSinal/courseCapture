@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -26,13 +26,26 @@ export function InviteCodes({ invites, now }: { invites: Invite[]; now: number }
   const t = useTranslations("admin.invites");
   const format = useFormatter();
   const [state, action, creating] = useActionState(createInvite, undefined);
-  const [copied, setCopied] = useState<string | null>(null);
+  const [copied, setCopied] = useState<{ code: string; ok: boolean } | null>(null);
   const [confirm, setConfirm] = useState<string | null>(null);
 
+  // "Sure?" goes back to "Revoke" if the admin doesn't confirm.
+  useEffect(() => {
+    if (!confirm) return;
+    const timer = setTimeout(() => setConfirm(null), 4000);
+    return () => clearTimeout(timer);
+  }, [confirm]);
+
   const copy = async (code: string) => {
-    await navigator.clipboard?.writeText(formatInviteCode(code)).catch(() => {});
-    setCopied(code);
+    try {
+      await navigator.clipboard.writeText(formatInviteCode(code));
+      setCopied({ code, ok: true });
+    } catch {
+      setCopied({ code, ok: false });
+    }
   };
+  const copyNote = (code: string) =>
+    copied?.code === code ? (copied.ok ? t("copied") : t("copyFailed")) : null;
 
   return (
     <div className="flex max-w-3xl flex-col gap-8">
@@ -64,10 +77,8 @@ export function InviteCodes({ invites, now }: { invites: Invite[]; now: number }
             <span className="join-code text-accent-text" dir="ltr">
               {formatInviteCode(state.createdCode)}
             </span>
-            <IconButton icon="copy" label={t("copy")} onClick={() => copy(state.createdCode!)} />
-            <span className="subhead flex-1 text-accent-text">
-              {copied === state.createdCode ? t("copied") : t("created")}
-            </span>
+            <IconButton icon="copy" label={t("copyCode", { code: formatInviteCode(state.createdCode) })} onClick={() => copy(state.createdCode!)} />
+            <span className="subhead flex-1 text-accent-text">{copyNote(state.createdCode) ?? t("created")}</span>
           </div>
         )}
       </Card>
@@ -93,6 +104,11 @@ export function InviteCodes({ invites, now }: { invites: Invite[]; now: number }
                       {t("usesOf", { uses: i.uses, max: i.max_uses })} ·{" "}
                       {t("expires", { date: format.dateTime(new Date(i.expires_at), { month: "short", day: "numeric" }) })}
                     </span>
+                    {copyNote(i.code) && (
+                      <span role="status" className="caption text-accent-text">
+                        {copyNote(i.code)}
+                      </span>
+                    )}
                   </div>
                   <Badge
                     size="sm"
@@ -110,7 +126,11 @@ export function InviteCodes({ invites, now }: { invites: Invite[]; now: number }
                   </Badge>
                   {status === "active" && (
                     <>
-                      <IconButton icon="copy" size="xs" label={t("copy")} onClick={() => copy(i.code)} />
+                      <IconButton
+                        icon="copy"
+                        label={t("copyCode", { code: formatInviteCode(i.code) })}
+                        onClick={() => copy(i.code)}
+                      />
                       <form
                         action={revokeInvite}
                         onSubmit={(e) => {
@@ -124,10 +144,11 @@ export function InviteCodes({ invites, now }: { invites: Invite[]; now: number }
                         <Button
                           type="submit"
                           variant="danger"
-                          size="sm"
                           data-confirm={confirm === i.code || undefined}
+                          onBlur={() => setConfirm(null)}
                         >
                           {confirm === i.code ? t("sure") : t("revoke")}
+                          <span className="sr-only"> {formatInviteCode(i.code)}</span>
                         </Button>
                       </form>
                     </>

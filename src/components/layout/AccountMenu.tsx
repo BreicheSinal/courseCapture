@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
 import { Icon } from "@/components/ui/Icon";
+import { LanguageSelect } from "@/components/ui/LanguageSelect";
 import { Segmented } from "@/components/ui/Segmented";
 import { useThemePreference } from "@/components/ui/ThemeSwitcher";
 import { saveThemePreference, signOut } from "@/lib/auth/actions";
@@ -54,7 +55,16 @@ export function AccountMenu({ name, role }: AccountMenuProps) {
   };
 
   return (
-    <div ref={wrap} className="cc-menu">
+    <div
+      ref={wrap}
+      className="cc-menu"
+      onBlur={(e) => {
+        // Tabbing to something outside closes it. (relatedTarget is null when clicking
+        // a non-focusable part of the panel; outside clicks are handled by pointerdown.)
+        const next = e.relatedTarget as Node | null;
+        if (open && next && !wrap.current?.contains(next)) setOpen(false);
+      }}
+    >
       <button
         ref={trigger}
         type="button"
@@ -95,11 +105,11 @@ export function AccountMenu({ name, role }: AccountMenuProps) {
             </Link>
           )}
 
-          <div className="flex flex-col gap-2 px-3 pt-2 pb-3">
-            <span className="footnote text-ink-muted">{t("auth.menu.appearance")}</span>
+          <div className="flex flex-col gap-3 px-3 pt-2 pb-3">
             <Segmented
               name="appearance"
               legend={t("auth.menu.appearance")}
+              showLegend
               size="lg"
               block
               value={theme}
@@ -110,6 +120,7 @@ export function AccountMenu({ name, role }: AccountMenuProps) {
                 { value: "system", label: t("theme.system") },
               ]}
             />
+            <LanguageSelect />
           </div>
 
           <hr className="cc-menu__divider" />

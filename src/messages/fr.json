@@ -69,7 +69,7 @@
       "metaTitle": "Connexion",
       "tagline": "Transformez articles et diapositives en cours que votre classe peut suivre.",
       "title": "Connexion",
-      "roleLabel": "Je suis",
+      "roleLabel": "Type de compte",
       "teacher": "Je suis enseignant",
       "student": "Je suis élève",
       "emailTeacher": "E-mail de l’établissement",
@@ -104,7 +104,7 @@
       "intro": "Dites-nous comment vous appeler. Vos enseignants et camarades verront ce nom.",
       "nameLabel": "Votre nom",
       "namePlaceholder": "Nadia Rahme",
-      "roleLabel": "Je suis",
+      "roleLabel": "Type de compte",
       "continue": "Continuer",
       "saving": "Enregistrement…"
     },
@@ -143,11 +143,12 @@
       "join": "Rejoindre {school}",
       "joining": "Inscription…",
       "noCode": "Pas de code ? Vous pouvez continuer à attendre.",
-      "backToApproval": "Retour à la validation"
+      "backToApproval": "Retour à la validation",
+      "differentCode": "Utiliser un autre code"
     },
     "wrongAccount": {
       "metaTitle": "Mauvais type de compte",
-      "back": "Retour à la connexion",
+      "back": "Retour",
       "eyebrow": "Le type de compte ne correspond pas",
       "titleStudent": "C’est un compte élève",
       "titleTeacher": "C’est un compte enseignant",
@@ -159,7 +160,7 @@
       "continueStudent": "Continuer en tant qu’élève",
       "continueTeacher": "Continuer en tant qu’enseignant",
       "continueAdmin": "Aller à l’administration",
-      "differentEmail": "Utiliser une autre adresse",
+      "differentEmail": "Se déconnecter et utiliser une autre adresse",
       "teacherQuestion": "Vous êtes enseignant ?",
       "teacherHint": "Les comptes enseignants utilisent une autre adresse. Demandez une invitation à votre établissement ou connectez-vous avec votre adresse professionnelle.",
       "studentQuestion": "Vous êtes élève ?",
@@ -186,8 +187,8 @@
       "linkExpired": "Ce lien a expiré ou a déjà servi. Demandez-en un nouveau.",
       "invalidName": "Saisissez votre nom.",
       "roleRequired": "Choisissez enseignant ou élève.",
-      "invalidCode": "Les codes comptent 8 caractères, comme ABCD-1234.",
-      "codeNotFound": "Ce code ne correspond pas. Vérifiez-le avec votre administrateur. Les codes expirent après 7 jours.",
+      "invalidCode": "Saisissez les 8 caractères, comme ABCD-1234.",
+      "codeNotFound": "Ce code ne correspond pas. Vérifiez-le avec votre administrateur ou demandez-en un nouveau s’il a expiré.",
       "generic": "Un problème est survenu. Réessayez."
     }
   },
@@ -204,7 +205,8 @@
       "decidedTitle": "Décisions récentes",
       "approved": "Validé",
       "rejected": "Refusé",
-      "viaInvite": "Code d’invitation"
+      "viaInvite": "Code d’invitation",
+      "sure": "Sûr ?"
     },
     "invites": {
       "metaTitle": "Codes d’invitation",
@@ -217,7 +219,6 @@
       "create": "Créer le code",
       "creating": "Création…",
       "created": "Code créé. Partagez-le avec l’enseignant.",
-      "copy": "Copier le code",
       "copied": "Code copié",
       "listTitle": "Codes",
       "emptyTitle": "Aucun code d’invitation",
@@ -231,7 +232,9 @@
       "revoke": "Révoquer",
       "sure": "Sûr ?",
       "invalidSchool": "Saisissez le nom de l’établissement.",
-      "generic": "Impossible de créer le code. Réessayez."
+      "generic": "Impossible de créer le code. Réessayez.",
+      "copyCode": "Copier le code {code}",
+      "copyFailed": "Copie impossible. Sélectionnez le code et copiez-le."
     }
   }
 }

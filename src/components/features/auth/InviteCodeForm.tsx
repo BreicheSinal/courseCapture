@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
+import { useFormStatus } from "react-dom";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/Button";
@@ -11,8 +12,30 @@ import { checkInvite, redeemInvite, type InviteState } from "@/lib/auth/actions"
 import { formatInviteCode } from "@/lib/auth/invite-code";
 import { AuthHeading } from "./AuthScreen";
 
+function JoinButton({ school }: { school: string }) {
+  const t = useTranslations("auth.invite");
+  const { pending } = useFormStatus();
+  return (
+    <Button type="submit" variant="primary" block busy={pending}>
+      {pending ? t("joining") : t("join", { school })}
+    </Button>
+  );
+}
+
 /** Canvas T7e · Invite code: check the code, see the school, then join. */
 export function InviteCodeForm({ initialError }: { initialError?: "codeNotFound" }) {
+  // Changing the key starts over with an empty code ("Use a different code").
+  const [attempt, setAttempt] = useState(0);
+  return (
+    <InviteSteps
+      key={attempt}
+      initialError={attempt === 0 ? initialError : undefined}
+      onReset={() => setAttempt((n) => n + 1)}
+    />
+  );
+}
+
+function InviteSteps({ initialError, onReset }: { initialError?: "codeNotFound"; onReset: () => void }) {
   const t = useTranslations("auth");
   const locale = useLocale();
   const [state, action, checking] = useActionState<InviteState, FormData>(checkInvite, {
@@ -66,8 +89,9 @@ export function InviteCodeForm({ initialError }: { initialError?: "codeNotFound"
                 <span className="footnote text-ink">{t("invite.invitedBy", { name: state.invitedBy })}</span>
               </div>
             </div>
-            <Button type="submit" variant="primary" block>
-              {t("invite.join", { school: state.school })}
+            <JoinButton school={state.school} />
+            <Button variant="ghost" onClick={onReset} className="self-center">
+              {t("invite.differentCode")}
             </Button>
           </form>
         )}

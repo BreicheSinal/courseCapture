@@ -13,7 +13,8 @@ export default async function Page() {
   const supabase = await createClient();
   const cols = "id, full_name, email, status, created_at, approved_via_invite";
   const [pending, decided] = await Promise.all([
-    supabase.from("profiles").select(cols).eq("role", "teacher").eq("status", "pending").order("created_at"),
+    // Only teachers who confirmed their email (pending_teachers() in the migration).
+    supabase.rpc("pending_teachers"),
     supabase
       .from("profiles")
       .select(cols)

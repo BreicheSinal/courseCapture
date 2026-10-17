@@ -24,6 +24,8 @@
 | 19 | First admin is set in SQL; admins can't be created from the app | Smallest attack surface |
 | 20 | Design-system CSS sits in Tailwind's `components` layer | So utilities can override a component's defaults |
 | 21 | Database tests run on plain Postgres with an auth shim | No Docker needed; same migrations as Supabase |
+| 22 | A rejected teacher can still redeem an invite code | A code from the school admin is proof they teach there; T7d offers it |
+| 23 | Only teachers who confirmed their email reach the approval queue | Asking for a link creates the account before anyone clicks it |
 
 ## Open questions
 1. ~~Who is the first admin?~~ Decided (#19): set in SQL.

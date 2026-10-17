@@ -180,3 +180,93 @@ describe("approval", () => {
     );
   });
 });
+
+describe("invite edge cases", () => {
+  const newCode = (school: string, uses = 1, days = 7) =>
+    db.commitAs(admin, async (c) =>
+      (await c.query("select code from public.create_teacher_invite($1, $2, $3)", [school, uses, days])).rows[0].code as string,
+    );
+
+  it("refuses revoked and expired codes", async () => {
+    const revoked = await newCode("Revoked School");
+    await db.commitAs(admin, (c) => c.query("select public.revoke_teacher_invite($1)", [revoked]));
+    const expired = await newCode("Old School");
+    await db.client.query("update public.teacher_invites set expires_at = now() - interval '1 minute' where code = $1", [
+      expired,
+    ]);
+    const t = await db.createUser("t20@x.edu", { role: "teacher" });
+    for (const code of [revoked, expired]) {
+      expect(await db.as(t, async (c) => (await c.query("select * from public.check_teacher_invite($1)", [code])).rows)).toEqual([]);
+      expect(await errorOf(db.as(t, (c) => c.query("select public.redeem_teacher_invite($1)", [code])))).toMatch(/invalid_invite/);
+    }
+  });
+
+  it("lets a multi-use code approve that many teachers, then stops", async () => {
+    const code = await newCode("Two Seats", 2);
+    const ids = await Promise.all(["t21", "t22", "t23"].map((n) => db.createUser(`${n}@x.edu`, { role: "teacher" })));
+    await db.commitAs(ids[0], (c) => c.query("select public.redeem_teacher_invite($1)", [code]));
+    await db.commitAs(ids[1], (c) => c.query("select public.redeem_teacher_invite($1)", [code]));
+    expect(await errorOf(db.as(ids[2], (c) => c.query("select public.redeem_teacher_invite($1)", [code])))).toMatch(/invalid_invite/);
+    expect((await db.client.query("select uses from public.teacher_invites where code = $1", [code])).rows[0].uses).toBe(2);
+  });
+
+  it("lets a rejected teacher redeem a code (decision #22)", async () => {
+    const code = await newCode("Second Chance");
+    const t = await db.createUser("t24@x.edu", { role: "teacher" });
+    await db.commitAs(admin, (c) => c.query("select public.set_teacher_status($1, 'rejected')", [t]));
+    const p = await db.commitAs(t, async (c) => (await c.query("select status from public.redeem_teacher_invite($1)", [code])).rows[0]);
+    expect(p.status).toBe("approved");
+  });
+
+  it("hides codes from students and approved teachers", async () => {
+    const code = await newCode("Hidden");
+    const s = await db.createUser("s30@x.edu", { role: "student" });
+    const approved = await db.createUser("t25@x.edu", { role: "teacher" });
+    await db.client.query("update public.profiles set status = 'approved' where id = $1", [approved]);
+    for (const who of [s, approved]) {
+      expect(await db.as(who, async (c) => (await c.query("select * from public.check_teacher_invite($1)", [code])).rows)).toEqual([]);
+    }
+  });
+});
+
+describe("signed-out visitors", () => {
+  it("can't call any app function", async () => {
+    for (const q of [
+      "select public.is_admin()",
+      "select public.complete_onboarding('X', 'student')",
+      "select public.create_teacher_invite('X')",
+      "select * from public.check_teacher_invite('ABCDEFGH')",
+      "select public.redeem_teacher_invite('ABCDEFGH')",
+      "select public.revoke_teacher_invite('ABCDEFGH')",
+      "select * from public.pending_teachers()",
+    ]) {
+      expect(await errorOf(db.as(null, (c) => c.query(q)))).toMatch(/permission denied/);
+    }
+  });
+});
+
+describe("unconfirmed sign-ups", () => {
+  it("stay out of the approval queue and can't be approved", async () => {
+    const unconfirmed = await db.createUser("ghost@x.edu", { role: "teacher" }, { confirmed: false });
+    const confirmed = await db.createUser("real@x.edu", { role: "teacher" });
+    const queue = await db.as(admin, async (c) => (await c.query("select id from public.pending_teachers()")).rows.map((r) => r.id));
+    expect(queue).toContain(confirmed);
+    expect(queue).not.toContain(unconfirmed);
+    expect(await errorOf(db.as(admin, (c) => c.query("select public.set_teacher_status($1, 'approved')", [unconfirmed])))).toMatch(
+      /email_not_confirmed/,
+    );
+  });
+
+  it("only admins see the queue", async () => {
+    const t = await db.createUser("t26@x.edu", { role: "teacher" });
+    expect(await db.as(t, async (c) => (await c.query("select * from public.pending_teachers()")).rows)).toEqual([]);
+  });
+});
+
+describe("email changes", () => {
+  it("keep the profile email current", async () => {
+    const id = await db.createUser("old@x.edu", { role: "student" });
+    await db.client.query("update auth.users set email = 'new@x.edu' where id = $1", [id]);
+    expect((await profileOf(id)).email).toBe("new@x.edu");
+  });
+});

@@ -116,7 +116,15 @@ export async function completeOnboarding(_prev: FormState, formData: FormData): 
 export async function checkApproval(formData: FormData): Promise<void> {
   const locale = localeSchema.catch("en").parse(formData.get("locale"));
   const supabase = await createClient();
-  const { data: profile } = await supabase.from("profiles").select("role, status, full_name").single();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect({ href: "/sign-in", locale });
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role, status, full_name")
+    .eq("id", user!.id)
+    .single();
   if (profile?.status === "approved") redirect({ href: homeFor(profile), locale });
   refresh();
 }

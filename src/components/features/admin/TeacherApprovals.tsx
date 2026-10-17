@@ -1,10 +1,9 @@
 import { useFormatter, useTranslations } from "next-intl";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { setTeacherStatus } from "@/lib/auth/admin-actions";
+import { ApprovalActions } from "./ApprovalActions";
 import type { ProfileRow } from "@/types/supabase";
 
 type Teacher = Pick<ProfileRow, "id" | "full_name" | "email" | "status" | "created_at" | "approved_via_invite">;
@@ -37,15 +36,7 @@ export function TeacherApprovals({ pending, decided }: { pending: Teacher[]; dec
                   </span>
                   <span className="caption text-ink-muted">{t("signedUp", { date: date(p.created_at) })}</span>
                 </div>
-                <form action={setTeacherStatus} className="flex gap-2">
-                  <input type="hidden" name="teacher" value={p.id} />
-                  <Button type="submit" name="status" value="rejected" variant="ghost" size="sm">
-                    {t("reject")}
-                  </Button>
-                  <Button type="submit" name="status" value="approved" variant="primary" size="sm">
-                    {t("approve")}
-                  </Button>
-                </form>
+                <ApprovalActions id={p.id} name={p.full_name || p.email} />
               </li>
             ))}
           </ul>

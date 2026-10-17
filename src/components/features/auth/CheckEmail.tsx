@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
-import { useLocale, useTranslations } from "next-intl";
+import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -21,8 +21,6 @@ function webmailFor(email: string): string | null {
   return null;
 }
 
-const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
-
 /** Canvas T7b (teacher) / S0b (student) · Check your email, with a rate-limited resend. */
 export function CheckEmail({ email, role }: { email: string; role: string }) {
   const t = useTranslations("auth");
@@ -31,22 +29,33 @@ export function CheckEmail({ email, role }: { email: string; role: string }) {
   const [sentAgain, setSentAgain] = useState(false);
   const [error, setError] = useState<AuthErrorKey | undefined>();
   const [pending, start] = useTransition();
+  // Screen readers hear only events (sent again, error, can resend now), never the ticking countdown.
+  const [announce, setAnnounce] = useState("");
+  const format = useFormatter();
   const webmail = webmailFor(email);
+  const mmss = (s: number) =>
+    `${format.number(Math.floor(s / 60))}:${format.number(s % 60, { minimumIntegerDigits: 2 })}`;
 
   useEffect(() => {
     if (left <= 0) return;
-    const id = setTimeout(() => setLeft((s) => s - 1), 1000);
+    const id = setTimeout(() => {
+      setLeft((s) => s - 1);
+      if (left === 1) setAnnounce(t("checkEmail.canResend"));
+    }, 1000);
     return () => clearTimeout(id);
-  }, [left]);
+  }, [left, t]);
 
   const resend = () =>
     start(async () => {
       const r = await resendSignInLink(email, role, locale);
-      if (r?.error) setError(r.error);
-      else {
+      if (r?.error) {
+        setError(r.error);
+        setAnnounce(t(`errors.${r.error}`));
+      } else {
         setError(undefined);
         setSentAgain(true);
         setLeft(COOLDOWN);
+        setAnnounce(t("checkEmail.sentAgain", { time: mmss(COOLDOWN) }));
       }
     });
 
@@ -81,12 +90,15 @@ export function CheckEmail({ email, role }: { email: string; role: string }) {
             {t("checkEmail.resend")}
           </Button>
           <span
-            role="status"
+            aria-hidden="true"
             className={
               error ? "footnote font-semibold text-danger" : sentAgain && left > 0 ? "footnote font-semibold text-success" : "footnote text-ink-muted"
             }
           >
             {status}
+          </span>
+          <span role="status" className="sr-only">
+            {announce}
           </span>
         </div>
       </Card>
