@@ -233,5 +233,13 @@
       "copyCode": "Copier le code {code}",
       "copyFailed": "Copie impossible. Sélectionnez le code et copiez-le."
     }
+  },
+  "emails": {
+    "approved": {
+      "subject": "Votre compte CourseCapture est approuvé",
+      "greeting": "Bonjour {name},",
+      "body": "L’administrateur de votre établissement a approuvé votre compte enseignant. Vous pouvez maintenant créer des classes et transformer vos documents et diapositives en cours.",
+      "cta": "Ouvrir CourseCapture"
+    }
   }
 }

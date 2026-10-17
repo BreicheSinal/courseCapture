@@ -245,6 +245,17 @@ otp_expiry = 900
 # sender_name = "Admin"
 
 # Uncomment to customize email template
+# Sign-in links go straight to /auth/callback with a token hash, so they work
+# on any device (docs/auth-and-roles.md). Paste the same files into the
+# hosted project: Authentication → Email Templates.
+[auth.email.template.magic_link]
+subject = "Your CourseCapture sign-in link"
+content_path = "./supabase/templates/magic_link.html"
+
+[auth.email.template.confirmation]
+subject = "Your CourseCapture sign-in link"
+content_path = "./supabase/templates/confirmation.html"
+
 # [auth.email.template.invite]
 # subject = "You have been invited"
 # content_path = "./supabase/templates/invite.html"

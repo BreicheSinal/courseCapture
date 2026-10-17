@@ -6,7 +6,7 @@ import { THEME_COOKIE } from "@/lib/theme/theme";
 
 /**
  * Where sign-in email links land.
- * Exchanges the one-time code for a session, then sends the person on:
+ * Verifies the one-time link (token hash or PKCE code), then sends the person on:
  * - wrong role for what they picked at sign-in → /wrong-account (T7c)
  * - otherwise → /{locale}, which routes them to the right home.
  */
@@ -27,17 +27,28 @@ export async function GET(request: NextRequest) {
   // Supabase sends errors back as query params (e.g. an expired link).
   if (url.searchParams.get("error")) return to("/sign-in?error=linkExpired");
 
-  const code = url.searchParams.get("code");
-  if (!code) return to("/sign-in?error=linkExpired");
-
   const supabase = await createClient();
-  const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-  if (error || !data.user) return to("/sign-in?error=linkExpired");
+  const tokenHash = url.searchParams.get("token_hash");
+  const otpType = url.searchParams.get("type");
+  const code = url.searchParams.get("code");
+
+  // Two link styles (docs/auth-and-roles.md):
+  // - token_hash: the email template links straight here; works on any device.
+  // - code (PKCE): Supabase's default link; only works in the browser that asked.
+  let user = null;
+  if (tokenHash && (otpType === "email" || otpType === "magiclink" || otpType === "signup")) {
+    const { data, error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: "email" });
+    if (!error) user = data.user;
+  } else if (code) {
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+    if (!error) user = data.user;
+  }
+  if (!user) return to("/sign-in?error=linkExpired");
 
   const { data: profile } = await supabase
     .from("profiles")
     .select("role, full_name, theme")
-    .eq("id", data.user.id)
+    .eq("id", user.id)
     .single();
 
   theme = profile?.theme ?? null;
