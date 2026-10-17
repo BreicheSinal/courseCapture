@@ -1,0 +1,48 @@
+# Design system → code
+
+The app uses the **CourseCapture design system** (Claude Design). Its look: calm, Apple-inspired — system fonts, cool neutrals, soft rounded cards and one blue accent.
+
+## Source of truth
+1. `design-system/tokens.json` — synced from the design system. Never edited by hand.
+2. A build script generates `src/styles/tokens.css` with CSS variables for both themes.
+3. `tailwind.config` maps those variables to utility names (`bg-surface`, `text-ink-muted`, `rounded-lg`, `p-5`…).
+4. Components only use Tailwind token utilities — **no hex values, no arbitrary colours**.
+
+## Tokens
+| Group | Tokens |
+|---|---|
+| Colour | `bg`, `surface`, `surface-sunken`, `ink`, `ink-muted`, `line`, `line-strong`, `accent`, `on-accent`, `accent-text`, `accent-soft`, `success`, `warning`, `danger` (each has Light + Dark) |
+| Type | `large-title`, `title`, `headline`, `body`, `callout`, `subhead`, `footnote`, `caption`, `eyebrow`, `code`, `join-code` — system font stack |
+| Spacing | `space-1` (4) · 2 (8) · 3 (12) · 4 (16) · 5 (20) · 6 (24) · 8 (32) · 12 (48) |
+| Radius | `radius-sm` 8 · `radius-md` 12 · `radius-lg` 20 · `radius-pill` |
+| Shadow | `shadow-card` (Light only; Dark uses a `line` border) |
+| Size | `control-height` 44 · `control-height-sm` 32 · `avatar` 28 |
+
+## Rules carried over from the system
+- One filled `accent` action per view; links and ghost buttons use `accent-text`.
+- `ink-muted` never on `surface-sunken`.
+- Status colours are for text and borders only, always with a word ("Correct", "Overdue").
+- `line` for decoration, `line-strong` for borders that identify a control.
+- Focus: 2px solid `accent` ring, 2px offset, on every focusable element.
+- Motion: 120ms ease for hover/press, 400ms ease for progress width; honour reduced motion.
+- No gradients, no coloured left borders, no decorative emoji.
+- Icons: 24px grid, 1.8px stroke, round caps, `currentColor`; icon-only buttons need `aria-label`.
+
+## Components (`src/components/ui/`)
+From the system (37): Button, IconButton, Menu, ThemeSwitcher · Field, Input, SearchInput, Select, Checkbox, Radio, Toggle, Switch, FileDropzone · Pagination, Breadcrumbs, Tabs · Badge, QuizOption, Toast, EmptyState, Skeleton, StatusDot, Tooltip, Modal, Sheet, DestructiveActionModal · CourseCard, ModuleNav, Flashcard, Book, Table, StudentRow · JoinCode, Announcement, StatTile · AppHeader, Avatar, Entity.
+
+**Sketched on the canvas, not yet in the system** — built here, then proposed back to the system:
+| Component | Used on |
+|---|---|
+| Stepper | T1–T3 |
+| DatePicker | T5 |
+| ClassPicker (Combobox) | T5 |
+| DiagramFrame (AI label, caption, alt text) | T4, S3 |
+| AskClaudePanel (Sheet + input + answer cards) | S5 |
+| TabBar (phone, 3 tabs, 52px targets) | T6, S2 and all phone screens |
+
+## Logo and icons
+Use the system's `lockup.svg` / `lockup-dark.svg`, `mark*.svg`, `app-icon.svg`, `icon-192/512.png`, `icon-maskable-512.png`, `favicon.svg`. Copied into `public/` from `design-system/`. Don't recolour, stretch or retype.
+
+## Keeping in sync
+When the design system changes: re-sync `design-system/`, regenerate `tokens.css`, run the visual and a11y tests in both themes.

@@ -1,0 +1,70 @@
+# Routes — canvas screens to URLs
+
+All routes are prefixed with the interface locale, e.g. `/en/teacher/classes`, `/ar/student/home`. One responsive page per screen covers both the phone and desktop artboards; light and dark come from the theme, not separate pages.
+
+## Auth and onboarding
+| Canvas | Route | Notes |
+|---|---|---|
+| X6 Splash | — | PWA launch screen (manifest), not a route |
+| T7 Sign in | `/sign-in` | Email magic link, Google |
+| T7b / S0b Check your email | `/sign-in/check-email?role=` | Same page, role-specific copy |
+| — Role picker | `/onboarding/role` | First sign-in only |
+| T7e Invite code | `/onboarding/invite` | Teacher with a code |
+| T7d Pending approval | `/onboarding/pending` | Teachers waiting for admin |
+| T7c Wrong account type | `/wrong-account` | Opened the other role's area |
+| — | `/auth/callback` | Supabase redirect handler |
+
+## Teacher
+| Canvas | Route |
+|---|---|
+| T8 First run | `/teacher` (when no classes) |
+| T10 Class list / Desktop sidebar | `/teacher/classes` |
+| T9 Create class | `/teacher/classes/new` |
+| T6 Class page | `/teacher/classes/[classId]` |
+| T11 Roster | `/teacher/classes/[classId]/students` |
+| T12 Student panel | `/teacher/classes/[classId]/students/[studentId]` |
+| T13 New announcement | `/teacher/classes/[classId]/announcements/new` |
+| T15 Delete class | `/teacher/classes/[classId]/delete` (modal route) |
+| T16 / Desktop T7 Courses | `/teacher/courses` |
+| T1 New course | `/teacher/courses/new?class=` |
+| T2 Generating | `/teacher/courses/[courseId]/generating` |
+| T3 Review course | `/teacher/courses/[courseId]/review` |
+| T4 Edit module | `/teacher/courses/[courseId]/modules/[position]/edit` |
+| T5 Assign | `/teacher/courses/[courseId]/assign` |
+| — Preview | `/teacher/courses/[courseId]/preview` (student player, read-only) |
+| T14 / Desktop T8 Settings | `/teacher/settings` |
+
+## Student
+| Canvas | Route |
+|---|---|
+| S1 Join | `/student/join` |
+| S2 Home | `/student` |
+| S7 / Desktop S7 Classes | `/student/classes` and `/student/classes/[classId]` |
+| S8 Course overview | `/student/courses/[courseId]` |
+| S3 Module reader | `/student/courses/[courseId]/modules/[position]` |
+| S4 Quick check | `/student/courses/[courseId]/modules/[position]/check` |
+| S5 Ask Claude | Sheet over S3 (`?ask=1`), not a separate page |
+| S6 Finish | `/student/courses/[courseId]/finish` |
+| Desktop S8 Account | `/student/account` |
+
+## Admin
+| Route | Purpose |
+|---|---|
+| `/admin/teachers` | Pending teachers: approve / reject |
+| `/admin/invites` | Create and revoke teacher invite codes |
+
+*(No canvas screens yet — built from existing components.)*
+
+## Shared
+| Canvas | Where |
+|---|---|
+| X1 Account menu | Menu in AppHeader (theme, language, settings, sign out) |
+| X2 Empty states | `EmptyState` component on each list |
+| X3 Error states | `error.tsx` per route group + inline field errors |
+| X4 Loading | `loading.tsx` per route group with `Skeleton` |
+| X5 App icon | `public/` icons + manifest |
+
+## Navigation
+- **Phone:** bottom tab bar (3 tabs, 52px targets). Teacher: Classes · Courses · Settings. Student: Home · Classes · Account.
+- **Desktop:** left sidebar with the same items + AppHeader.
+- Middleware: no session → `/sign-in`; no role → `/onboarding/role`; pending teacher → `/onboarding/pending`; wrong role for path → `/wrong-account`.
