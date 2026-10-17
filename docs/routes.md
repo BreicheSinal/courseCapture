@@ -5,14 +5,15 @@ All routes are prefixed with the interface locale, e.g. `/en/teacher/classes`, `
 ## Auth and onboarding
 | Canvas | Route | Notes |
 |---|---|---|
-| X6 Splash | — | PWA launch screen (manifest), not a route |
-| T7 Sign in | `/sign-in` | Email magic link, Google |
+| X6 Splash | `/` while routing | Wordmark while `/` decides where to send you |
+| T7 Sign in | `/sign-in?error=` | Teacher/student choice, email magic link, Google |
 | T7b / S0b Check your email | `/sign-in/check-email?role=` | Same page, role-specific copy |
-| — Role picker | `/onboarding/role` | First sign-in only |
+| — Name (and role) | `/onboarding/profile?role=` | First sign-in only; role is normally picked on T7 |
 | T7e Invite code | `/onboarding/invite` | Teacher with a code |
 | T7d Pending approval | `/onboarding/pending` | Teachers waiting for admin |
 | T7c Wrong account type | `/wrong-account` | Opened the other role's area |
-| — | `/auth/callback` | Supabase redirect handler |
+| — | `/auth/callback` | Supabase redirect handler (no locale prefix) |
+| — Foundation preview | `/design` | Dev page: tokens, components, themes |
 
 ## Teacher
 | Canvas | Route |
@@ -67,4 +68,5 @@ All routes are prefixed with the interface locale, e.g. `/en/teacher/classes`, `
 ## Navigation
 - **Phone:** bottom tab bar (3 tabs, 52px targets). Teacher: Classes · Courses · Settings. Student: Home · Classes · Account.
 - **Desktop:** left sidebar with the same items + AppHeader.
-- Middleware: no session → `/sign-in`; no role → `/onboarding/role`; pending teacher → `/onboarding/pending`; wrong role for path → `/wrong-account`.
+- Proxy: no session on a protected path → `/sign-in`. Pages: `decide()` in `src/lib/auth/routing.ts` handles onboarding, pending teachers and wrong areas (`docs/auth-and-roles.md`).
+- Admin (phone tab bar / sidebar): Teachers · Invites.

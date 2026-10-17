@@ -11,3 +11,16 @@
 [dir="rtl"] .cc-flip-rtl {
   transform: scaleX(-1);
 }
+
+/* Centred fixed toasts: the logical inset flips, so the transform must flip too. */
+[dir="rtl"] .cc-toasts--fixed {
+  transform: translateX(50%);
+}
+
+/* Toggle knob moves toward the end edge. */
+[dir="rtl"] .cc-toggle__input:checked + .cc-toggle__track::after {
+  transform: translateX(-18px);
+}
+[dir="rtl"] .cc-toggle--sm .cc-toggle__input:checked + .cc-toggle__track::after {
+  transform: translateX(-14px);
+}

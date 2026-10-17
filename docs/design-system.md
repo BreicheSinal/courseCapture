@@ -10,6 +10,8 @@ The app uses the **CourseCapture design system** (Claude Design). Its look: calm
 3. React components in `src/components/ui/` are thin, typed wrappers that apply those `cc-*` classes, so they look exactly like the design system and update when it changes.
 4. Page layout uses Tailwind utilities on the 4px scale (`p-5` = 20px = `space-5`) and token colours only — **no hex values, no arbitrary colours**.
 5. Shorthand rules that can't be converted for RTL are fixed by hand in `src/styles/rtl.css`.
+6. All design-system CSS is in Tailwind's `components` layer, so a utility on a `cc-*` element (`p-4`, `font-semibold`, `max-sm:hidden`) overrides the component default.
+7. Pieces drawn on the canvas but not yet in the system get CSS in `src/styles/extensions.css` (from tokens), to be proposed back to the system.
 
 ## Tokens
 | Group | Tokens |
@@ -43,6 +45,7 @@ From the system (37): Button, IconButton, Menu, ThemeSwitcher · Field, Input, S
 | DiagramFrame (AI label, caption, alt text) | T4, S3 |
 | AskClaudePanel (Sheet + input + answer cards) | S5 |
 | TabBar (phone, 3 tabs, 52px targets) | T6, S2 and all phone screens |
+| Large wordmark | T7, X6 |
 
 ## Logo and icons
 Use the system's `lockup.svg` / `lockup-dark.svg`, `mark*.svg`, `app-icon.svg`, `icon-192/512.png`, `icon-maskable-512.png`, `favicon.svg`. Copied into `public/` from `design-system/`. Don't recolour, stretch or retype.

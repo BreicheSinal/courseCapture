@@ -1,0 +1,10 @@
+/*
+ * Pieces drawn on the design canvas that aren't in the design system yet.
+ * Built from system tokens; propose them back to the system, then delete here.
+ */
+
+/* T7 sign-in: the wordmark at hero size (canvas lockup is 36px tall). */
+.cc-wordmark--lg {
+  font-size: 32px;
+  line-height: 40px;
+}

@@ -18,12 +18,18 @@
 | 13 | PWA first, native later | Fastest path to phones |
 | 14 | Build in stages, one PR per stage | Reviewable chunks |
 | 15 | Provider-agnostic AI layer (Vercel AI SDK), Anthropic by default | Switch vendor or model by env vars; no vendor lock-in |
+| 16 | Role is picked on the sign-in screen and fixed once set | Matches the canvas (T7); the wrong-account screen (T7c) handles mix-ups |
+| 17 | Names are asked on first sign-in (`/onboarding/profile`) | Email sign-in gives no name; T7d greets the teacher by name |
+| 18 | Invite codes carry a school name and are 8 characters, 7-day default expiry | Matches T7e; no look-alike characters |
+| 19 | First admin is set in SQL; admins can't be created from the app | Smallest attack surface |
+| 20 | Design-system CSS sits in Tailwind's `components` layer | So utilities can override a component's defaults |
+| 21 | Database tests run on plain Postgres with an auth shim | No Docker needed; same migrations as Supabase |
 
 ## Open questions
-1. **Who is the first admin?** Assumed: the owner's account, set manually.
+1. ~~Who is the first admin?~~ Decided (#19): set in SQL.
 2. **Approval emails** — Supabase's built-in mail or a provider like Resend?
-3. **Package manager** — pnpm (assumed) or npm?
-4. **Repo visibility** — private (assumed) or public?
+3. ~~Package manager~~ Decided: pnpm.
+4. ~~Repo visibility~~ Decided: private.
 5. **Keep source files** after generation by default? Assumed: no.
 6. **Quiz answer secrecy** — is it OK for v1 that a determined student could read answers? (See schema note.)
 7. **Daily AI limits** — starting numbers per teacher and per student.

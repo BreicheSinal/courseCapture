@@ -5,7 +5,10 @@
 @import "./generated/components.css";
 
 /* Hand-written fixes for design-system rules that can't be converted automatically. */
-@import "./rtl.css";
+@import "./rtl.css" layer(components);
+
+/* Canvas pieces not yet in the design system. */
+@import "./extensions.css" layer(components);
 
 /* Tailwind variants that match our theme mechanism (docs/theming.md). */
 @custom-variant dark {
