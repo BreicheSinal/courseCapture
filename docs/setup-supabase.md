@@ -13,7 +13,7 @@ Stage 2 needs a Supabase project for sign-in and the database. About 15 minutes.
 ## 2. Run the migration
 Either:
 - **CLI (recommended):** `pnpm exec supabase login`, `pnpm exec supabase link --project-ref <ref>`, then `pnpm exec supabase db push`.
-- **Dashboard:** SQL Editor → paste `supabase/migrations/20261017120000_auth_profiles_invites.sql` → Run.
+- **Dashboard:** SQL Editor → paste each file in `supabase/migrations/` in order (`20261017100506_auth_profiles_invites.sql`, then `20261017101500_auth_hardening.sql`) → Run.
 
 ## 3. Auth settings (Authentication → URL Configuration)
 - **Site URL:** your production URL (or `http://localhost:3000` for now).

@@ -60,7 +60,7 @@ Functions (all `security definer`, `search_path = ''`, caller checked first):
 
 Profile functions: `handle_new_user()` (trigger on `auth.users`), `complete_onboarding(name, role)` (sets the name, and the role once), `set_teacher_status(id, approved|rejected)` (admins only), `is_admin()`.
 
-**Status:** `profiles` and `teacher_invites` exist (stage 2, `20261017120000_auth_profiles_invites.sql`). The other tables below arrive with stages 3–5.
+**Status:** `profiles` and `teacher_invites` exist (stage 2, `20261017100506_auth_profiles_invites.sql`). The other tables below arrive with stages 3–5.
 
 ### `classes`
 | Column | Type | Notes |
