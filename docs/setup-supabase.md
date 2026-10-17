@@ -30,7 +30,11 @@ Authentication → Providers → Email:
 - **Email OTP expiration:** 900 seconds (the screens say links work for 15 minutes).
 
 ## 4. Email templates (Authentication → Email Templates)
-New people get the **Confirm signup** email; returning people get **Magic link**. Both should read as a sign-in link. Suggested subject: *Your CourseCapture sign-in link*. Keep `{{ .ConfirmationURL }}` as the button link.
+New people get the **Confirm signup** email; returning people get **Magic link**. For both:
+- **Subject:** `Your CourseCapture sign-in link`
+- **Body:** paste `supabase/templates/confirmation.html` (Confirm signup) and `supabase/templates/magic_link.html` (Magic link).
+
+The link in these templates is `{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=email`, which lets a link work on any device. Supabase's default `{{ .ConfirmationURL }}` only works in the browser that asked for it.
 
 ### Own SMTP with Google (decision #33)
 Supabase's built-in sender is test-only (about 2 emails an hour). Send through the Google account for the support address instead:

@@ -37,6 +37,8 @@
 | 32 | Production: Vercel project `invix-studio/course-capture` at `https://invixlab.tech` | Domain already connected (#38) |
 | 33 | Email: Supabase sends through Google SMTP as the support address; the app sends the approval email the same way | Owner's choice (#14); built-in mailer is test-only |
 | 34 | Email link is the only sign-in method; the canvas's "Continue with school account" (Google) button is removed | Owner's choice; one path to support. Can come back later with the Google setup steps |
+| 35 | Sign-in emails link with a token hash, verified on the server | Teachers ask on a laptop and open the email on a phone; PKCE-only links fail there |
+| 36 | Approval email sent by the app with nodemailer over the same SMTP account, after the response | One sender for all mail; a slow mail server never delays the admin |
 
 ## Open questions
 1. **Due date per class** when one course is assigned to several classes — assumed yes.

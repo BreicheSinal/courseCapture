@@ -1,7 +1,9 @@
 "use server";
 
 import { refresh } from "next/cache";
+import { after } from "next/server";
 import { z } from "zod";
+import { sendApprovedEmail } from "@/lib/email/approved";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -16,7 +18,16 @@ export async function setTeacherStatus(formData: FormData): Promise<void> {
   if (!id.success || !status.success) return;
   const supabase = await createClient();
   // On failure (e.g. not an admin) nothing changes; the refreshed list shows the real state.
-  await supabase.rpc("set_teacher_status", { p_teacher: id.data, p_status: status.data });
+  const { error } = await supabase.rpc("set_teacher_status", { p_teacher: id.data, p_status: status.data });
+  if (!error && status.data === "approved") {
+    const { data: teacher } = await supabase
+      .from("profiles")
+      .select("email, full_name, ui_locale")
+      .eq("id", id.data)
+      .single();
+    // Sent after the response so a slow mail server never delays the admin.
+    if (teacher) after(() => sendApprovedEmail(teacher));
+  }
   refresh();
 }
 

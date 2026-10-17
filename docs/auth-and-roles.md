@@ -4,8 +4,10 @@ Built in stage 2. Setup: `docs/setup-supabase.md`.
 
 ## Sign-in (T7)
 - The person picks **I'm a teacher / I'm a student** on the sign-in screen, then asks for a sign-in link by email (Supabase magic link) → T7b / S0b "Check your email" with a 60-second resend. Email is the only sign-in method (decision #34).
-- Links work for 15 minutes and must be opened on the same device/browser (PKCE).
-- The link lands on `/auth/callback`, which exchanges the code for a session, applies the saved theme, and redirects.
+- Links work for 15 minutes, on any device. The email templates (`supabase/templates/`) link straight to `/auth/callback?…&token_hash=…&type=email`; the callback verifies the hash on the server (`verifyOtp`), so a link asked for on a laptop can be opened on a phone.
+- Supabase's default link (`?code=`, PKCE) still works but only in the browser that asked for it; the callback accepts both.
+- The callback then applies the saved theme and redirects.
+- When an admin approves a teacher, the app emails them ("You're approved") in their interface language through the same SMTP account (`src/lib/email/`, `SMTP_*` env vars). A mail failure is logged and never blocks the approval.
 
 ## Accounts
 ```
