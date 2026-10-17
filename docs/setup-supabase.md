@@ -16,8 +16,13 @@ Either:
 - **Dashboard:** SQL Editor → paste each file in `supabase/migrations/` in order (`20261017100506_auth_profiles_invites.sql`, then `20261017101500_auth_hardening.sql`) → Run.
 
 ## 3. Auth settings (Authentication → URL Configuration)
-- **Site URL:** your production URL (or `http://localhost:3000` for now).
-- **Redirect URLs:** add `http://localhost:3000/auth/callback` and `https://<your-domain>/auth/callback` (and Vercel previews: `https://*-<team>.vercel.app/auth/callback`).
+- **Site URL:** `https://invixlab.tech`
+- **Redirect URLs** (every address a sign-in link may return to):
+  - `https://invixlab.tech/auth/callback` — production
+  - `https://course-capture-*-invix-studio.vercel.app/auth/callback` — Vercel preview deployments
+  - `http://localhost:3000/auth/callback` — local development
+
+On Vercel (`invix-studio/course-capture` → Settings → Environment Variables) set `NEXT_PUBLIC_APP_URL=https://invixlab.tech` for Production. The Supabase ↔ Vercel integration adds the Supabase URL and keys automatically.
 
 Authentication → Providers → Email:
 - Email provider **on**. "Confirm email" can stay on — the sign-in link confirms it.

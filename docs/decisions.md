@@ -33,10 +33,10 @@
 | 28 | A course can be assigned to several classes (no copies), each with its own due date | One course to edit; progress stays per student per course |
 | 29 | Certificates are downloadable PDFs | Requested |
 | 30 | Analytics: Vercel Web Analytics (free, cookieless) | No consent banner needed |
+| 31 | Students of any age sign up the same way; no parental-consent step | Owner's decision (#42). Revisit before launching to schools in regions with child-privacy rules (COPPA, GDPR-K) |
+| 32 | Production: Vercel project `invix-studio/course-capture` at `https://invixlab.tech` | Domain already connected (#38) |
 
 ## Open questions
 1. **Approval emails** — Supabase's built-in mailer only sends sign-in emails and is rate-limited. Options: Resend's free plan as Supabase's SMTP (also sends "you're approved"), or no approval email for now.
 2. **Due date per class** when one course is assigned to several classes — assumed yes.
-3. **Students under 13** — will they sign up themselves? (affects consent rules such as COPPA/GDPR-K)
-4. **Editing a course after it's assigned** — allowed? Assumed yes; changed modules keep students' progress on the unchanged ones.
-5. **Domain and Vercel project** — needed for sign-in redirect URLs and production setup.
+3. **Editing a course after it's assigned** — allowed? Assumed yes; changed modules keep students' progress on the unchanged ones.
