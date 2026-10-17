@@ -1,0 +1,13 @@
+/*
+ * Right-to-left fixes for design-system rules that use shorthand values
+ * (e.g. `padding: 4px 12px 4px 4px`) and so can't be rewritten automatically
+ * by scripts/build-tokens.mjs. Add a rule here when a component looks wrong in Arabic.
+ */
+[dir="rtl"] .cc-chip {
+  padding: 4px 4px 4px 12px;
+}
+
+/* Directional icons (arrows, chevrons) point the other way in RTL. */
+[dir="rtl"] .cc-flip-rtl {
+  transform: scaleX(-1);
+}

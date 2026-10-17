@@ -1,0 +1,16 @@
+<!-- @dsCard group="Forms" height=544 subtitle="Sizes, error, disabled and grouped options" -->
+<style>
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans)}
+.pv{display:flex;flex-direction:column;gap:20px;padding:24px;max-width:560px}
+.row{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.cap{font:12px/16px var(--font-sans);color:var(--ink-muted);margin:0 0 -10px}
+</style>
+<div class="pv" style="max-width:380px">
+  <div class="cc-field"><label class="cc-field__label" for="s1">Language</label><div class="cc-select"><select class="cc-input" id="s1"><option>English</option><option>Arabic</option><option>French</option><option>Spanish</option></select><svg class="cc-select__chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></div></div>
+  <p class="cap">Small and large</p>
+  <div class="cc-select"><select class="cc-input cc-input--sm" aria-label="Small"><option>Small</option></select><svg class="cc-select__chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></div>
+  <div class="cc-select"><select class="cc-input cc-input--lg" aria-label="Large"><option>Large</option></select><svg class="cc-select__chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></div>
+  <p class="cap">Error and disabled</p>
+  <div class="cc-field is-error"><label class="cc-field__label" for="s2">Class</label><div class="cc-select"><select class="cc-input" id="s2" aria-invalid="true" aria-describedby="s2e"><option value="" selected disabled hidden>Select a class</option><option>Biology 101</option><option>Chemistry A</option></select><svg class="cc-select__chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></div><span class="cc-field__error" id="s2e">Select a class.</span></div>
+  <div class="cc-field"><label class="cc-field__label" for="s3">Level</label><div class="cc-select"><select class="cc-input" id="s3" disabled><option>Intermediate</option></select><svg class="cc-select__chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></div><span class="cc-field__hint">Set by the course.</span></div>
+</div>

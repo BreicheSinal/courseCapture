@@ -1,0 +1,25 @@
+<!-- @dsCard group="Forms" height=520 subtitle="Input, error, select and text area" -->
+<style>
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans)}
+.pv{display:flex;flex-direction:column;gap:16px;padding:24px;max-width:480px}
+</style>
+<div class="pv">
+  <div class="cc-field">
+    <label class="cc-field__label" for="f1">New class name</label>
+    <input class="cc-input" id="f1" type="text" placeholder="Biology 101">
+  </div>
+  <div class="cc-field is-error">
+    <label class="cc-field__label" for="f2">Join code</label>
+    <input class="cc-input" id="f2" type="text" value="ZZZZZ" aria-invalid="true" style="text-transform:uppercase;letter-spacing:.1em">
+    <span class="cc-field__error">No class with that code.</span>
+  </div>
+  <div class="cc-field">
+    <label class="cc-field__label" for="f3">Language</label>
+    <select class="cc-input" id="f3"><option>English</option><option>Arabic</option><option>French</option><option>Spanish</option></select>
+  </div>
+  <div class="cc-field">
+    <label class="cc-field__label" for="f4">Source text</label>
+    <textarea class="cc-input" id="f4" placeholder="Paste paper or slide text…"></textarea>
+    <span class="cc-field__hint">Upload a .pdf / .pptx / .txt / .md file or paste text.</span>
+  </div>
+</div>

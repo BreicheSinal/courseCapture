@@ -1,0 +1,39 @@
+<!-- @dsCard group="Course" height=610 subtitle="Student cards, and the teacher card with preview and delete icon buttons" -->
+<style>
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans)}
+.pv{display:flex;flex-direction:column;gap:16px;padding:24px;max-width:520px}
+.cap{font:12px/16px var(--font-sans);color:var(--ink-muted);margin:0 0 -8px}
+button.cc-card{color:var(--ink)}
+</style>
+<div class="pv">
+  <p class="cap">Student</p>
+  <button class="cc-card cc-course" type="button">
+    <span class="cc-course__top"><span class="cc-course__title">Photosynthesis</span></span>
+    <span class="cc-course__meta">Biology · 3/9 · due Nov 4</span>
+    <span class="cc-progress" role="progressbar" aria-valuenow="3" aria-valuemin="0" aria-valuemax="9"><i style="width:33%"></i></span>
+  </button>
+  <button class="cc-card cc-course" type="button">
+    <span class="cc-course__top"><span class="cc-course__title">Cell division</span><span class="cc-badge cc-badge--warning">Overdue</span></span>
+    <span class="cc-course__meta">Biology · 5/8 · due Oct 2</span>
+    <span class="cc-progress" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="8"><i style="width:62%"></i></span>
+  </button>
+  <button class="cc-card cc-course" type="button">
+    <span class="cc-course__top"><span class="cc-course__title">The Calvin cycle</span><span class="cc-badge cc-badge--success">Complete</span></span>
+    <span class="cc-course__meta">Biology · 6/6</span>
+    <span class="cc-progress" role="progressbar" aria-valuenow="6" aria-valuemin="0" aria-valuemax="6"><i style="width:100%"></i></span>
+  </button>
+
+  <p class="cap">Teacher</p>
+  <div class="cc-card cc-card--stack">
+    <div class="cc-course__top">
+      <div>
+        <p class="cc-course__title">Photosynthesis</p>
+        <p class="cc-course__meta">9 modules · due Nov 4</p>
+      </div>
+      <div class="cc-course__actions">
+        <button class="cc-iconbtn" type="button" aria-label="Preview course" title="Preview course"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
+        <button class="cc-iconbtn" type="button" aria-label="Delete course" title="Delete course"><svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v5M14 11v5"/></svg></button>
+      </div>
+    </div>
+  </div>
+</div>

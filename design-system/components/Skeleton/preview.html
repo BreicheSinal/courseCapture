@@ -1,0 +1,28 @@
+<!-- @dsCard group="Feedback" height=448 subtitle="Shapes, a loading course card and a loading list" -->
+<style>
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans)}
+.pv{display:flex;flex-direction:column;gap:20px;padding:24px;max-width:560px}
+.row{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.cap{font:12px/16px var(--font-sans);color:var(--ink-muted);margin:0 0 -10px}
+</style>
+<div class="pv">
+  <p class="cap">Shapes</p>
+  <div class="row">
+    <span class="cc-skel" style="width:96px;height:32px"></span>
+    <span class="cc-skel cc-skel--pill" style="width:96px;height:32px"></span>
+    <span class="cc-skel cc-skel--round"></span>
+    <span class="cc-skel cc-skel--square" style="width:64px;height:32px"></span>
+    <span class="cc-skel cc-skel--still" style="width:96px;height:32px"></span>
+  </div>
+  <p class="cap">Course card</p>
+  <div class="cc-card" aria-busy="true" style="display:flex;flex-direction:column;gap:12px">
+    <span class="cc-skel cc-skel--title"></span>
+    <span class="cc-skel" style="width:35%"></span>
+    <span class="cc-skel cc-skel--pill" style="height:8px"></span>
+  </div>
+  <p class="cap">Roster</p>
+  <div class="cc-entities" aria-busy="true">
+    <div class="cc-entity"><span class="cc-entity__lead"><span class="cc-skel cc-skel--round"></span></span><span class="cc-entity__body"><span class="cc-skel" style="width:40%"></span><span class="cc-skel" style="width:25%;height:12px"></span></span></div>
+    <div class="cc-entity"><span class="cc-entity__lead"><span class="cc-skel cc-skel--round"></span></span><span class="cc-entity__body"><span class="cc-skel" style="width:50%"></span><span class="cc-skel" style="width:30%;height:12px"></span></span></div>
+  </div>
+</div>

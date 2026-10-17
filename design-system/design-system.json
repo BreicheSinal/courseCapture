@@ -1,0 +1,150 @@
+{
+  "v": 3,
+  "assetGroups": {
+    "Logos": {
+      "name": "Logos",
+      "tile": "l",
+      "order": [
+        "mark.svg",
+        "mark-dark.svg",
+        "mark-ink.svg",
+        "mark-white.svg",
+        "lockup.svg",
+        "lockup-dark.svg",
+        "wordmark.svg",
+        "wordmark-dark.svg"
+      ],
+      "files": {
+        "mark.svg": {
+          "name": "mark.svg",
+          "blob": "20f5138e2e91ec94d62387893fb305f6",
+          "size": 633,
+          "type": "image/svg+xml"
+        },
+        "mark-dark.svg": {
+          "name": "mark-dark.svg",
+          "blob": "2d17b006c6399644c1a7fa86047cfff4",
+          "size": 633,
+          "type": "image/svg+xml"
+        },
+        "mark-ink.svg": {
+          "name": "mark-ink.svg",
+          "blob": "ac15fcd7c591d85b3946e49265e1d975",
+          "size": 576,
+          "type": "image/svg+xml"
+        },
+        "mark-white.svg": {
+          "name": "mark-white.svg",
+          "blob": "9c410a14932298e58b7ff51c0a19fb36",
+          "size": 576,
+          "type": "image/svg+xml"
+        },
+        "lockup.svg": {
+          "name": "lockup.svg",
+          "blob": "cf381036b85067cd867b39754ff7b5e6",
+          "size": 11105,
+          "type": "image/svg+xml"
+        },
+        "lockup-dark.svg": {
+          "name": "lockup-dark.svg",
+          "blob": "589ce2efd2a91003a0919a1e63501128",
+          "size": 11105,
+          "type": "image/svg+xml"
+        },
+        "wordmark.svg": {
+          "name": "wordmark.svg",
+          "blob": "239feae20db13cb8e85669b1e90842d5",
+          "size": 10575,
+          "type": "image/svg+xml"
+        },
+        "wordmark-dark.svg": {
+          "name": "wordmark-dark.svg",
+          "blob": "1b2f47d7e8b65d68bb7c9c017aa17052",
+          "size": 10575,
+          "type": "image/svg+xml"
+        }
+      }
+    },
+    "AppIcons": {
+      "name": "App icons",
+      "tile": "m",
+      "order": [
+        "favicon.svg",
+        "app-icon.svg",
+        "app-icon-maskable.svg",
+        "apple-touch-icon-180.png",
+        "icon-192.png",
+        "icon-512.png",
+        "icon-maskable-512.png"
+      ],
+      "files": {
+        "favicon.svg": {
+          "name": "favicon.svg",
+          "blob": "54f5329d029e18c7c43513b412e924b9",
+          "size": 633,
+          "type": "image/svg+xml"
+        },
+        "app-icon.svg": {
+          "name": "app-icon.svg",
+          "blob": "573b9a0f9b199d4863fc869f85144f8c",
+          "size": 632,
+          "type": "image/svg+xml"
+        },
+        "app-icon-maskable.svg": {
+          "name": "app-icon-maskable.svg",
+          "blob": "7fd2d874269cfe330ae2eb0232fa42a5",
+          "size": 690,
+          "type": "image/svg+xml"
+        },
+        "apple-touch-icon-180.png": {
+          "name": "apple-touch-icon-180.png",
+          "blob": "579a3def2a692c3dfcf2feccf3864e23",
+          "size": 3084,
+          "type": "image/png"
+        },
+        "icon-192.png": {
+          "name": "icon-192.png",
+          "blob": "d86caa180f006cd124e408e6ac278c54",
+          "size": 4530,
+          "type": "image/png"
+        },
+        "icon-512.png": {
+          "name": "icon-512.png",
+          "blob": "905b03144afba6ce77f3bba5224b8880",
+          "size": 13125,
+          "type": "image/png"
+        },
+        "icon-maskable-512.png": {
+          "name": "icon-maskable-512.png",
+          "blob": "1be449e2dc904807873b855b6affdd51",
+          "size": 7657,
+          "type": "image/png"
+        }
+      }
+    }
+  },
+  "blobs": {},
+  "createdOnFiles": {
+    "at": "2026-10-16T20:52:00Z",
+    "v": 1
+  },
+  "docs": {
+    "readme": "project/README.md",
+    "sections": []
+  },
+  "groups": [
+    "Logos",
+    "AppIcons"
+  ],
+  "lastChange": {
+    "at": "2026-10-16T23:55:00Z",
+    "by": "Claude",
+    "note": "Added Tabs, Modal, Sheet, Checkbox, Radio, Toggle, Switch, Select, Tooltip and FileDropzone",
+    "via": "Claude chat"
+  },
+  "layout": "files",
+  "libraries": [],
+  "namespace": "CourseCapture",
+  "sections": {},
+  "title": "CourseCapture"
+}

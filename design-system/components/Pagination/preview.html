@@ -1,0 +1,22 @@
+<!-- @dsCard group="Navigation" height=380 subtitle="Previous and next, only one at the ends" -->
+<style>
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans)}
+.pv{display:flex;flex-direction:column;gap:20px;padding:24px;max-width:560px}
+.row{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.cap{font:12px/16px var(--font-sans);color:var(--ink-muted);margin:0 0 -10px}
+</style>
+<div class="pv">
+  <p class="cap">Middle of the list</p>
+  <nav class="cc-pager" aria-label="Pagination">
+    <a class="cc-pager__link" href="#" aria-label="Go to previous page: Module 1, Photosynthesis basics"><span class="cc-pager__dir">Previous</span><span class="cc-pager__title">Module 1: Photosynthesis basics</span></a>
+    <a class="cc-pager__link cc-pager__link--next" href="#" aria-label="Go to next page: Module 3, The Calvin cycle"><span class="cc-pager__dir">Next</span><span class="cc-pager__title">Module 3: The Calvin cycle</span></a>
+  </nav>
+  <p class="cap">First page</p>
+  <nav class="cc-pager" aria-label="Pagination">
+    <a class="cc-pager__link cc-pager__link--next" href="#" aria-label="Go to next page: Module 2, Light reactions"><span class="cc-pager__dir">Next</span><span class="cc-pager__title">Module 2: Light reactions</span></a>
+  </nav>
+  <p class="cap">Last page</p>
+  <nav class="cc-pager" aria-label="Pagination">
+    <a class="cc-pager__link" href="#" aria-label="Go to previous page: Module 8, Limiting factors"><span class="cc-pager__dir">Previous</span><span class="cc-pager__title">Module 8: Limiting factors</span></a>
+  </nav>
+</div>

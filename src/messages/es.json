@@ -1,0 +1,65 @@
+{
+  "common": {
+    "appName": "CourseCapture",
+    "skipToContent": "Ir al contenido",
+    "mainNavigation": "Principal",
+    "notFoundTitle": "Página no encontrada",
+    "notFoundText": "Revisa la dirección o vuelve al inicio.",
+    "goHome": "Ir al inicio",
+    "errorTitle": "Algo salió mal",
+    "errorText": "Inténtalo de nuevo. Si sigue pasando, recarga la página.",
+    "tryAgain": "Intentar de nuevo",
+    "loading": "Cargando"
+  },
+  "roles": {
+    "teacher": "Docente",
+    "student": "Estudiante",
+    "admin": "Admin"
+  },
+  "nav": {
+    "classes": "Clases",
+    "courses": "Cursos",
+    "settings": "Ajustes",
+    "home": "Inicio",
+    "account": "Cuenta"
+  },
+  "theme": {
+    "label": "Tema",
+    "light": "Claro",
+    "system": "Sistema",
+    "dark": "Oscuro"
+  },
+  "language": {
+    "label": "Idioma"
+  },
+  "foundation": {
+    "metaTitle": "Vista previa de la base",
+    "eyebrow": "Etapa 1 de 6",
+    "title": "Base",
+    "intro": "Esta página comprueba la base de la app: tokens de diseño, temas claro y oscuro, idiomas y diseño. Las pantallas reales la sustituirán en las próximas etapas.",
+    "preferences": "Preferencias",
+    "preferencesHint": "Tus elecciones se recuerdan en este dispositivo.",
+    "buttons": "Botones",
+    "primary": "Asignar a Biología",
+    "secondary": "Vista previa",
+    "tertiary": "Exportar HTML",
+    "ghost": "Cancelar",
+    "danger": "Eliminar curso",
+    "busy": "Generando parte {done}/{total}…",
+    "copyCode": "Copiar código de acceso",
+    "badges": "Insignias",
+    "draft": "Borrador",
+    "complete": "Completado",
+    "overdue": "Atrasado",
+    "failed": "Error",
+    "type": "Tipografía",
+    "sampleTitle": "Fotosíntesis",
+    "sampleHeadline": "Módulo 2: Reacciones luminosas",
+    "sampleBody": "La clorofila absorbe la luz roja y azul.",
+    "sampleMeta": "{modules, plural, one {# módulo} other {# módulos}} · entrega el {date}",
+    "states": "Estados",
+    "emptyTitle": "Crea tu primera clase",
+    "emptyText": "Luego comparte su código de acceso y asigna un curso creado a partir de un artículo o unas diapositivas.",
+    "emptyAction": "Crear clase"
+  }
+}

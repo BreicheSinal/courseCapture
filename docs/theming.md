@@ -6,8 +6,9 @@
 - The choice is saved in a cookie (instant, works signed-out) and on `profiles.theme` (follows the user across devices). On sign-in the profile value wins.
 
 ## Mechanism
-- `<html data-theme="light|dark">` is set **on the server** from the cookie, so there's no flash on first paint. With `system`, no attribute is set and CSS media queries decide.
-- `tokens.css` defines every colour token three ways:
+- `<html data-theme="light|dark">` is set by a tiny **inline script in `<head>`** (`src/lib/theme/theme.ts → themeInitScript`) that reads the `cc-theme` cookie before the page paints, so there's no flash. It runs in the browser rather than on the server so pages stay fully pre-rendered (Next.js Cache Components). With `system`, no attribute is set and CSS media queries decide.
+- `ThemeSwitcher` writes the cookie and updates the attribute immediately.
+- `src/styles/generated/tokens.css` (built by `pnpm tokens`) defines every colour token three ways:
   ```
   :root { …light values… }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { …dark… } }

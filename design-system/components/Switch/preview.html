@@ -1,0 +1,15 @@
+<!-- @dsCard group="Forms" height=314 subtitle="Two and three options, three sizes, disabled" -->
+<style>
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans)}
+.pv{display:flex;flex-direction:column;gap:20px;padding:24px;max-width:560px}
+.row{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.cap{font:12px/16px var(--font-sans);color:var(--ink-muted);margin:0 0 -10px}
+</style>
+<div class="pv">
+  <p class="cap">Default</p>
+  <div class="row"><div class="cc-seg " role="radiogroup" aria-label="View"><label class="cc-seg__opt"><input type="radio" name="View" checked><span>Cards</span></label><label class="cc-seg__opt"><input type="radio" name="View" ><span>List</span></label></div><div class="cc-seg " role="radiogroup" aria-label="Audience"><label class="cc-seg__opt"><input type="radio" name="Audience" ><span>Student view</span></label><label class="cc-seg__opt"><input type="radio" name="Audience" checked><span>Teacher view</span></label><label class="cc-seg__opt"><input type="radio" name="Audience" ><span>Print</span></label></div></div>
+  <p class="cap">Small and large</p>
+  <div class="row"><div class="cc-seg cc-seg--sm" role="radiogroup" aria-label="Small"><label class="cc-seg__opt"><input type="radio" name="Small" checked><span>Day</span></label><label class="cc-seg__opt"><input type="radio" name="Small" ><span>Week</span></label></div><div class="cc-seg cc-seg--lg" role="radiogroup" aria-label="Large"><label class="cc-seg__opt"><input type="radio" name="Large" ><span>Light</span></label><label class="cc-seg__opt"><input type="radio" name="Large" checked><span>Dark</span></label></div></div>
+  <p class="cap">Full width, one option disabled</p>
+  <div class="cc-seg cc-seg--block" role="radiogroup" aria-label="Export"><label class="cc-seg__opt"><input type="radio" name="Export" checked><span>HTML</span></label><label class="cc-seg__opt"><input type="radio" name="Export"><span>PDF</span></label><label class="cc-seg__opt"><input type="radio" name="Export" disabled><span>PowerPoint</span></label></div>
+</div>

@@ -1,0 +1,17 @@
+<!-- @dsCard group="Forms" height=424 subtitle="Empty, with a value, loading and disabled" -->
+<style>
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans)}
+.pv{display:flex;flex-direction:column;gap:20px;padding:24px;max-width:560px}
+.row{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.cap{font:12px/16px var(--font-sans);color:var(--ink-muted);margin:0 0 -10px}
+</style>
+<div class="pv" style="max-width:420px">
+  <p class="cap">Empty, with shortcut</p>
+  <div class="cc-search" role="search"><div class="cc-inputbox"><span class="cc-inputbox__affix" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></span><input class="cc-input" type="search" aria-label="Search students" placeholder="Search students"><kbd class="cc-search__kbd">⌘K</kbd></div></div>
+  <p class="cap">With a value</p>
+  <div class="cc-search" role="search"><div class="cc-inputbox"><span class="cc-inputbox__affix" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></span><input class="cc-input" type="search" aria-label="Search students" value="Omar"><button class="cc-search__btn" type="button" aria-label="Clear search"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button><kbd class="cc-search__kbd">Esc</kbd></div></div>
+  <p class="cap">Loading</p>
+  <div class="cc-search" role="search"><div class="cc-inputbox"><span class="cc-inputbox__affix" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></span><input class="cc-input" type="search" aria-label="Search courses" value="photo"><span class="cc-search__spin" role="status" aria-label="Loading results"></span></div></div>
+  <p class="cap">Disabled</p>
+  <div class="cc-search" role="search"><div class="cc-inputbox is-disabled"><span class="cc-inputbox__affix" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></span><input class="cc-input" type="search" aria-label="Search courses" placeholder="Search courses" disabled></div></div>
+</div>

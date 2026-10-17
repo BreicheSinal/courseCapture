@@ -1,0 +1,17 @@
+<!-- @dsCard group="Feedback" height=288 subtitle="Four sides, a disabled-button hint and a shortcut" -->
+<style>
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans)}
+.pv{display:flex;flex-direction:column;gap:20px;padding:24px;max-width:560px}
+.row{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.cap{font:12px/16px var(--font-sans);color:var(--ink-muted);margin:0 0 -10px}
+</style>
+<div class="pv" style="padding-top:56px">
+  <div class="row" style="gap:48px;justify-content:center">
+    <span class="cc-tip cc-tip--top is-open"><button class="cc-btn cc-btn--secondary" type="button" aria-describedby="t1">Top</button><span class="cc-tip__bubble" role="tooltip" id="t1">Shown above</span></span>
+    <span class="cc-tip cc-tip--bottom is-open"><button class="cc-btn cc-btn--secondary" type="button" aria-describedby="t2">Bottom</button><span class="cc-tip__bubble" role="tooltip" id="t2">Shown below</span></span>
+  </div>
+  <div class="row" style="gap:150px;justify-content:center;margin-top:72px">
+    <span class="cc-tip cc-tip--left is-open"><button class="cc-iconbtn" type="button" aria-label="Search students" aria-describedby="t4"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></button><span class="cc-tip__bubble" role="tooltip" id="t4">Search<kbd>⌘K</kbd></span></span>
+    <span class="cc-tip cc-tip--right is-open"><button class="cc-btn cc-btn--primary" type="button" aria-disabled="true" aria-describedby="t3" style="opacity:.4">Assign course</button><span class="cc-tip__bubble" role="tooltip" id="t3">Choose a class first</span></span>
+  </div>
+</div>

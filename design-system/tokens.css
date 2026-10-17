@@ -1,0 +1,142 @@
+/* CourseCapture — generated from tokens.json */
+:root, [data-theme="light"] {
+  --bg: #f5f5f7; /* Page background behind every view. Cards sit on it as surface. */
+  --surface: #ffffff; /* Cards, panels, inputs, quiz options and any raised container on bg. */
+  --surface-sunken: #ececf0; /* Progress tracks, table headers, code chips and other wells set into surface or bg. Do not put ink-muted text on it. */
+  --ink: #1d1d1f; /* Primary text on bg, surface and surface-sunken. */
+  --ink-muted: #68686d; /* Secondary text such as meta lines, dates and captions, on bg and surface only (4.3:1 on surface-sunken in Light, so never there). */
+  --line: #d2d2d7; /* Decorative hairlines: card borders, row dividers. Never the only cue that a control exists. */
+  --line-strong: #86868b; /* Borders that identify a control (inputs, secondary buttons, quiz options). At least 3:1 on bg and surface in both themes. */
+  --accent: #0071e3; /* Primary action fills, progress bars, avatars and the focus ring. Text on it is on-accent. */
+  --on-accent: #ffffff; /* Text and icons on accent fills (4.7:1 Light, 6.1:1 Dark). */
+  --accent-text: #0066cc; /* Links, ghost buttons and accent-colored text on bg, surface and accent-soft (4.8:1 or better in both themes). */
+  --accent-soft: #e6f0fc; /* Tint behind selected items, info badges and the join code. Text on it is accent-text. */
+  --success: #1a7f37; /* Correct answers and completed states, on bg and surface. Always paired with a word such as Correct or Complete. */
+  --warning: #8f5200; /* Overdue and attention states, on bg and surface. Always paired with a word such as Overdue. */
+  --danger: #d70015; /* Wrong answers, destructive actions and errors, on bg and surface. Always paired with a word or mark. */
+  --shadow-card: 0 1px 2px rgba(0,0,0,0.05), 0 8px 24px rgba(0,0,0,0.06); /* Cards at rest in Light. Dark uses the line border instead. */
+}
+[data-theme="dark"] {
+  --bg: #000000;
+  --surface: #1c1c1e;
+  --surface-sunken: #2c2c2e;
+  --ink: #f5f5f7;
+  --ink-muted: #a1a1a6;
+  --line: #3a3a3c;
+  --line-strong: #8e8e93;
+  --accent: #2997ff;
+  --on-accent: #00162b;
+  --accent-text: #2997ff;
+  --accent-soft: #0b2a4a;
+  --success: #30d158;
+  --warning: #ff9f0a;
+  --danger: #ff453a;
+  --shadow-card: none;
+}
+:root {
+  --space-1: 4px; /* Tight gaps inside a note or badge. */
+  --space-2: 8px; /* Gap between an icon or avatar and its label. */
+  --space-3: 12px; /* Gap between stacked items in a card; option padding. */
+  --space-4: 16px; /* Page side gutter minimum; gap between cards. */
+  --space-5: 20px; /* Card padding; button side padding. */
+  --space-6: 24px; /* Gap between page sections inside a card group. */
+  --space-8: 32px; /* Gap between page sections. */
+  --space-12: 48px; /* Top-level section spacing and hero padding. */
+  --radius-sm: 8px; /* Small chips and code tags. */
+  --radius-md: 12px; /* Buttons, inputs, quiz options, join code, announcements. */
+  --radius-lg: 20px; /* Cards and panels. */
+  --radius-pill: 999px; /* Badges, progress bars and avatars. */
+  --control-height: 44px; /* Minimum height of buttons and inputs; the touch target. */
+  --control-height-sm: 32px; /* Compact buttons in dense lists such as the roster. */
+  --avatar: 28px; /* Student initial circle. */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", system-ui, Roboto, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  --text-large-title: 700 34px/41px var(--font-sans); /* One per page: the class or course name. */
+  --text-title: 700 28px/34px var(--font-sans); /* Section titles on a page. */
+  --text-headline: 600 20px/25px var(--font-sans); /* Card titles and module headings. */
+  --text-body: 400 16px/24px var(--font-sans); /* Module explanations and running text. */
+  --text-callout: 400 15px/22px var(--font-sans); /* Quiz questions, options and announcement text. */
+  --text-subhead: 400 14px/20px var(--font-sans); /* Meta lines under titles, table cells. */
+  --text-footnote: 400 13px/18px var(--font-sans); /* Hints and helper text. */
+  --text-caption: 400 12px/16px var(--font-sans); /* Dates and small labels. */
+  --text-eyebrow: 600 12px/16px var(--font-sans); /* Uppercase labels above a heading. */
+  --text-code: 400 13px/20px var(--font-mono); /* Inline code and identifiers. */
+  --text-join-code: 700 22px/28px var(--font-mono); /* The five-character class join code. */
+}
+.large-title {
+  font-family: var(--font-sans);
+  font-size: 34px;
+  line-height: 41px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.title {
+  font-family: var(--font-sans);
+  font-size: 28px;
+  line-height: 34px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+.headline {
+  font-family: var(--font-sans);
+  font-size: 20px;
+  line-height: 25px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.callout {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.subhead {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.footnote {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.caption {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+.code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.join-code {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}

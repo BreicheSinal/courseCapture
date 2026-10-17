@@ -1,0 +1,65 @@
+{
+  "common": {
+    "appName": "CourseCapture",
+    "skipToContent": "Skip to content",
+    "mainNavigation": "Main",
+    "notFoundTitle": "Page not found",
+    "notFoundText": "Check the address, or go back to the start.",
+    "goHome": "Go to start",
+    "errorTitle": "Something went wrong",
+    "errorText": "Try again. If it keeps happening, reload the page.",
+    "tryAgain": "Try again",
+    "loading": "Loading"
+  },
+  "roles": {
+    "teacher": "Teacher",
+    "student": "Student",
+    "admin": "Admin"
+  },
+  "nav": {
+    "classes": "Classes",
+    "courses": "Courses",
+    "settings": "Settings",
+    "home": "Home",
+    "account": "Account"
+  },
+  "theme": {
+    "label": "Theme",
+    "light": "Light",
+    "system": "System",
+    "dark": "Dark"
+  },
+  "language": {
+    "label": "Language"
+  },
+  "foundation": {
+    "metaTitle": "Foundation preview",
+    "eyebrow": "Stage 1 of 6",
+    "title": "Foundation",
+    "intro": "This page checks the base of the app: design tokens, light and dark themes, languages and the layout. Real screens replace it in the next stages.",
+    "preferences": "Preferences",
+    "preferencesHint": "Your choices are remembered on this device.",
+    "buttons": "Buttons",
+    "primary": "Assign to Biology",
+    "secondary": "Preview",
+    "tertiary": "Export HTML",
+    "ghost": "Cancel",
+    "danger": "Delete course",
+    "busy": "Generating part {done}/{total}…",
+    "copyCode": "Copy join code",
+    "badges": "Badges",
+    "draft": "Draft",
+    "complete": "Complete",
+    "overdue": "Overdue",
+    "failed": "Failed",
+    "type": "Type",
+    "sampleTitle": "Photosynthesis",
+    "sampleHeadline": "Module 2: Light reactions",
+    "sampleBody": "Chlorophyll absorbs red and blue light.",
+    "sampleMeta": "{modules, plural, one {# module} other {# modules}} · due {date}",
+    "states": "States",
+    "emptyTitle": "Create your first class",
+    "emptyText": "Then share its join code and assign a course built from a paper or slide deck.",
+    "emptyAction": "Create class"
+  }
+}

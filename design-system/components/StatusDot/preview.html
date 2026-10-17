@@ -1,0 +1,15 @@
+<!-- @dsCard group="Status and feedback" height=290 subtitle="Queued, generating, ready, failed and canceled" -->
+<style>
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans)}
+.pv{display:flex;flex-direction:column;gap:20px;padding:24px;max-width:560px}
+.row{display:flex;flex-wrap:wrap;gap:20px;align-items:center}
+.cap{font:12px/16px var(--font-sans);color:var(--ink-muted);margin:0 0 -10px}
+</style>
+<div class="pv">
+  <p class="cap">With label</p>
+  <div class="row"><span class="cc-dot cc-dot--queued" role="img" aria-label="Photosynthesis: Queued"><span class="cc-dot__mark" aria-hidden="true"></span><span class="cc-dot__label">Queued</span></span><span class="cc-dot cc-dot--building" role="img" aria-label="Photosynthesis: Generating"><span class="cc-dot__mark" aria-hidden="true"></span><span class="cc-dot__label">Generating</span></span><span class="cc-dot cc-dot--ready" role="img" aria-label="Photosynthesis: Ready"><span class="cc-dot__mark" aria-hidden="true"></span><span class="cc-dot__label">Ready</span></span><span class="cc-dot cc-dot--error" role="img" aria-label="Photosynthesis: Failed"><span class="cc-dot__mark" aria-hidden="true"></span><span class="cc-dot__label">Failed</span></span><span class="cc-dot cc-dot--canceled" role="img" aria-label="Photosynthesis: Canceled"><span class="cc-dot__mark" aria-hidden="true"></span><span class="cc-dot__label">Canceled</span></span></div>
+  <p class="cap">Dot only</p>
+  <div class="row"><span class="cc-dot cc-dot--queued" role="img" aria-label="Photosynthesis: Queued"><span class="cc-dot__mark"></span></span><span class="cc-dot cc-dot--building" role="img" aria-label="Photosynthesis: Generating"><span class="cc-dot__mark"></span></span><span class="cc-dot cc-dot--ready" role="img" aria-label="Photosynthesis: Ready"><span class="cc-dot__mark"></span></span><span class="cc-dot cc-dot--error" role="img" aria-label="Photosynthesis: Failed"><span class="cc-dot__mark"></span></span><span class="cc-dot cc-dot--canceled" role="img" aria-label="Photosynthesis: Canceled"><span class="cc-dot__mark"></span></span></div>
+  <p class="cap">Next to text that names it</p>
+  <div class="cc-entities"><div class="cc-entity"><span class="cc-entity__lead"><span class="cc-dot cc-dot--building" aria-hidden="true"><span class="cc-dot__mark"></span></span></span><span class="cc-entity__body"><span class="cc-entity__title">Cell division</span><span class="cc-entity__desc">Generating · started Oct 16</span></span></div></div>
+</div>

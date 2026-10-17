@@ -1,0 +1,19 @@
+<!-- @dsCard group="Layout" height=410 subtitle="Class list, selectable list and a row with two actions" -->
+<style>
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans)}
+.pv{display:flex;flex-direction:column;gap:20px;padding:24px;max-width:560px}
+.row{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.cap{font:12px/16px var(--font-sans);color:var(--ink-muted);margin:0 0 -10px}
+</style>
+<div class="pv">
+  <p class="cap">Interactive rows</p>
+  <div class="cc-entities">
+    <button class="cc-entity" type="button"><span class="cc-entity__lead"><span class="cc-avatar cc-avatar--lg" aria-hidden="true">B</span></span><span class="cc-entity__body"><span class="cc-entity__title">Biology 101</span><span class="cc-entity__desc">12 students · 3 courses</span></span><span class="cc-entity__trail"><span class="cc-badge cc-badge--info">Active</span></span></button>
+    <button class="cc-entity" type="button"><span class="cc-entity__lead"><span class="cc-avatar cc-avatar--lg cc-avatar--soft" aria-hidden="true">C</span></span><span class="cc-entity__body"><span class="cc-entity__title">Chemistry A</span><span class="cc-entity__desc">9 students · 1 course</span></span><span class="cc-entity__trail"><span class="cc-badge">Archived</span></span></button>
+  </div>
+  <p class="cap">Selectable, with actions</p>
+  <div class="cc-entities">
+    <div class="cc-entity"><span class="cc-entity__lead"><input class="cc-entity__check" type="checkbox" aria-label="Select Photosynthesis" checked></span><span class="cc-entity__body"><span class="cc-entity__title">Photosynthesis</span><span class="cc-entity__desc">9 modules · due Nov 4</span></span><span class="cc-entity__trail"><button class="cc-btn cc-btn--secondary cc-btn--sm" type="button">Assign course</button><button class="cc-iconbtn" type="button" aria-label="More actions for Photosynthesis"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></svg></button></span></div>
+    <div class="cc-entity"><span class="cc-entity__lead"><input class="cc-entity__check" type="checkbox" aria-label="Select Cell division"></span><span class="cc-entity__body"><span class="cc-entity__title">Cell division</span><span class="cc-entity__desc">6 modules · no due date</span></span><span class="cc-entity__trail"><button class="cc-btn cc-btn--secondary cc-btn--sm" type="button">Assign course</button><button class="cc-iconbtn" type="button" aria-label="More actions for Cell division"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></svg></button></span></div>
+  </div>
+</div>

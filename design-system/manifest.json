@@ -1,0 +1,55 @@
+{
+  "manifestVersion": 3,
+  "name": "CourseCapture",
+  "namespace": "CourseCapture",
+  "files": [
+    "components/Announcement/README.md",
+    "components/Badge/README.md",
+    "components/Button/README.md",
+    "components/CourseCard/README.md",
+    "components/JoinCode/README.md",
+    "components/QuizOption/README.md",
+    "components/StudentRow/README.md",
+    "components/bundle.css",
+    "tokens.css"
+  ],
+  "libraries": [],
+  "components": [
+    {
+      "name": "Announcement",
+      "group": "Class",
+      "summary": "Announcement is a short teacher post shown to every student in a class, newest first."
+    },
+    {
+      "name": "Badge",
+      "group": "Status",
+      "summary": "Badge is a small uppercase pill that labels a role, a class or a status."
+    },
+    {
+      "name": "Button",
+      "group": "Actions",
+      "summary": "Button is the single control for every action, in four styles and two sizes."
+    },
+    {
+      "name": "CourseCard",
+      "group": "Course",
+      "summary": "CourseCard is the tappable card a student uses to open an assigned course, with its class, due date and progress."
+    },
+    {
+      "name": "JoinCode",
+      "group": "Class",
+      "summary": "JoinCode shows a class's five-character join code in a tinted bar with Copy and New code actions."
+    },
+    {
+      "name": "QuizOption",
+      "group": "Feedback",
+      "summary": "QuizOption is one answer choice in a module's quick check; it shows the result after the student answers."
+    },
+    {
+      "name": "StudentRow",
+      "group": "Course",
+      "summary": "StudentRow is one line of the teacher's roster: avatar and name, a progress bar, modules done and the quiz score."
+    }
+  ],
+  "assetGroups": []
+}

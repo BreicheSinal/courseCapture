@@ -1,0 +1,36 @@
+<!-- @dsCard group="Status" height=334 subtitle="Roles and states, tint and solid, three sizes, an icon and a link pill" -->
+<style>
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans)}
+.pv{display:flex;flex-direction:column;gap:20px;padding:24px;max-width:560px}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.cap{font:12px/16px var(--font-sans);color:var(--ink-muted);margin:0 0 -10px}
+</style>
+<div class="pv">
+  <p class="cap">Meaning</p>
+  <div class="row">
+    <span class="cc-badge cc-badge--info">Teacher</span>
+    <span class="cc-badge cc-badge--neutral">Draft</span>
+    <span class="cc-badge cc-badge--success">Complete</span>
+    <span class="cc-badge cc-badge--warning">Overdue</span>
+    <span class="cc-badge cc-badge--danger">Failed</span>
+  </div>
+  <p class="cap">Tint, solid and inverted</p>
+  <div class="row">
+    <span class="cc-badge cc-badge--success cc-badge--tint">Complete</span>
+    <span class="cc-badge cc-badge--warning cc-badge--tint">Overdue</span>
+    <span class="cc-badge cc-badge--danger cc-badge--tint">Failed</span>
+    <span class="cc-badge cc-badge--solid">New</span>
+    <span class="cc-badge cc-badge--inverted">Beta</span>
+  </div>
+  <p class="cap">Sizes</p>
+  <div class="row">
+    <span class="cc-badge cc-badge--info cc-badge--sm">Small</span>
+    <span class="cc-badge cc-badge--info">Medium</span>
+    <span class="cc-badge cc-badge--info cc-badge--lg">Large</span>
+  </div>
+  <p class="cap">Icon and link pill</p>
+  <div class="row">
+    <span class="cc-badge cc-badge--neutral"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Private</span>
+    <a class="cc-badge cc-badge--info" href="#">Biology 101</a>
+  </div>
+</div>
