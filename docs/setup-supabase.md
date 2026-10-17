@@ -16,13 +16,14 @@ Either:
 - **Dashboard:** SQL Editor → paste each file in `supabase/migrations/` in order (`20261017100506_auth_profiles_invites.sql`, then `20261017101500_auth_hardening.sql`) → Run.
 
 ## 3. Auth settings (Authentication → URL Configuration)
-- **Site URL:** `https://invixlab.tech`
+- **Site URL:** `https://www.invixlab.tech` (`invixlab.tech` redirects to www)
 - **Redirect URLs** (every address a sign-in link may return to):
-  - `https://invixlab.tech/auth/callback` — production
+  - `https://www.invixlab.tech/auth/callback` — production
+  - `https://invixlab.tech/auth/callback` — production, without www
   - `https://course-capture-*-invix-studio.vercel.app/auth/callback` — Vercel preview deployments
   - `http://localhost:3000/auth/callback` — local development
 
-On Vercel (`invix-studio/course-capture` → Settings → Environment Variables) set `NEXT_PUBLIC_APP_URL=https://invixlab.tech` for Production. The Supabase ↔ Vercel integration adds the Supabase URL and keys automatically.
+On Vercel (`invix-studio/course-capture` → Settings → Environment Variables) set `NEXT_PUBLIC_APP_URL=https://www.invixlab.tech` for Production. The Supabase ↔ Vercel integration adds the Supabase URL and keys automatically.
 
 Authentication → Providers → Email:
 - Email provider **on**. "Confirm email" can stay on — the sign-in link confirms it.
@@ -45,7 +46,8 @@ The support address can be on a different domain from the app (e.g. app on `invi
 
 If the support address is an alias rather than its own Google account, sign in as the real mailbox and add the alias under Gmail → Settings → Accounts → **Send mail as** first.
 
-## 5. Google ("Continue with school account") — optional
+## 5. Google ("Continue with school account") — not used
+Email is the only sign-in method for now (decision #34) and the button isn't in the app. If it comes back:
 1. Google Cloud Console → APIs & Services → Credentials → **OAuth client ID** (Web).
    Authorized redirect URI: `https://<project-ref>.supabase.co/auth/v1/callback`.
 2. Supabase → Authentication → Providers → **Google**: paste the client ID and secret, enable.

@@ -6,7 +6,7 @@ All routes are prefixed with the interface locale, e.g. `/en/teacher/classes`, `
 | Canvas | Route | Notes |
 |---|---|---|
 | X6 Splash | `/` while routing | Wordmark while `/` decides where to send you |
-| T7 Sign in | `/sign-in?error=` | Teacher/student choice, email magic link, Google |
+| T7 Sign in | `/sign-in?error=` | Teacher/student choice, email magic link |
 | T7b / S0b Check your email | `/sign-in/check-email?role=` | Same page, role-specific copy |
 | — Name (and role) | `/onboarding/profile?role=` | First sign-in only; role is normally picked on T7 |
 | T7e Invite code | `/onboarding/invite` | Teacher with a code |

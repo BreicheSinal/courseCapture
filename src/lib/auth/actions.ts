@@ -1,6 +1,5 @@
 "use server";
 
-import { redirect as nextRedirect } from "next/navigation";
 import { refresh } from "next/cache";
 import { z } from "zod";
 import { redirect } from "@/i18n/navigation";
@@ -18,7 +17,6 @@ export type AuthErrorKey =
   | "invalidEmail"
   | "rateLimited"
   | "sendFailed"
-  | "oauthFailed"
   | "invalidName"
   | "roleRequired"
   | "invalidCode"
@@ -72,19 +70,6 @@ export async function resendSignInLink(email: string, role: string, locale: stri
   if (!e.success) return { error: "invalidEmail" };
   const err = await sendLink(e.data, roleSchema.catch("teacher").parse(role), localeSchema.catch("en").parse(locale));
   return err ? { error: err } : { ok: true };
-}
-
-/** T7 · "Continue with school account" (Google). */
-export async function signInWithGoogle(formData: FormData): Promise<void> {
-  const locale = localeSchema.catch("en").parse(formData.get("locale"));
-  const role = roleSchema.catch("teacher").parse(formData.get("role"));
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: "google",
-    options: { redirectTo: callbackUrl(locale, role) },
-  });
-  if (error || !data.url) redirect({ href: "/sign-in?error=oauthFailed", locale });
-  nextRedirect(data.url!);
 }
 
 export async function signOut(formData: FormData): Promise<void> {

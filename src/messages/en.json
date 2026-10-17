@@ -77,8 +77,6 @@
       "emailPlaceholder": "name@school.edu",
       "submit": "Email me a sign-in link",
       "sending": "Sending link…",
-      "or": "or",
-      "google": "Continue with school account",
       "footTeacher": "New here? Signing in creates your teacher account.",
       "footStudent": "We only ask for your name. No ads, ever.",
       "notConfigured": "Sign-in isn't set up yet. Add the Supabase keys to .env.local (docs/setup-supabase.md)."
@@ -183,7 +181,6 @@
       "invalidEmail": "Enter an email address like name@school.edu.",
       "rateLimited": "Wait a minute before asking for another link.",
       "sendFailed": "Couldn't send the link. Try again in a moment.",
-      "oauthFailed": "Couldn't start school sign-in. Use the email link instead.",
       "linkExpired": "That sign-in link has expired or was already used. Ask for a new one.",
       "invalidName": "Enter your name.",
       "roleRequired": "Choose teacher or student.",

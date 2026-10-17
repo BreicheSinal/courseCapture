@@ -77,8 +77,6 @@
       "emailPlaceholder": "nombre@escuela.edu",
       "submit": "Enviarme un enlace de acceso",
       "sending": "Enviando enlace…",
-      "or": "o",
-      "google": "Continuar con la cuenta del centro",
       "footTeacher": "¿Eres nuevo? Al iniciar sesión se crea tu cuenta de docente.",
       "footStudent": "Solo te pedimos tu nombre. Nunca hay anuncios.",
       "notConfigured": "El inicio de sesión aún no está configurado. Añade las claves de Supabase en .env.local (docs/setup-supabase.md)."
@@ -183,7 +181,6 @@
       "invalidEmail": "Introduce un correo como nombre@escuela.edu.",
       "rateLimited": "Espera un minuto antes de pedir otro enlace.",
       "sendFailed": "No se pudo enviar el enlace. Inténtalo de nuevo en un momento.",
-      "oauthFailed": "No se pudo iniciar el acceso con la cuenta del centro. Usa el enlace por correo.",
       "linkExpired": "Ese enlace ha caducado o ya se usó. Pide uno nuevo.",
       "invalidName": "Introduce tu nombre.",
       "roleRequired": "Elige docente o estudiante.",

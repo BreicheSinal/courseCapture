@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { THEME_COOKIE } from "@/lib/theme/theme";
 
 /**
- * Where sign-in email links and Google sign-in land.
+ * Where sign-in email links land.
  * Exchanges the one-time code for a session, then sends the person on:
  * - wrong role for what they picked at sign-in → /wrong-account (T7c)
  * - otherwise → /{locale}, which routes them to the right home.
@@ -42,8 +42,8 @@ export async function GET(request: NextRequest) {
 
   theme = profile?.theme ?? null;
 
-  // Google sign-in can't carry the role into the account, so set it now if
-  // the name is known; otherwise onboarding asks (pre-selected).
+  // An account without a role (e.g. created outside the app) gets the role
+  // picked at sign-in if the name is known; otherwise onboarding asks.
   if (profile && profile.role === null && wanted) {
     if (profile.full_name.trim()) {
       const { error: onboardError } = await supabase.rpc("complete_onboarding", {

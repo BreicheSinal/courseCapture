@@ -36,6 +36,7 @@
 | 31 | Students of any age sign up the same way; no parental-consent step | Owner's decision (#42). Revisit before launching to schools in regions with child-privacy rules (COPPA, GDPR-K) |
 | 32 | Production: Vercel project `invix-studio/course-capture` at `https://invixlab.tech` | Domain already connected (#38) |
 | 33 | Email: Supabase sends through Google SMTP as the support address; the app sends the approval email the same way | Owner's choice (#14); built-in mailer is test-only |
+| 34 | Email link is the only sign-in method; the canvas's "Continue with school account" (Google) button is removed | Owner's choice; one path to support. Can come back later with the Google setup steps |
 
 ## Open questions
 1. **Due date per class** when one course is assigned to several classes — assumed yes.
