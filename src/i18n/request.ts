@@ -15,6 +15,9 @@ export default getRequestConfig(async ({ locale }) => {
 
   return {
     locale,
+    // Same zone on server and client so dates never differ between renders.
+    // Due dates are calendar dates; timestamps show in UTC until profiles store a zone.
+    timeZone: "UTC",
     messages: (await import(`../messages/${locale}.json`)).default,
   };
 });

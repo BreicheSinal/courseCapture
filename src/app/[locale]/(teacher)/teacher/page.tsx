@@ -1,8 +1,7 @@
-import { ComingSoon } from "@/components/features/home/ComingSoon";
-import { getSession } from "@/lib/auth/session";
+import { getLocale } from "next-intl/server";
+import { redirect } from "@/i18n/navigation";
 
-/** Teacher home. Stage 3 replaces this with T8 first run / T10 class list. */
+/** Teacher home: the class list (T10), which shows first run (T8) when there are no classes. */
 export default async function Page() {
-  const session = await getSession(); // already checked by the layout
-  return <ComingSoon role="teacher" name={session?.profile.full_name || session?.email || ""} />;
+  redirect({ href: "/teacher/classes", locale: await getLocale() });
 }

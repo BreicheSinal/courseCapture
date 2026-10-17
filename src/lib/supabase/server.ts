@@ -1,6 +1,7 @@
 import "server-only";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { connection } from "next/server";
 import type { Database } from "@/types/supabase";
 import { assertSupabaseConfigured, supabaseAnonKey, supabaseUrl } from "./env";
 
@@ -11,6 +12,9 @@ import { assertSupabaseConfigured, supabaseAnonKey, supabaseUrl } from "./env";
 export async function createClient() {
   // Read cookies first: it marks the render as per-request, so builds never try to prerender it.
   const cookieStore = await cookies();
+  // supabase-js reads the clock while it sets up (session expiry), which a
+  // prefetch prerender may not do. Mark everything after this as request-time.
+  await connection();
   assertSupabaseConfigured();
   return createServerClient<Database>(supabaseUrl, supabaseAnonKey, {
     cookies: {

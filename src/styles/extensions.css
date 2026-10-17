@@ -8,3 +8,43 @@
   font: var(--text-large-title);
   letter-spacing: -0.02em;
 }
+
+/* T6 class sections as links (each section has its own URL): same look as a selected tab. */
+.cc-tab[aria-current="page"] {
+  color: var(--ink);
+}
+.cc-tab[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  inset-inline: var(--space-3);
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+a.cc-tab {
+  text-decoration: none;
+}
+
+/* T6 / T10 course and class cards that are links: the card is the one control. */
+a.cc-course {
+  color: var(--ink);
+  text-decoration: none;
+}
+a.cc-course:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* T12 student panel and T15 delete class: a dialog drawn over its page. */
+.cc-scrim--page {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+}
+
+/* T9 class created: the join code at large-title size (system join-code style, bigger). */
+.join-code--lg {
+  font-size: 34px;
+  line-height: 41px;
+}

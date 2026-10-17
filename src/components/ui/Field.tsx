@@ -2,7 +2,7 @@ import { useId, type InputHTMLAttributes, type ReactNode } from "react";
 import { cn } from "@/lib/utils/cn";
 
 type FieldProps = Omit<InputHTMLAttributes<HTMLInputElement>, "size"> & {
-  label: string;
+  label: ReactNode;
   hint?: ReactNode;
   /** Error text; also marks the input invalid. Says what to do. */
   error?: ReactNode;
