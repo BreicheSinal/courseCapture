@@ -84,15 +84,24 @@ Joining is a `security definer` function `join_class(code)` so students never ne
 | Column | Type | Notes |
 |---|---|---|
 | `id` | uuid PK | |
-| `class_id` | uuid → classes (cascade) | nullable while a draft has no class yet |
+| — | | Classes are linked through `course_assignments` (decision #28) |
 | `teacher_id` | uuid → profiles | |
 | `title` | text | |
 | `content_locale` | text | language the course is written in |
 | `level` | course_level | |
 | `status` | course_status | |
-| `due_date` | date | nullable |
-| `source_path` | text | Storage path; cleared when source is deleted |
+| `source_name` | text | original filename only; the file itself is deleted after generation (#25) |
 | `created_at` / `assigned_at` / `updated_at` | timestamptz | |
+
+### `course_assignments`
+One course in many classes (decision #28).
+
+| Column | Type | Notes |
+|---|---|---|
+| `course_id` | uuid → courses (cascade) | PK part |
+| `class_id` | uuid → classes (cascade) | PK part |
+| `due_date` | date | nullable; per class |
+| `assigned_at` | timestamptz | |
 
 ### `modules`
 | Column | Type | Notes |
@@ -104,12 +113,18 @@ Joining is a `security definer` function `join_class(code)` so students never ne
 | `body` | text | |
 | `key_points` | text[] | |
 | `flashcards` | jsonb | `[{ "q": "", "a": "" }]` |
-| `quiz` | jsonb | `{ "question": "", "options": ["",…], "answer_index": 0 }` — nullable |
+| `quiz` | jsonb | `{ "question": "", "options": ["",…] }` — nullable; no answer here |
 | `visual_svg` | text | sanitised; nullable |
 | `visual_caption` | text | |
 | `visual_alt` | text | required when `visual_svg` is set |
 
-> **Quiz answers and RLS:** students can read `modules`, which includes `answer_index`. Acceptable for v1 (low-stakes checks). If it matters later, move answers to a teacher-only table and grade via a function.
+### `quiz_answers` (teacher-only)
+| Column | Type | Notes |
+|---|---|---|
+| `module_id` | uuid PK → modules (cascade) | |
+| `answer_index` | int | |
+
+Students never read this table. `answer_quiz(module_id, chosen_index)` (security definer) records the attempt and returns whether it was right plus the correct index (decision #26).
 
 ### `module_progress`
 | Column | Type | Notes |
@@ -177,7 +192,9 @@ Helper functions (`security definer`, stable): `is_admin()`, `is_approved_teache
 | `teacher_invites` | Admin | Via functions only |
 | `classes` | Teacher who owns it; students who are members | Owning approved teacher |
 | `class_members` | Teacher of the class; the student themself | Insert via `join_class()` only; teacher or student can delete |
-| `courses` | Owning teacher; class members when `status = assigned` | Owning approved teacher |
+| `courses` | Owning teacher; members of any class it's assigned to | Owning approved teacher |
+| `course_assignments` | Owning teacher; class members | Owning teacher of both the course and the class |
+| `quiz_answers` | Owning teacher only | Owning teacher; job (service role) |
 | `modules` | Same as parent course | Owning teacher; job (service role) |
 | `module_progress` | The student; the class's teacher | The student, only for courses they can see |
 | `quiz_attempts` | The student; the class's teacher | The student, insert only |
@@ -188,5 +205,5 @@ Helper functions (`security definer`, stable): `is_admin()`, `is_approved_teache
 Every policy gets a test. Database tests live in `tests/db/` and run with `pnpm test:db` against real Postgres (see `docs/setup-supabase.md` → Tests).
 
 ## Storage
-- Bucket `sources` (private). Path `teacher_id/course_id/filename`. Teacher can upload/read own folder; jobs read with service role. Deleted after successful generation unless "keep source" is on.
-- Bucket `certificates` — not needed; certificates render on demand.
+- Bucket `sources` (private). Path `teacher_id/course_id/filename`. Teacher can upload/read own folder; jobs read with service role. Always deleted after generation; only `courses.source_name` remains.
+- Certificates: PDFs generated on demand by a route handler; not stored.
