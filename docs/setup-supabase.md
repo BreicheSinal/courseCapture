@@ -31,15 +31,19 @@ Authentication → Providers → Email:
 ## 4. Email templates (Authentication → Email Templates)
 New people get the **Confirm signup** email; returning people get **Magic link**. Both should read as a sign-in link. Suggested subject: *Your CourseCapture sign-in link*. Keep `{{ .ConfirmationURL }}` as the button link.
 
-### Own SMTP with Resend (decision #33)
-Supabase's built-in sender is test-only (about 2 emails an hour). Send through Resend's free plan instead (3,000 emails a month):
-1. Create a free account at resend.com → **Domains → Add domain** → `invixlab.tech`. Add the DNS records it shows (SPF, DKIM) where the domain's DNS is managed, and wait for **Verified**.
-2. Resend → **API Keys → Create** (sending access). Copy the key.
+### Own SMTP with Google (decision #33)
+Supabase's built-in sender is test-only (about 2 emails an hour). Send through the Google account for the support address instead:
+1. Sign in to Google as the support account → **Security** → turn on **2-Step Verification**.
+2. **Security → App passwords** → create one named "CourseCapture" → copy the 16-character password. Your normal password won't work for SMTP.
 3. Supabase → **Authentication → SMTP Settings → Enable custom SMTP**:
-   - Sender email `noreply@invixlab.tech`, sender name `CourseCapture`
-   - Host `smtp.resend.com`, port `465`, username `resend`, password = the API key
-4. Supabase → **Authentication → Rate Limits**: raise "emails sent per hour" (e.g. 100).
-5. Vercel and `.env.local`: `RESEND_API_KEY=<the key>` and `EMAIL_FROM="CourseCapture <noreply@invixlab.tech>"` (server only; used for the approval email).
+   - Sender email: the support address; sender name `CourseCapture`
+   - Host `smtp.gmail.com`, port `465`, username: the support address, password: the app password
+4. Supabase → **Authentication → Rate Limits**: raise "emails sent per hour" (e.g. 100). Google Workspace allows about 2,000 emails a day per account (a free Gmail account about 500).
+5. Vercel and `.env.local` (server only; used for the approval email): `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `EMAIL_FROM` (see `.env.example`).
+
+The support address can be on a different domain from the app (e.g. app on `invixlab.tech`, email on another domain). That's fine: links in emails point to the app's domain; deliverability depends on the email domain's own Google Workspace SPF/DKIM records, which Google sets up for that domain.
+
+If the support address is an alias rather than its own Google account, sign in as the real mailbox and add the alias under Gmail → Settings → Accounts → **Send mail as** first.
 
 ## 5. Google ("Continue with school account") — optional
 1. Google Cloud Console → APIs & Services → Credentials → **OAuth client ID** (Web).
