@@ -3,8 +3,15 @@ export const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 export const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
 export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
 
-/** Base URL used in sign-in email links and OAuth redirects. */
-export const appUrl = (process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000").replace(/\/$/, "");
+/**
+ * Base URL used in sign-in email links and OAuth redirects (server only).
+ * Production sets NEXT_PUBLIC_APP_URL; Vercel preview deployments fall back to
+ * their own address (VERCEL_URL); local development uses localhost.
+ */
+export const appUrl = (
+  process.env.NEXT_PUBLIC_APP_URL ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000")
+).replace(/\/$/, "");
 
 export function assertSupabaseConfigured() {
   if (!isSupabaseConfigured) {
