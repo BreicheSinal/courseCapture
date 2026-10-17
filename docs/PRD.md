@@ -97,7 +97,7 @@ A user has exactly one role. Choosing the wrong one is handled by the "Wrong acc
 
 ### Classes
 - FR-5 A class has a name and a unique five-character join code (alphabet without 0/O/1/I).
-- FR-6 Teachers can generate a new code (old one stops working) and delete a class (with confirmation; removes its courses, memberships, announcements and progress).
+- FR-6 Teachers can generate a new code (old one stops working) and delete a class (type-the-name confirmation; removes its join code, memberships, announcements and course assignments; the courses themselves stay in Courses, decision #28).
 - FR-7 Students can be in many classes; a teacher can remove a student from a class.
 
 ### Courses
@@ -108,7 +108,7 @@ A user has exactly one role. Choosing the wrong one is handled by the "Wrong acc
 - FR-12 Every AI-produced SVG is sanitised on the server before it is stored (no scripts, foreignObject, images, links, event handlers or `url()`).
 - FR-13 If AI generation fails, fall back to a basic paragraph splitter and tell the teacher.
 - FR-14 Courses are `draft` until assigned; drafts autosave.
-- FR-15 A course belongs to one class; it can be duplicated into another class.
+- FR-15 A course can be assigned to several classes, each with its own due date (decision #28).
 - FR-16 Optional due date; student views mark overdue courses with the word "Overdue".
 - FR-17 Export a course as a standalone HTML file.
 

@@ -32,13 +32,21 @@ export function useThemePreference(): [ThemePref, (next: ThemePref) => void] {
  * Light / System / Dark radio group (design-system ThemeSwitcher).
  * Arrow keys move and select; only the selected option is in the tab order.
  */
-export function ThemeSwitcher({ size = "md" }: { size?: "md" | "sm" }) {
+export function ThemeSwitcher({
+  size = "md",
+  onChange,
+}: {
+  size?: "md" | "sm";
+  /** Called after the person picks a theme (e.g. to save it to their profile). */
+  onChange?: (pref: ThemePref) => void;
+}) {
   const t = useTranslations("theme");
   const [pref, setPref] = useThemePreference();
   const refs = useRef<Array<HTMLButtonElement | null>>([]);
 
   function choose(next: ThemePref, focus = false) {
     setPref(next);
+    onChange?.(next);
     if (focus) refs.current[themePrefs.indexOf(next)]?.focus();
   }
 

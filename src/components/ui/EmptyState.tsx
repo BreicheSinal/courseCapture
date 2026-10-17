@@ -6,7 +6,7 @@ type EmptyStateProps = {
   icon: IconName;
   title: string;
   /** Says what to do next. */
-  text?: string;
+  text?: ReactNode;
   actions?: ReactNode;
   tone?: "default" | "error";
   inline?: boolean;

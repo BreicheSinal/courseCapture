@@ -18,14 +18,15 @@ All routes are prefixed with the interface locale, e.g. `/en/teacher/classes`, `
 ## Teacher
 | Canvas | Route |
 |---|---|
-| T8 First run | `/teacher` (when no classes) |
+| T8 First run | `/teacher/classes` when there are no classes (`/teacher` redirects there) |
 | T10 Class list / Desktop sidebar | `/teacher/classes` |
 | T9 Create class | `/teacher/classes/new` |
 | T6 Class page | `/teacher/classes/[classId]` |
 | T11 Roster | `/teacher/classes/[classId]/students` |
-| T12 Student panel | `/teacher/classes/[classId]/students/[studentId]` |
-| T13 New announcement | `/teacher/classes/[classId]/announcements/new` |
-| T15 Delete class | `/teacher/classes/[classId]/delete` (modal route) |
+| T12 Student panel | `/teacher/classes/[classId]/students/[studentId]?course=` (dialog over the roster) |
+| T13 New announcement | `/teacher/classes/[classId]/announcements` (form above the posted list, as on the canvas) |
+| — Edit class | `/teacher/classes/[classId]/edit` (from the class page's settings list and T9 "Edit class name") |
+| T15 Delete class | `/teacher/classes/[classId]/delete` (dialog over the class page) |
 | T16 / Desktop T7 Courses | `/teacher/courses` |
 | T1 New course | `/teacher/courses/new?class=` |
 | T2 Generating | `/teacher/courses/[courseId]/generating` |

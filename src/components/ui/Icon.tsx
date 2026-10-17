@@ -34,11 +34,17 @@ const paths = {
   checkCircle: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M8 12l3 3 5-6",
   resend: "M20 12a8 8 0 1 1-2.3-5.7 M20 4v4h-4",
   signOut: "M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3 M10 17l-5-5 5-5 M5 12h11",
+  chevronForward: "M9 6l6 6-6 6",
+  search: "M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14z M20 20l-3.5-3.5",
+  check: "M5 12.5l4.5 4.5L19 7.5",
+  close: "M6 6l12 12M18 6L6 18",
+  pencil: "M4 20h4L19 9a2.1 2.1 0 0 0-3-3L5 17z M14 7l3 3",
+  megaphone: "M3 10v4a1 1 0 0 0 1 1h3l6 4V5L7 9H4a1 1 0 0 0-1 1z M17 9a4 4 0 0 1 0 6",
 } as const;
 
 export type IconName = keyof typeof paths;
 
-const directional: ReadonlySet<IconName> = new Set(["arrowForward", "chevronBack", "signOut"]);
+const directional: ReadonlySet<IconName> = new Set(["arrowForward", "chevronBack", "chevronForward", "signOut", "megaphone"]);
 
 export function Icon({ name, className, ...props }: { name: IconName } & Omit<SVGProps<SVGSVGElement>, "children">) {
   return (

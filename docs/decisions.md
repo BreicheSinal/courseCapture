@@ -39,6 +39,15 @@
 | 34 | Email link is the only sign-in method; the canvas's "Continue with school account" (Google) button is removed | Owner's choice; one path to support. Can come back later with the Google setup steps |
 | 35 | Sign-in emails link with a token hash, verified on the server | Teachers ask on a laptop and open the email on a phone; PKCE-only links fail there |
 | 36 | Approval email sent by the app with nodemailer over the same SMTP account, after the response | One sender for all mail; a slow mail server never delays the admin |
+| 37 | Class sections are links with their own URLs (Courses · Roster · Announcements), styled as tabs; the canvas's "Modules" tab is labelled "Courses" because it lists courses | Links keep refresh/back working; the label says what's there |
+| 38 | Course tables arrive in stage 3, read-only to clients | T6, T11, T12 and T16 read them; stages 4–5 add the write paths without reshaping queries |
+| 39 | Deleting a class keeps its courses (only the assignments go) | A course can be in several classes (#28); the canvas copy said courses were removed |
+| 40 | Course levels are beginner / intermediate / advanced (PRD), not the canvas's school stages | Matches the PRD and T1; the level describes the course, not the school |
+| 41 | Dates are formatted in UTC until profiles store a time zone | Server and client render the same text; due dates are calendar dates |
+| 42 | "New course" opens a placeholder until stage 5 | Every button on the canvas leads somewhere honest |
+| 43 | Deleting a class keeps students' progress on its courses | Progress belongs to the student and the course (#28); the course may be in other classes |
+| 44 | Joining a class is limited to 10 wrong codes per student per hour | 5-character codes can otherwise be guessed |
+| 45 | Teachers see students' name and email only (through the roster function), never the whole profile | Least data; the screens need nothing else |
 
 ## Open questions
 1. **Due date per class** when one course is assigned to several classes — assumed yes.

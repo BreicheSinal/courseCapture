@@ -8,7 +8,16 @@ import { cn } from "@/lib/utils/cn";
 import { Icon } from "./Icon";
 
 /** Interface-language picker (design-system Select inside a Field). Keeps the current page. */
-export function LanguageSelect({ hideLabel, className }: { hideLabel?: boolean; className?: string }) {
+export function LanguageSelect({
+  hideLabel,
+  className,
+  onSelect,
+}: {
+  hideLabel?: boolean;
+  className?: string;
+  /** Called with the new language before the page switches (e.g. to save it). */
+  onSelect?: (locale: Locale) => void | Promise<void>;
+}) {
   const t = useTranslations("language");
   const locale = useLocale();
   const router = useRouter();
@@ -29,7 +38,10 @@ export function LanguageSelect({ hideLabel, className }: { hideLabel?: boolean; 
           disabled={pending}
           onChange={(e) => {
             const next = e.target.value as Locale;
-            startTransition(() => router.replace(pathname, { locale: next }));
+            startTransition(async () => {
+              await onSelect?.(next);
+              router.replace(pathname, { locale: next });
+            });
           }}
         >
           {locales.map((l) => (
