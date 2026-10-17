@@ -1,0 +1,16 @@
+<!-- @dsCard group="Forms" height=816 subtitle="Rest, drag over, error, and a file uploading" -->
+<style>
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans)}
+.pv{display:flex;flex-direction:column;gap:20px;padding:24px;max-width:560px}
+.row{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.cap{font:12px/16px var(--font-sans);color:var(--ink-muted);margin:0 0 -10px}
+</style>
+<div class="pv" style="max-width:520px">
+  <label class="cc-drop"><input class="cc-drop__input" type="file" accept=".pdf,.pptx,.txt,.md" aria-label="Choose a file"><span class="cc-drop__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4M7.5 8.5L12 4l4.5 4.5M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"/></svg></span><p class="cc-drop__title">Drop a file here or browse</p><p class="cc-drop__hint">PDF, PPTX, TXT or MD, up to 20 MB. Scanned PDFs work too.</p></label>
+  <p class="cap">Drag over</p>
+  <label class="cc-drop is-over"><input class="cc-drop__input" type="file" aria-label="Choose a file"><span class="cc-drop__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4M7.5 8.5L12 4l4.5 4.5M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"/></svg></span><p class="cc-drop__title">Drop to upload</p><p class="cc-drop__hint">Release to start building your course.</p></label>
+  <p class="cap">Error</p>
+  <label class="cc-drop is-error"><input class="cc-drop__input" type="file" aria-label="Choose a file"><span class="cc-drop__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4M7.5 8.5L12 4l4.5 4.5M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"/></svg></span><p class="cc-drop__title">Drop a file here or browse</p><p class="cc-drop__error" role="alert">That file is 34 MB. Choose one under 20 MB.</p></label>
+  <p class="cap">Uploading</p>
+  <div class="cc-file"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></svg><div class="cc-file__body"><span class="cc-file__name">Photosynthesis-review.pdf</span><div class="cc-progress" role="progressbar" aria-label="Uploading Photosynthesis-review.pdf" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100"><i style="width:62%"></i></div><span class="cc-file__meta">2.4 MB · 62%</span></div><button class="cc-iconbtn" type="button" aria-label="Remove Photosynthesis-review.pdf"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+</div>

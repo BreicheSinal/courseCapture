@@ -1,0 +1,14 @@
+<!-- @dsCard group="Navigation" height=352 subtitle="Trail, disabled item and a collapsed trail with a menu" -->
+<style>
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans)}
+.pv{display:flex;flex-direction:column;gap:20px;padding:24px;max-width:560px}
+.cap{font:12px/16px var(--font-sans);color:var(--ink-muted);margin:0 0 -10px}
+</style>
+<div class="pv">
+  <p class="cap">Trail</p>
+  <nav class="cc-crumbs" aria-label="Breadcrumb"><ol><li><a class="cc-crumbs__link" href="#">Classes</a></li><li><a class="cc-crumbs__link" href="#">Biology 101</a></li><li><a class="cc-crumbs__link" href="#">Photosynthesis</a></li><li><span aria-current="page">Module 3</span></li></ol></nav>
+  <p class="cap">With a disabled item</p>
+  <nav class="cc-crumbs" aria-label="Breadcrumb"><ol><li><a class="cc-crumbs__link" href="#">Classes</a></li><li><span class="cc-crumbs__link" aria-disabled="true">Chemistry A</span></li><li><span aria-current="page">Module 3</span></li></ol></nav>
+  <p class="cap">Collapsed, menu open</p>
+  <div class="cc-menu"><nav class="cc-crumbs" aria-label="Breadcrumb"><ol><li><a class="cc-crumbs__link" href="#">Home</a></li><li><button class="cc-crumbs__more" type="button" aria-haspopup="menu" aria-expanded="true" aria-label="Show more levels">…</button></li><li><a class="cc-crumbs__link" href="#">Photosynthesis</a></li><li><span aria-current="page">Module 3</span></li></ol></nav><div class="cc-menu__panel" role="menu" aria-label="More levels" style="margin-top:8px"><button class="cc-menu__item" type="button" role="menuitem">Classes</button><button class="cc-menu__item" type="button" role="menuitem">Biology 101</button></div></div>
+</div>

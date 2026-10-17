@@ -16,6 +16,16 @@ See `docs/folder-structure.md`. Short version:
 - SQL changes = a new file in `supabase/migrations/`, never edit an applied migration.
 - Prompts = `ai/prompts/*.md`, loaded at runtime; don't inline prompt text in TS.
 
+## Next.js 16 notes
+- This is Next.js 16 with **Cache Components** on. Read `node_modules/next/dist/docs/` before using an API you're unsure of.
+- Middleware is called **Proxy** now: `src/proxy.ts`.
+- The root layout is `src/app/[locale]/layout.tsx`; the locale comes from `next/root-params` via next-intl's `getLocale()`. Keep `generateStaticParams` there.
+- Use `Link`, `redirect`, `useRouter`, `usePathname` from `@/i18n/navigation`, not `next/link` / `next/navigation`.
+
+## Using the design system
+- UI components live in `src/components/ui/` and wrap the design system's `cc-*` classes. Read the component's `design-system/components/<Name>/README.md` before building or changing one.
+- Never edit `design-system/` or `src/styles/generated/` by hand; run `pnpm tokens`.
+
 ## Non-negotiables
 1. **Tokens only.** No hex colours, no arbitrary Tailwind colours (`bg-[#…]`), no raw px spacing outside the token scale. Use `bg-surface`, `text-ink-muted`, `p-5`, `rounded-lg`… (`docs/design-system.md`).
 2. **Both themes.** Every UI change must look right in Light and Dark (`docs/theming.md`).
@@ -29,14 +39,16 @@ See `docs/folder-structure.md`. Short version:
 ## Copy style
 Sentence case. Name the action on every button ("Assign to Biology", not "Submit"). Errors say what to do next. No decorative emoji. Status always has a word, not colour only.
 
-## Commands (once the app exists)
+## Commands
 ```
-pnpm dev            # Next.js
-pnpm db:start       # Supabase local
-pnpm inngest:dev    # Inngest dev server
-pnpm tokens         # Regenerate styles/tokens.css from design-system/tokens.json
-pnpm lint && pnpm typecheck && pnpm test
-pnpm test:e2e       # Playwright (both themes, LTR + RTL)
+pnpm dev            # Next.js (regenerates design tokens first)
+pnpm tokens         # Regenerate src/styles/generated/ from design-system/
+pnpm i18n:check     # Every locale has the same keys as en.json
+pnpm check          # tokens + i18n + lint + typecheck + unit tests
+pnpm build
+pnpm test:e2e       # Playwright (added with the first real screens)
+pnpm db:start       # Supabase local (stage 2)
+pnpm inngest:dev    # Inngest dev server (stage 5)
 ```
 
 ## Workflow

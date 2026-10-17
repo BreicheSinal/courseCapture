@@ -1,0 +1,41 @@
+<!-- @dsCard group="Actions" height=698 subtitle="Five styles, four sizes, icons, shapes, loading, link and full width" -->
+<style>
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans)}
+.pv{display:flex;flex-direction:column;gap:16px;padding:24px;max-width:640px}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.cap{font:12px/16px var(--font-sans);color:var(--ink-muted);margin:0 0 -6px}
+</style>
+<div class="pv">
+  <p class="cap">Styles</p>
+  <div class="row">
+    <button class="cc-btn cc-btn--primary" type="button">Assign to Biology</button>
+    <button class="cc-btn cc-btn--secondary" type="button">Preview</button>
+    <button class="cc-btn cc-btn--tertiary" type="button">Export HTML</button>
+    <button class="cc-btn cc-btn--ghost" type="button">Cancel</button>
+    <button class="cc-btn cc-btn--warning" type="button">Extend due date</button>
+    <button class="cc-btn cc-btn--danger" type="button">Delete course</button>
+    <button class="cc-btn cc-btn--danger" type="button" data-confirm="true">Sure?</button>
+  </div>
+  <p class="cap">Sizes</p>
+  <div class="row">
+    <button class="cc-btn cc-btn--secondary cc-btn--tiny" type="button">Tiny</button>
+    <button class="cc-btn cc-btn--secondary cc-btn--sm" type="button">Small</button>
+    <button class="cc-btn cc-btn--secondary" type="button">Medium</button>
+    <button class="cc-btn cc-btn--secondary cc-btn--lg" type="button">Large</button>
+  </div>
+  <p class="cap">Icons, icon only and shapes</p>
+  <div class="row">
+    <button class="cc-btn cc-btn--primary" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>New course</button>
+    <button class="cc-btn cc-btn--secondary" type="button">Continue<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    <button class="cc-btn cc-btn--secondary cc-btn--square" type="button" aria-label="Copy join code"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg></button>
+    <button class="cc-btn cc-btn--primary cc-btn--circle" type="button" aria-label="Add course"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+    <button class="cc-btn cc-btn--primary cc-btn--pill" type="button">Start free</button>
+  </div>
+  <p class="cap">Loading, disabled and link</p>
+  <div class="row">
+    <button class="cc-btn cc-btn--primary" type="button" aria-busy="true"><span class="cc-btn__spin" aria-hidden="true"></span>Generating part 2/4…</button>
+    <button class="cc-btn cc-btn--primary" type="button" disabled title="Choose a class first">Assign to Biology</button>
+    <a class="cc-btn cc-btn--secondary" href="#">View roster<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  </div>
+  <div style="max-width:320px"><button class="cc-btn cc-btn--primary cc-btn--block" type="button">Join</button></div>
+</div>

@@ -1,0 +1,32 @@
+<!-- @dsCard group="Layout" height=336 subtitle="Sizes, tones, photo and an overlapping group" -->
+<style>
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans)}
+.pv{display:flex;flex-direction:column;gap:20px;padding:24px;max-width:560px}
+.row{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.cap{font:12px/16px var(--font-sans);color:var(--ink-muted);margin:0 0 -10px}
+</style>
+<div class="pv">
+  <p class="cap">Sizes</p>
+  <div class="row">
+    <span class="cc-avatar cc-avatar--sm" aria-label="Layla">L</span>
+    <span class="cc-avatar" aria-label="Layla">L</span>
+    <span class="cc-avatar cc-avatar--lg" aria-label="Layla">L</span>
+  </div>
+  <p class="cap">Tones and photo</p>
+  <div class="row">
+    <span class="cc-avatar cc-avatar--lg" aria-label="You: Layla">L</span>
+    <span class="cc-avatar cc-avatar--lg cc-avatar--soft" aria-label="Omar">O</span>
+    <span class="cc-avatar cc-avatar--lg cc-avatar--neutral" aria-label="Unknown student">?</span>
+    <span class="cc-avatar cc-avatar--lg"><img alt="Sara" src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23d2d2d7'/%3E%3Ccircle cx='20' cy='16' r='7' fill='%238e8e93'/%3E%3Cpath d='M6 40c2-10 8-13 14-13s12 3 14 13z' fill='%238e8e93'/%3E%3C/svg%3E"></span>
+  </div>
+  <p class="cap">Group on a surface</p>
+  <div class="cc-card" style="padding:16px">
+    <span class="cc-avatars">
+      <span class="cc-avatar" aria-label="Layla">L</span>
+      <span class="cc-avatar cc-avatar--soft" aria-label="Omar">O</span>
+      <span class="cc-avatar cc-avatar--soft" aria-label="Sara">S</span>
+      <span class="cc-avatar cc-avatar--soft" aria-label="Nour">N</span>
+      <span class="cc-avatar cc-avatar--neutral" aria-label="3 more students">+3</span>
+    </span>
+  </div>
+</div>

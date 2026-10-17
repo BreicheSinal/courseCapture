@@ -3,10 +3,13 @@
 The app uses the **CourseCapture design system** (Claude Design). Its look: calm, Apple-inspired — system fonts, cool neutrals, soft rounded cards and one blue accent.
 
 ## Source of truth
-1. `design-system/tokens.json` — synced from the design system. Never edited by hand.
-2. A build script generates `src/styles/tokens.css` with CSS variables for both themes.
-3. `tailwind.config` maps those variables to utility names (`bg-surface`, `text-ink-muted`, `rounded-lg`, `p-5`…).
-4. Components only use Tailwind token utilities — **no hex values, no arbitrary colours**.
+1. `design-system/` — a synced copy of the design system: `tokens.json`, `components/bundle.css`, and every component's `README.md` and `preview.html`. Never edited by hand; refresh with the `/sync-design-system` command.
+2. `pnpm tokens` (`scripts/build-tokens.mjs`, also run before `dev` and `build`) generates:
+   - `src/styles/generated/tokens.css` — every token as a CSS variable (`--surface`, `--space-5`, `--text-headline`…) for Light, Dark and System, the type classes (`.large-title`, `.headline`, `.body`…), and a Tailwind 4 `@theme` block that **replaces Tailwind's default palette, radii and text sizes** with the tokens. So `bg-surface`, `text-ink-muted`, `border-line`, `rounded-lg`, `shadow-card` exist and `bg-red-500` doesn't.
+   - `src/styles/generated/components.css` — the system's component classes (`cc-btn`, `cc-badge`, `cc-card`…) with left/right rules rewritten to logical properties for RTL.
+3. React components in `src/components/ui/` are thin, typed wrappers that apply those `cc-*` classes, so they look exactly like the design system and update when it changes.
+4. Page layout uses Tailwind utilities on the 4px scale (`p-5` = 20px = `space-5`) and token colours only — **no hex values, no arbitrary colours**.
+5. Shorthand rules that can't be converted for RTL are fixed by hand in `src/styles/rtl.css`.
 
 ## Tokens
 | Group | Tokens |

@@ -1,0 +1,40 @@
+<!-- @dsCard group="Actions" height=680 subtitle="Actions menu with a destructive item, a choice menu and an account menu with a locked item" -->
+<style>
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans)}
+.pv{display:flex;flex-direction:column;gap:24px;align-items:flex-start;padding:24px}
+</style>
+<div class="pv">
+
+  <div class="cc-menu">
+    <button class="cc-btn cc-btn--secondary" type="button" aria-haspopup="menu" aria-expanded="true">Course actions
+      <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+    <div class="cc-menu__panel" role="menu" aria-label="Course actions">
+      <button class="cc-menu__item" type="button" role="menuitem"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>Preview course</button>
+      <button class="cc-menu__item" type="button" role="menuitem"><svg viewBox="0 0 24 24"><path d="M12 4v11M7.5 10.5L12 15l4.5-4.5M5 19h14"/></svg>Export HTML</button>
+      <hr class="cc-menu__divider">
+      <button class="cc-menu__item cc-menu__item--danger" type="button" role="menuitem"><svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v5M14 11v5"/></svg>Delete course</button>
+    </div>
+  </div>
+
+  <div class="cc-menu">
+    <button class="cc-btn cc-btn--secondary" type="button" aria-haspopup="menu" aria-expanded="true">Language: English
+      <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+    <div class="cc-menu__panel" role="menu" aria-label="Language">
+      <div class="cc-menu__section" role="presentation">Language</div>
+      <button class="cc-menu__item" type="button" role="menuitemradio" aria-checked="true">English<svg class="cc-menu__check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button>
+      <button class="cc-menu__item" type="button" role="menuitemradio" aria-checked="false">Arabic</button>
+      <button class="cc-menu__item" type="button" role="menuitemradio" aria-checked="false">French</button>
+      <button class="cc-menu__item" type="button" role="menuitemradio" aria-checked="false">Spanish</button>
+    </div>
+  </div>
+
+  <div class="cc-menu">
+    <button class="cc-avatar cc-avatar--lg" type="button" aria-haspopup="menu" aria-expanded="true" aria-label="Account menu, Layla Haddad">L</button>
+    <div class="cc-menu__panel" role="menu" aria-label="Account">
+      <div class="cc-menu__who" role="presentation">Layla Haddad<span>Teacher</span></div>
+      <hr class="cc-menu__divider">
+      <button class="cc-menu__item" type="button" role="menuitem" aria-disabled="true" title="Only the page owner can switch roles"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Switch role</button>
+    </div>
+  </div>
+
+</div>

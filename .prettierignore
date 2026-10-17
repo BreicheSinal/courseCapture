@@ -1,0 +1,7 @@
+pnpm-lock.yaml
+design-system/
+src/styles/generated/
+docs/
+ai/
+*.md
+.next/

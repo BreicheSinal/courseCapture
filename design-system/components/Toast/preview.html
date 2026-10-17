@@ -1,0 +1,35 @@
+<!-- @dsCard group="Feedback" height=346 subtitle="Default, success with action, warning, undo and a persistent error" -->
+<style>
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans)}
+.pv{padding:24px}
+.cc-toasts{align-items:flex-start}
+</style>
+<div class="pv">
+  <div class="cc-toasts" aria-live="polite">
+    <div class="cc-toast" role="status">
+      <p class="cc-toast__body">Code copied</p>
+    </div>
+
+    <div class="cc-toast cc-toast--success" role="status">
+      <span class="cc-toast__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg></span>
+      <p class="cc-toast__body">Course assigned</p>
+      <div class="cc-toast__actions"><button class="cc-btn cc-btn--ghost cc-btn--sm" type="button">View</button></div>
+    </div>
+
+    <div class="cc-toast cc-toast--warning" role="status">
+      <span class="cc-toast__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17.5v.01"/></svg></span>
+      <p class="cc-toast__body">Scanned PDF: only the first 8 pages were read</p>
+    </div>
+
+    <div class="cc-toast" role="status">
+      <p class="cc-toast__body">Announcement deleted</p>
+      <div class="cc-toast__actions"><button class="cc-btn cc-btn--ghost cc-btn--sm" type="button">Undo</button></div>
+    </div>
+
+    <div class="cc-toast cc-toast--error" role="status">
+      <span class="cc-toast__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg></span>
+      <p class="cc-toast__body">Couldn't read that PDF. Paste the text instead.</p>
+      <div class="cc-toast__actions"><button class="cc-iconbtn cc-iconbtn--xs" type="button" aria-label="Dismiss" title="Dismiss"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<!-- @dsCard group="Feedback" height=524 subtitle="Type-to-confirm gate, with the confirm button disabled" -->
+<style>
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans)}
+.cc-scrim{min-height:520px;box-sizing:border-box}
+</style>
+<div class="cc-scrim">
+  <div class="cc-dialog" role="alertdialog" aria-labelledby="d-t" aria-describedby="d-d">
+    <h2 class="cc-dialog__title" id="d-t">Delete Biology 101</h2>
+    <p class="cc-dialog__text" id="d-d">This removes the class, its 12 students' progress and their quiz scores. Assigned courses stay in your library.</p>
+    <div class="cc-dialog__note"><svg viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.01"/></svg><span>This can't be undone.</span></div>
+    <div class="cc-field">
+      <label class="cc-field__label" for="d-i">Type Biology 101 to confirm</label>
+      <input class="cc-input" id="d-i" value="Biology 10" autocomplete="off">
+    </div>
+    <div class="cc-dialog__actions">
+      <button class="cc-btn cc-btn--secondary" type="button">Cancel</button>
+      <button class="cc-btn cc-btn--danger" type="button" disabled>Delete class</button>
+    </div>
+  </div>
+</div>

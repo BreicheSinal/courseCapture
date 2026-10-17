@@ -2,7 +2,7 @@
 
 Teachers turn papers and slides into interactive courses; students join a class with a code and learn through modules, flashcards, quizzes and an AI tutor.
 
-> **Status:** project structure and docs only — no app code yet. Review the docs, then the build starts in stages (see `docs/PRD.md` §9).
+> **Status:** Stage 1 (foundation) — design tokens, light/dark/system themes, four languages with Arabic right-to-left, and the app shell. Open `/` to see the foundation preview. Next stages: see `docs/PRD.md` §9.
 
 ## Start here
 | Read | For |
@@ -22,10 +22,12 @@ Teachers turn papers and slides into interactive courses; students join a class 
 ## Stack
 Next.js · TypeScript · Tailwind · Radix UI · Supabase · AI provider (Anthropic, OpenAI, Google…) · Inngest · next-intl · Vercel
 
-## Setup (once code lands)
-1. Install Node 20+ and pnpm, Docker (for local Supabase).
-2. `cp .env.example .env.local` and fill in the keys.
-3. `pnpm install`, `pnpm db:start`, `pnpm dev`, `pnpm inngest:dev`.
-4. Open `http://localhost:3000`.
+## Setup
+1. Install Node 20+ and pnpm (`corepack enable`).
+2. `pnpm install`
+3. `pnpm dev` and open `http://localhost:3000` — you'll be sent to `/en` (or your browser's language).
+4. Before a PR: `pnpm check`.
+
+From stage 2 you'll also need Docker (local Supabase) and `.env.local` (copy `.env.example`).
 
 Recommended VS Code extensions: ESLint, Prettier, Tailwind CSS IntelliSense, i18n Ally, Supabase.

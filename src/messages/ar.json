@@ -1,0 +1,65 @@
+{
+  "common": {
+    "appName": "CourseCapture",
+    "skipToContent": "انتقل إلى المحتوى",
+    "mainNavigation": "الرئيسية",
+    "notFoundTitle": "الصفحة غير موجودة",
+    "notFoundText": "تحقّق من العنوان، أو عُد إلى البداية.",
+    "goHome": "اذهب إلى البداية",
+    "errorTitle": "حدث خطأ ما",
+    "errorText": "حاول مرة أخرى. إذا تكرّر ذلك، أعد تحميل الصفحة.",
+    "tryAgain": "حاول مرة أخرى",
+    "loading": "جارٍ التحميل"
+  },
+  "roles": {
+    "teacher": "معلّم",
+    "student": "طالب",
+    "admin": "مسؤول"
+  },
+  "nav": {
+    "classes": "الصفوف",
+    "courses": "الدورات",
+    "settings": "الإعدادات",
+    "home": "الرئيسية",
+    "account": "الحساب"
+  },
+  "theme": {
+    "label": "المظهر",
+    "light": "فاتح",
+    "system": "النظام",
+    "dark": "داكن"
+  },
+  "language": {
+    "label": "اللغة"
+  },
+  "foundation": {
+    "metaTitle": "معاينة الأساس",
+    "eyebrow": "المرحلة 1 من 6",
+    "title": "الأساس",
+    "intro": "تتحقّق هذه الصفحة من أساس التطبيق: رموز التصميم، والمظهران الفاتح والداكن، واللغات، والتخطيط. ستحلّ محلّها الشاشات الحقيقية في المراحل التالية.",
+    "preferences": "التفضيلات",
+    "preferencesHint": "يتم تذكّر اختياراتك على هذا الجهاز.",
+    "buttons": "الأزرار",
+    "primary": "عيّن لصف الأحياء",
+    "secondary": "معاينة",
+    "tertiary": "تصدير HTML",
+    "ghost": "إلغاء",
+    "danger": "حذف الدورة",
+    "busy": "جارٍ إنشاء الجزء {done}/{total}…",
+    "copyCode": "نسخ رمز الانضمام",
+    "badges": "الشارات",
+    "draft": "مسودة",
+    "complete": "مكتمل",
+    "overdue": "متأخر",
+    "failed": "فشل",
+    "type": "الخطوط",
+    "sampleTitle": "البناء الضوئي",
+    "sampleHeadline": "الوحدة 2: التفاعلات الضوئية",
+    "sampleBody": "يمتص الكلوروفيل الضوء الأحمر والأزرق.",
+    "sampleMeta": "{modules, plural, zero {لا وحدات} one {وحدة واحدة} two {وحدتان} few {# وحدات} many {# وحدة} other {# وحدة}} · الاستحقاق {date}",
+    "states": "الحالات",
+    "emptyTitle": "أنشئ صفّك الأول",
+    "emptyText": "ثم شارك رمز الانضمام وعيّن دورة مبنية من ورقة بحثية أو عرض شرائح.",
+    "emptyAction": "إنشاء صف"
+  }
+}

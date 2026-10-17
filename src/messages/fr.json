@@ -1,0 +1,65 @@
+{
+  "common": {
+    "appName": "CourseCapture",
+    "skipToContent": "Aller au contenu",
+    "mainNavigation": "Principale",
+    "notFoundTitle": "Page introuvable",
+    "notFoundText": "Vérifiez l’adresse ou revenez au début.",
+    "goHome": "Revenir au début",
+    "errorTitle": "Un problème est survenu",
+    "errorText": "Réessayez. Si le problème persiste, rechargez la page.",
+    "tryAgain": "Réessayer",
+    "loading": "Chargement"
+  },
+  "roles": {
+    "teacher": "Enseignant",
+    "student": "Élève",
+    "admin": "Admin"
+  },
+  "nav": {
+    "classes": "Classes",
+    "courses": "Cours",
+    "settings": "Réglages",
+    "home": "Accueil",
+    "account": "Compte"
+  },
+  "theme": {
+    "label": "Thème",
+    "light": "Clair",
+    "system": "Système",
+    "dark": "Sombre"
+  },
+  "language": {
+    "label": "Langue"
+  },
+  "foundation": {
+    "metaTitle": "Aperçu des fondations",
+    "eyebrow": "Étape 1 sur 6",
+    "title": "Fondations",
+    "intro": "Cette page vérifie la base de l’application : jetons de design, thèmes clair et sombre, langues et mise en page. Les vrais écrans la remplaceront aux prochaines étapes.",
+    "preferences": "Préférences",
+    "preferencesHint": "Vos choix sont mémorisés sur cet appareil.",
+    "buttons": "Boutons",
+    "primary": "Assigner à Biologie",
+    "secondary": "Aperçu",
+    "tertiary": "Exporter en HTML",
+    "ghost": "Annuler",
+    "danger": "Supprimer le cours",
+    "busy": "Génération de la partie {done}/{total}…",
+    "copyCode": "Copier le code d’accès",
+    "badges": "Badges",
+    "draft": "Brouillon",
+    "complete": "Terminé",
+    "overdue": "En retard",
+    "failed": "Échec",
+    "type": "Typographie",
+    "sampleTitle": "Photosynthèse",
+    "sampleHeadline": "Module 2 : Réactions lumineuses",
+    "sampleBody": "La chlorophylle absorbe la lumière rouge et bleue.",
+    "sampleMeta": "{modules, plural, one {# module} other {# modules}} · à rendre le {date}",
+    "states": "États",
+    "emptyTitle": "Créez votre première classe",
+    "emptyText": "Partagez ensuite son code d’accès et assignez un cours créé à partir d’un article ou de diapositives.",
+    "emptyAction": "Créer une classe"
+  }
+}
