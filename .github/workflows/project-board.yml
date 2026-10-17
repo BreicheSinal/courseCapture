@@ -1,0 +1,55 @@
+# Keeps the GitHub Project board (users/BreicheSinal/projects/1) in step with
+# issues and pull requests: Todo → In Progress (label "in progress" or an open PR) → Done (closed or merged).
+# Needs a repository secret PROJECT_TOKEN: a personal access token with project
+# read/write access (GitHub's built-in token can't reach user-owned projects).
+name: Project board
+
+on:
+  issues:
+    types: [opened, reopened, closed, labeled, unlabeled]
+  pull_request:
+    types: [opened, reopened, closed, ready_for_review]
+  workflow_dispatch: {} # "Run workflow" syncs every issue and PR
+
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+
+concurrency:
+  group: project-board
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    # Pull requests from forks don't get secrets; skip them.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    env:
+      GH_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+      PROJECT_OWNER: BreicheSinal
+      PROJECT_NUMBER: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check the token is set
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::error::Add a repository secret PROJECT_TOKEN (see docs/project-board.md)."
+            exit 1
+          fi
+      - name: Sync every issue and PR
+        if: github.event_name == 'workflow_dispatch'
+        run: .github/scripts/project-sync.sh --all
+      - name: Sync this issue
+        if: github.event_name == 'issues'
+        env:
+          NODE: ${{ github.event.issue.node_id }}
+          STATE: ${{ github.event.issue.state }}
+          LABELS: ${{ join(github.event.issue.labels.*.name, ',') }}
+        run: .github/scripts/project-sync.sh "$NODE" "$STATE" false "$LABELS"
+      - name: Sync this pull request
+        if: github.event_name == 'pull_request'
+        env:
+          NODE: ${{ github.event.pull_request.node_id }}
+          STATE: ${{ github.event.pull_request.merged && 'merged' || github.event.pull_request.state }}
+        run: .github/scripts/project-sync.sh "$NODE" "$STATE" true ""
