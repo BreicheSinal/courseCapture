@@ -1,16 +1,17 @@
-import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
-import { FoundationPreview } from "@/components/features/foundation/FoundationPreview";
+import { Suspense } from "react";
+import { guard } from "@/lib/auth/session";
+import { Splash } from "@/components/features/auth/Splash";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations("foundation");
-  return { title: t("metaTitle") };
+/** `/` sends everyone where they belong: sign-in, onboarding or their home. */
+export default function Page() {
+  return (
+    <Suspense fallback={<Splash />}>
+      <Dispatch />
+    </Suspense>
+  );
 }
 
-/**
- * Stage 1 only: a preview of tokens, themes, languages and the app shell.
- * Replaced in stage 2 by a redirect to sign-in or the person's home.
- */
-export default function Page() {
-  return <FoundationPreview />;
+async function Dispatch() {
+  await guard("root"); // always redirects
+  return <Splash />;
 }

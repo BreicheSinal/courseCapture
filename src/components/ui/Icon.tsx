@@ -25,11 +25,20 @@ const paths = {
   monitor: "M5 4h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z M8 20h8M12 16v4",
   moon: "M20 14.5A8 8 0 1 1 9.5 4 6.5 6.5 0 0 0 20 14.5z",
   alert: "M12 3l10 18H2z M12 10v4M12 17.5v.5",
+  chevronBack: "M15 18l-6-6 6-6",
+  mail: "M5 5h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z M3 7l9 6 9-6",
+  clock: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 7v5l3 2",
+  key: "M8 11a4 4 0 1 0 0 8 4 4 0 0 0 0-8z M11 12l9-9 M17 6l3 3 M15 8l2 2",
+  school: "M3 10l9-6 9 6 M5 10v9h14v-9 M10 19v-5h4v5",
+  person: "M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8z M4 21a8 8 0 0 1 16 0",
+  checkCircle: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M8 12l3 3 5-6",
+  resend: "M20 12a8 8 0 1 1-2.3-5.7 M20 4v4h-4",
+  signOut: "M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3 M10 17l-5-5 5-5 M5 12h11",
 } as const;
 
 export type IconName = keyof typeof paths;
 
-const directional: ReadonlySet<IconName> = new Set(["arrowForward"]);
+const directional: ReadonlySet<IconName> = new Set(["arrowForward", "chevronBack", "signOut"]);
 
 export function Icon({ name, className, ...props }: { name: IconName } & Omit<SVGProps<SVGSVGElement>, "children">) {
   return (

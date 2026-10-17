@@ -1,13 +1,13 @@
 import type { IconName } from "@/components/ui/Icon";
 
-export type NavRole = "teacher" | "student";
+export type NavRole = "teacher" | "student" | "admin";
 export type NavItem = {
   href: string;
-  labelKey: "classes" | "courses" | "settings" | "home" | "account";
+  labelKey: "classes" | "courses" | "settings" | "home" | "account" | "teachers" | "invites";
   icon: IconName;
 };
 
-/** Three tabs per role (docs/routes.md → Navigation). Same items on the phone tab bar and desktop sidebar. */
+/** Three tabs per role (two for admins) (docs/routes.md → Navigation). Same items on the phone tab bar and desktop sidebar. */
 export const navItems: Record<NavRole, NavItem[]> = {
   teacher: [
     { href: "/teacher/classes", labelKey: "classes", icon: "classes" },
@@ -18,6 +18,10 @@ export const navItems: Record<NavRole, NavItem[]> = {
     { href: "/student", labelKey: "home", icon: "home" },
     { href: "/student/classes", labelKey: "classes", icon: "classes" },
     { href: "/student/account", labelKey: "account", icon: "account" },
+  ],
+  admin: [
+    { href: "/admin/teachers", labelKey: "teachers", icon: "classes" },
+    { href: "/admin/invites", labelKey: "invites", icon: "key" },
   ],
 };
 

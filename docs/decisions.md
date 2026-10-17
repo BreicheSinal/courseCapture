@@ -18,15 +18,25 @@
 | 13 | PWA first, native later | Fastest path to phones |
 | 14 | Build in stages, one PR per stage | Reviewable chunks |
 | 15 | Provider-agnostic AI layer (Vercel AI SDK), Anthropic by default | Switch vendor or model by env vars; no vendor lock-in |
+| 16 | Role is picked on the sign-in screen and fixed once set | Matches the canvas (T7); the wrong-account screen (T7c) handles mix-ups |
+| 17 | Names are asked on first sign-in (`/onboarding/profile`) | Email sign-in gives no name; T7d greets the teacher by name |
+| 18 | Invite codes carry a school name and are 8 characters, 7-day default expiry | Matches T7e; no look-alike characters |
+| 19 | First admin is set in SQL; admins can't be created from the app | Smallest attack surface |
+| 20 | Design-system CSS sits in Tailwind's `components` layer | So utilities can override a component's defaults |
+| 21 | Database tests run on plain Postgres with an auth shim | No Docker needed; same migrations as Supabase |
+| 22 | A rejected teacher can still redeem an invite code | A code from the school admin is proof they teach there; T7d offers it |
+| 23 | Only teachers who confirmed their email reach the approval queue | Asking for a link creates the account before anyone clicks it |
+| 24 | Repo is public | No secrets in the repo; `.env.local` is never committed |
+| 25 | Source files are deleted after generation; only the filename is kept | Privacy and storage cost |
+| 26 | Quiz answers stay on the server; choices are checked by a database function | A student can't read answers from the browser |
+| 27 | Daily AI limits: teacher 20 generations + 100 diagram redraws, student 30 tutor questions | Cost control; configurable by env |
+| 28 | A course can be assigned to several classes (no copies), each with its own due date | One course to edit; progress stays per student per course |
+| 29 | Certificates are downloadable PDFs | Requested |
+| 30 | Analytics: Vercel Web Analytics (free, cookieless) | No consent banner needed |
 
 ## Open questions
-1. **Who is the first admin?** Assumed: the owner's account, set manually.
-2. **Approval emails** — Supabase's built-in mail or a provider like Resend?
-3. **Package manager** — pnpm (assumed) or npm?
-4. **Repo visibility** — private (assumed) or public?
-5. **Keep source files** after generation by default? Assumed: no.
-6. **Quiz answer secrecy** — is it OK for v1 that a determined student could read answers? (See schema note.)
-7. **Daily AI limits** — starting numbers per teacher and per student.
-8. **Can a course be assigned to several classes**, or duplicated per class? Assumed: duplicated.
-9. **Certificate** — on-screen + print only, or a downloadable PDF?
-10. **Analytics** — Vercel Analytics, PostHog, or none for v1?
+1. **Approval emails** — Supabase's built-in mailer only sends sign-in emails and is rate-limited. Options: Resend's free plan as Supabase's SMTP (also sends "you're approved"), or no approval email for now.
+2. **Due date per class** when one course is assigned to several classes — assumed yes.
+3. **Students under 13** — will they sign up themselves? (affects consent rules such as COPPA/GDPR-K)
+4. **Editing a course after it's assigned** — allowed? Assumed yes; changed modules keep students' progress on the unchanged ones.
+5. **Domain and Vercel project** — needed for sign-in redirect URLs and production setup.

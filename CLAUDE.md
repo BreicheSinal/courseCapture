@@ -31,7 +31,8 @@ See `docs/folder-structure.md`. Short version:
 2. **Both themes.** Every UI change must look right in Light and Dark (`docs/theming.md`).
 3. **Every string is translated.** No literal user-facing text in components; add keys to `src/messages/en.json` and the other locales (`docs/i18n.md`).
 4. **RTL-safe CSS.** Logical properties only (`ms-`, `pe-`, `start`, `text-start`); never `ml-`/`mr-`/`left`/`right`.
-5. **RLS everywhere.** New table → RLS enabled + policies + a test in `supabase/tests/` (`docs/schema.md`).
+5. **RLS everywhere.** New table → RLS enabled + policies + a test in `tests/db/` (`docs/schema.md`). Role/status changes only through security-definer functions that check the caller.
+9. **Auth checks in three places.** Proxy (signed in?), the page/layout (`guard()` / `requireSession()`), and RLS. Never rely on the first two alone.
 6. **AI on the server.** Never import the AI client, provider keys or service-role key into client code. Validate model output with Zod. Sanitise every SVG.
 7. **Accessible.** Real `<button>`/`<a>`/`<label>`, 44px targets, visible focus ring, `aria-label` on icon buttons, alt text on diagrams.
 8. **Match the canvas.** Each screen maps to a route in `docs/routes.md`; build to the design, don't invent layouts.
@@ -45,9 +46,10 @@ pnpm dev            # Next.js (regenerates design tokens first)
 pnpm tokens         # Regenerate src/styles/generated/ from design-system/
 pnpm i18n:check     # Every locale has the same keys as en.json
 pnpm check          # tokens + i18n + lint + typecheck + unit tests
+pnpm test:db        # migrations + RLS against Postgres (TEST_DATABASE_URL)
 pnpm build
 pnpm test:e2e       # Playwright (added with the first real screens)
-pnpm db:start       # Supabase local (stage 2)
+pnpm db:start       # Supabase local (Docker); pnpm db:reset reapplies migrations
 pnpm inngest:dev    # Inngest dev server (stage 5)
 ```
 

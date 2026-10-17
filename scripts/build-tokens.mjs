@@ -110,7 +110,10 @@ ${fixed.join("\n")}
 
 :lang(ar) { --font-sans: var(--font-sans-ar); }
 
+/* In the components layer so Tailwind utilities (e.g. font-semibold) can override. */
+@layer components {
 ${typeClasses}
+}
 
 @theme inline {
 ${twInline.join("\n")}
@@ -139,6 +142,7 @@ const swaps = [
   [/([;{])right:/g, "$1inset-inline-end:"],
 ];
 for (const [re, to] of swaps) css = css.replace(re, to);
-writeFileSync(join(out, "components.css"), `${HEADER}${css}`);
+// In the components layer so Tailwind utilities on a cc-* element win over its defaults.
+writeFileSync(join(out, "components.css"), `${HEADER}@layer components {\n${css}\n}\n`);
 
 console.log("✓ tokens.css and components.css generated");

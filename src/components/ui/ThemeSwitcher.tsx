@@ -17,19 +17,28 @@ const subscribe = (fn: () => void) => {
 const getSnapshot = () => readThemeCookie(document.cookie);
 const getServerSnapshot = (): ThemePref => "system";
 
+/** Current theme preference and a setter, shared by every switcher on the page. */
+export function useThemePreference(): [ThemePref, (next: ThemePref) => void] {
+  const pref = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const set = (next: ThemePref) => {
+    writeThemeCookie(next);
+    applyThemePref(next);
+    listeners.forEach((fn) => fn());
+  };
+  return [pref, set];
+}
+
 /**
  * Light / System / Dark radio group (design-system ThemeSwitcher).
  * Arrow keys move and select; only the selected option is in the tab order.
  */
 export function ThemeSwitcher({ size = "md" }: { size?: "md" | "sm" }) {
   const t = useTranslations("theme");
-  const pref = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const [pref, setPref] = useThemePreference();
   const refs = useRef<Array<HTMLButtonElement | null>>([]);
 
   function choose(next: ThemePref, focus = false) {
-    writeThemeCookie(next);
-    applyThemePref(next);
-    listeners.forEach((fn) => fn());
+    setPref(next);
     if (focus) refs.current[themePrefs.indexOf(next)]?.focus();
   }
 

@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils/cn";
 import { isActive, navItems, type NavRole } from "./nav";
 
 /**
- * Phone bottom tab bar: three tabs, 52px targets (canvas note; not yet in the design system).
+ * Phone bottom tab bar: three tabs (two for admins), 52px targets (canvas note; not yet in the design system).
  * Hidden on desktop, where Sidebar shows the same items.
  */
 export function TabBar({ role }: { role: NavRole }) {
@@ -19,7 +19,7 @@ export function TabBar({ role }: { role: NavRole }) {
       aria-label={t("common.mainNavigation")}
       className="fixed inset-x-0 bottom-0 z-10 border-t border-line bg-surface pb-[env(safe-area-inset-bottom)] lg:hidden"
     >
-      <ul className="m-0 grid list-none grid-cols-3 p-0">
+      <ul className="m-0 grid list-none auto-cols-fr grid-flow-col p-0">
         {navItems[role].map((item) => {
           const active = isActive(pathname, item.href);
           return (

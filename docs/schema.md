@@ -36,19 +36,31 @@ profiles(admin) ─1:n─ teacher_invites
 | `status` | account_status | students → `approved`; teachers → `pending` unless invite redeemed |
 | `ui_locale` | text | `en` / `ar` / `fr` / `es` |
 | `theme` | theme_pref | default `system` |
-| `created_at` | timestamptz | |
+| `approved_at` / `approved_by` | timestamptz / uuid | who approved, and when |
+| `approved_via_invite` | text | the invite code used, if any |
+| `created_at` / `updated_at` | timestamptz | |
 
 ### `teacher_invites`
 | Column | Type | Notes |
 |---|---|---|
-| `code` | text PK | e.g. 8 chars |
+| `code` | text PK | 8 chars from `ABCDEFGHJKLMNPQRSTUVWXYZ23456789`, stored without the dash |
+| `school_name` | text | shown to the teacher on T7e |
 | `created_by` | uuid → profiles | admin |
 | `max_uses` | int | default 1 |
 | `uses` | int | default 0 |
-| `expires_at` | timestamptz | nullable |
+| `expires_at` | timestamptz | default now + 7 days |
+| `revoked_at` | timestamptz | nullable |
 | `created_at` | timestamptz | |
 
-Redeeming is done by a `security definer` function `redeem_teacher_invite(code)` that checks expiry and uses, increments `uses`, and sets the caller to `teacher` + `approved`.
+Functions (all `security definer`, `search_path = ''`, caller checked first):
+- `create_teacher_invite(school, max_uses, days)` — admins only; generates the code with `gen_random_bytes`.
+- `check_teacher_invite(code)` — pending/rejected teachers only; returns school and inviter for a valid code, else nothing.
+- `redeem_teacher_invite(code)` — locks the code row, checks expiry/uses/revoked, increments `uses`, approves the caller.
+- `revoke_teacher_invite(code)` — admins only.
+
+Profile functions: `handle_new_user()` (trigger on `auth.users`), `complete_onboarding(name, role)` (sets the name, and the role once), `set_teacher_status(id, approved|rejected)` (admins only), `is_admin()`.
+
+**Status:** `profiles` and `teacher_invites` exist (stage 2, `20261017100506_auth_profiles_invites.sql`). The other tables below arrive with stages 3–5.
 
 ### `classes`
 | Column | Type | Notes |
@@ -72,15 +84,24 @@ Joining is a `security definer` function `join_class(code)` so students never ne
 | Column | Type | Notes |
 |---|---|---|
 | `id` | uuid PK | |
-| `class_id` | uuid → classes (cascade) | nullable while a draft has no class yet |
+| — | | Classes are linked through `course_assignments` (decision #28) |
 | `teacher_id` | uuid → profiles | |
 | `title` | text | |
 | `content_locale` | text | language the course is written in |
 | `level` | course_level | |
 | `status` | course_status | |
-| `due_date` | date | nullable |
-| `source_path` | text | Storage path; cleared when source is deleted |
+| `source_name` | text | original filename only; the file itself is deleted after generation (#25) |
 | `created_at` / `assigned_at` / `updated_at` | timestamptz | |
+
+### `course_assignments`
+One course in many classes (decision #28).
+
+| Column | Type | Notes |
+|---|---|---|
+| `course_id` | uuid → courses (cascade) | PK part |
+| `class_id` | uuid → classes (cascade) | PK part |
+| `due_date` | date | nullable; per class |
+| `assigned_at` | timestamptz | |
 
 ### `modules`
 | Column | Type | Notes |
@@ -92,12 +113,18 @@ Joining is a `security definer` function `join_class(code)` so students never ne
 | `body` | text | |
 | `key_points` | text[] | |
 | `flashcards` | jsonb | `[{ "q": "", "a": "" }]` |
-| `quiz` | jsonb | `{ "question": "", "options": ["",…], "answer_index": 0 }` — nullable |
+| `quiz` | jsonb | `{ "question": "", "options": ["",…] }` — nullable; no answer here |
 | `visual_svg` | text | sanitised; nullable |
 | `visual_caption` | text | |
 | `visual_alt` | text | required when `visual_svg` is set |
 
-> **Quiz answers and RLS:** students can read `modules`, which includes `answer_index`. Acceptable for v1 (low-stakes checks). If it matters later, move answers to a teacher-only table and grade via a function.
+### `quiz_answers` (teacher-only)
+| Column | Type | Notes |
+|---|---|---|
+| `module_id` | uuid PK → modules (cascade) | |
+| `answer_index` | int | |
+
+Students never read this table. `answer_quiz(module_id, chosen_index)` (security definer) records the attempt and returns whether it was right plus the correct index (decision #26).
 
 ### `module_progress`
 | Column | Type | Notes |
@@ -161,11 +188,13 @@ Helper functions (`security definer`, stable): `is_admin()`, `is_approved_teache
 
 | Table | Select | Insert / Update / Delete |
 |---|---|---|
-| `profiles` | Self; teachers see students in their classes; admins see all | Self updates name, locale, theme only; admin updates role/status |
-| `teacher_invites` | Admin | Admin |
+| `profiles` | Self; admins see all (stage 3 adds: teachers see students in their classes) | Self updates `full_name`, `ui_locale`, `theme` only (column grants); role/status only via functions |
+| `teacher_invites` | Admin | Via functions only |
 | `classes` | Teacher who owns it; students who are members | Owning approved teacher |
 | `class_members` | Teacher of the class; the student themself | Insert via `join_class()` only; teacher or student can delete |
-| `courses` | Owning teacher; class members when `status = assigned` | Owning approved teacher |
+| `courses` | Owning teacher; members of any class it's assigned to | Owning approved teacher |
+| `course_assignments` | Owning teacher; class members | Owning teacher of both the course and the class |
+| `quiz_answers` | Owning teacher only | Owning teacher; job (service role) |
 | `modules` | Same as parent course | Owning teacher; job (service role) |
 | `module_progress` | The student; the class's teacher | The student, only for courses they can see |
 | `quiz_attempts` | The student; the class's teacher | The student, insert only |
@@ -173,8 +202,8 @@ Helper functions (`security definer`, stable): `is_admin()`, `is_approved_teache
 | `generation_jobs` | Owning teacher | Service role only |
 | `ai_usage` | Self (own totals) | Service role only |
 
-Every policy gets a test in `supabase/tests/`.
+Every policy gets a test. Database tests live in `tests/db/` and run with `pnpm test:db` against real Postgres (see `docs/setup-supabase.md` → Tests).
 
 ## Storage
-- Bucket `sources` (private). Path `teacher_id/course_id/filename`. Teacher can upload/read own folder; jobs read with service role. Deleted after successful generation unless "keep source" is on.
-- Bucket `certificates` — not needed; certificates render on demand.
+- Bucket `sources` (private). Path `teacher_id/course_id/filename`. Teacher can upload/read own folder; jobs read with service role. Always deleted after generation; only `courses.source_name` remains.
+- Certificates: PDFs generated on demand by a route handler; not stored.

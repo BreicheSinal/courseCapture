@@ -1,0 +1,10 @@
+/*
+ * Pieces drawn on the design canvas that aren't in the design system yet.
+ * Built from system tokens; propose them back to the system, then delete here.
+ */
+
+/* T7 sign-in and X6 splash: the wordmark at large-title size. */
+.cc-wordmark--lg {
+  font: var(--text-large-title);
+  letter-spacing: -0.02em;
+}
