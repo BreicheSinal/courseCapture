@@ -48,6 +48,11 @@
 | 43 | Deleting a class keeps students' progress on its courses | Progress belongs to the student and the course (#28); the course may be in other classes |
 | 44 | Joining a class is limited to 10 wrong codes per student per hour | 5-character codes can otherwise be guessed |
 | 45 | Teachers see students' name and email only (through the roster function), never the whole profile | Least data; the screens need nothing else |
+| 46 | Certificates are made in the browser (jsPDF + Noto Sans / Noto Sans Arabic in `public/fonts`), not stored | Nothing to keep or secure on the server; Arabic and Latin names both render. Each fact gets its own line because PDF text can't mix directions well |
+| 47 | The reader shows the module's explanation (body) above the key points | PRD S3 lists it; the canvas only showed key points |
+| 48 | "Complete & next" on the quick check needs an answer first | The quick check is the module's last step; skipping it would leave the score empty |
+| 49 | AI-drawn SVGs are cleaned with an allowlist (`sanitize-html`) when stored and again when shown | CLAUDE.md rule 6; defence in depth |
+| 50 | "Ask about this module" (S5) is left off the reader until stage 6 | No button that does nothing |
 
 ## Open questions
 1. **Due date per class** when one course is assigned to several classes — assumed yes.

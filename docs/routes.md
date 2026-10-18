@@ -39,14 +39,14 @@ All routes are prefixed with the interface locale, e.g. `/en/teacher/classes`, `
 ## Student
 | Canvas | Route |
 |---|---|
-| S1 Join | `/student/join` |
+| S1 Join | `/student/join` (and where `/student` sends a student with no classes) |
 | S2 Home | `/student` |
 | S7 / Desktop S7 Classes | `/student/classes` and `/student/classes/[classId]` |
 | S8 Course overview | `/student/courses/[courseId]` |
 | S3 Module reader | `/student/courses/[courseId]/modules/[position]` |
 | S4 Quick check | `/student/courses/[courseId]/modules/[position]/check` |
-| S5 Ask Claude | Sheet over S3 (`?ask=1`), not a separate page |
-| S6 Finish | `/student/courses/[courseId]/finish` |
+| S5 Ask Claude | Sheet over S3 (`?ask=1`), not a separate page — stage 6 |
+| S6 Finish | `/student/courses/[courseId]/finish` (only once every module is done; otherwise back to S8) |
 | Desktop S8 Account | `/student/account` |
 
 ## Admin

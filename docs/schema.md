@@ -64,8 +64,9 @@ Profile functions: `handle_new_user()` (trigger on `auth.users`), `complete_onbo
 
 **Status:**
 - Stage 2 (`20261017100506_auth_profiles_invites.sql`, `20261017101500_auth_hardening.sql`): `profiles`, `teacher_invites`.
-- Stage 3 (`20261017183000_classes_courses.sql`): `classes`, `class_members`, `announcements`, `announcement_reads`, and the course tables the class pages read (`courses`, `course_assignments`, `modules`, `module_progress`, `quiz_attempts`). Course content and progress are **read-only to clients** until stages 4–5 add their write paths. Profiles gain `default_course_locale` and `default_course_level` (T14).
-- Stage 5: `quiz_answers`, `generation_jobs`, `ai_usage`, storage.
+- Stage 3 (`20261017191107_classes_courses.sql`): `classes`, `class_members`, `announcements`, `announcement_reads`, and the course tables the class pages read (`courses`, `course_assignments`, `modules`, `module_progress`, `quiz_attempts`). Course content and progress are **read-only to clients** until stages 4–5 add their write paths. Profiles gain `default_course_locale` and `default_course_level` (T14).
+- Stage 4 (`20261018080000_student_learning.sql`): `quiz_answers`, and the student write paths and reads below. Students write progress and quiz attempts only through functions.
+- Stage 5: `generation_jobs`, `ai_usage`, storage, and the teacher's write paths for courses and modules.
 
 ### `classes`
 | Column | Type | Notes |
@@ -135,9 +136,18 @@ One course in many classes (decision #28).
 | Column | Type | Notes |
 |---|---|---|
 | `module_id` | uuid PK → modules (cascade) | |
-| `answer_index` | int | |
+| `answer_index` | int | 0-based index into `modules.quiz.options` |
+| `explanation` | text | ≤ 600; shown after the student answers |
 
-Students never read this table. `answer_quiz(module_id, chosen_index)` (security definer) records the attempt and returns whether it was right plus the correct index (decision #26).
+`modules.quiz` is checked by the `modules_quiz_shape` constraint: only `question` (string) and `options` (2–10 items), so an answer can't be stored next to the question by mistake. Clients don't write `quiz_answers` yet; the generation job (stage 5) writes it with the service role.
+
+Students never read this table. Student functions (stage 4, `security definer`, approved student who can see the course — `studies_course()`):
+- `answer_quiz(module, choice)` — records the attempt (the first per module is `is_first`, under a per-student lock so two quick taps can't both count) and only then returns whether it was right, the right index and the explanation (decision #26).
+- `my_quiz_result(module)` — the student's own first answer, to show it again on a revisit.
+- `complete_module(module)` — records progress once; returns the course, done and total. Refuses (`quiz_first`) a module whose quick check hasn't been answered.
+- `student_classes()`, `student_courses()`, `student_course_modules(course)`, `student_announcements(class?, limit)` — the student's own classes (with the teacher's name only), assigned courses with progress, module states and announcements with "seen".
+- `mark_announcements_seen(ids)` — marks up to 50 announcements seen; ids outside the caller's classes are ignored.
+- Students of a teacher who is no longer approved lose access to that teacher's courses (`studies_course()` checks both).
 
 ### `module_progress`
 | Column | Type | Notes |
@@ -225,13 +235,13 @@ Other rules in the stage 3 migration:
 | `classes` | Teacher who owns it; students who are members | Created via `create_class()`; owning approved teacher renames (`name`, `section` only); owner deletes (members, announcements and assignments cascade; courses stay) |
 | `class_members` | Teacher of the class; the student themself | Insert via `join_class()` only; teacher removes, student leaves |
 | `courses` | Owning teacher; members of any class it's assigned to | Owning approved teacher |
-| `course_assignments` | Owning teacher; class members | Owning teacher of both the course and the class |
-| `quiz_answers` | Owning teacher only | Owning teacher; job (service role) |
+| `course_assignments` | Owning teacher; class members, only for courses that are assigned (not drafts) | Owning teacher of both the course and the class |
+| `quiz_answers` | Owning teacher only | Job (service role), stage 5 |
 | `modules` | Same as parent course | Owning teacher; job (service role) |
-| `module_progress` | The student; the course's (approved) teacher | The student, only for courses they can see (stage 4) |
+| `module_progress` | The student; the course's (approved) teacher | Via `complete_module()` only |
 | `quiz_attempts` | The student; the course's (approved) teacher | Via `answer_quiz()` (stage 4) |
 | `announcements` | Teacher of the class; class members | Approved teacher of the class posts (`author_id` = caller); teacher deletes; no edits |
-| `announcement_reads` | The student; the class's teacher | The student, for announcements in their classes |
+| `announcement_reads` | The student; the class's teacher | Via `mark_announcements_seen()` (or a direct insert of their own row), for announcements in their classes |
 | `generation_jobs` | Owning teacher | Service role only |
 | `ai_usage` | Self (own totals) | Service role only |
 
@@ -239,4 +249,4 @@ Every policy gets a test. Database tests live in `tests/db/` and run with `pnpm 
 
 ## Storage
 - Bucket `sources` (private). Path `teacher_id/course_id/filename`. Teacher can upload/read own folder; jobs read with service role. Always deleted after generation; only `courses.source_name` remains.
-- Certificates: PDFs generated on demand by a route handler; not stored.
+- Certificates: PDFs made in the student's browser (jsPDF with the Noto fonts in `public/fonts`); nothing is generated on the server or stored.
