@@ -65,7 +65,7 @@ Profile functions: `handle_new_user()` (trigger on `auth.users`), `complete_onbo
 **Status:**
 - Stage 2 (`20261017100506_auth_profiles_invites.sql`, `20261017101500_auth_hardening.sql`): `profiles`, `teacher_invites`.
 - Stage 3 (`20261017191107_classes_courses.sql`): `classes`, `class_members`, `announcements`, `announcement_reads`, and the course tables the class pages read (`courses`, `course_assignments`, `modules`, `module_progress`, `quiz_attempts`). Course content and progress are **read-only to clients** until stages 4–5 add their write paths. Profiles gain `default_course_locale` and `default_course_level` (T14).
-- Stage 4 (`20261018080000_student_learning.sql`): `quiz_answers`, and the student write paths and reads below. Students write progress and quiz attempts only through functions.
+- Stage 4 (`20261018085156_student_learning.sql`): `quiz_answers`, and the student write paths and reads below. Students write progress and quiz attempts only through functions.
 - Stage 5: `generation_jobs`, `ai_usage`, storage, and the teacher's write paths for courses and modules.
 
 ### `classes`
