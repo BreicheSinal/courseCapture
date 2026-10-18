@@ -66,7 +66,7 @@ Profile functions: `handle_new_user()` (trigger on `auth.users`), `complete_onbo
 - Stage 2 (`20261017100506_auth_profiles_invites.sql`, `20261017101500_auth_hardening.sql`): `profiles`, `teacher_invites`.
 - Stage 3 (`20261017191107_classes_courses.sql`): `classes`, `class_members`, `announcements`, `announcement_reads`, and the course tables the class pages read (`courses`, `course_assignments`, `modules`, `module_progress`, `quiz_attempts`). Course content and progress are **read-only to clients** until stages 4–5 add their write paths. Profiles gain `default_course_locale` and `default_course_level` (T14).
 - Stage 4 (`20261018085156_student_learning.sql`): `quiz_answers`, and the student write paths and reads below. Students write progress and quiz attempts only through functions.
-- Stage 5: `generation_jobs`, `ai_usage`, storage, and the teacher's write paths for courses and modules.
+- Stage 5 (`20261018120000_course_generation.sql`): `generation_jobs`, `ai_usage`, the private `sources` bucket, module review state (`review_note`, `checked_at`), and the teacher's write paths for courses, modules and assignments. Generated content is written by server code with the service role.
 
 ### `classes`
 | Column | Type | Notes |
@@ -131,6 +131,10 @@ One course in many classes (decision #28).
 | `visual_svg` | text | sanitised; nullable |
 | `visual_caption` | text | |
 | `visual_alt` | text | required when `visual_svg` is set |
+| `review_note` | text | ≤ 200; why the module should be checked (T3 "Check"); null when nothing to flag |
+| `checked_at` | timestamptz | when the teacher marked it checked (T4); null = not checked |
+
+`flashcards` holds at most 8 cards (`modules_flashcards_shape`). `(course_id, position)` is unique and deferrable, so `move_module()` can swap two positions in one statement.
 
 ### `quiz_answers` (teacher-only)
 | Column | Type | Notes |
@@ -139,7 +143,7 @@ One course in many classes (decision #28).
 | `answer_index` | int | 0-based index into `modules.quiz.options` |
 | `explanation` | text | ≤ 600; shown after the student answers |
 
-`modules.quiz` is checked by the `modules_quiz_shape` constraint: only `question` (string) and `options` (2–10 items), so an answer can't be stored next to the question by mistake. Clients don't write `quiz_answers` yet; the generation job (stage 5) writes it with the service role.
+`modules.quiz` is checked by the `modules_quiz_shape` constraint: only `question` (string) and `options` (2–10 items), so an answer can't be stored next to the question by mistake. The generation job writes `quiz_answers` with the service role; teachers change it only through `save_module()`.
 
 Students never read this table. Student functions (stage 4, `security definer`, approved student who can see the course — `studies_course()`):
 - `answer_quiz(module, choice)` — records the attempt (the first per module is `is_first`, under a per-student lock so two quick taps can't both count) and only then returns whether it was right, the right index and the explanation (decision #26).
@@ -188,27 +192,47 @@ Feeds "seen by N" on T13. Students insert their own row (stage 4).
 | `created_at` | timestamptz | |
 
 ### `generation_jobs`
+One row per "Generate course" (T1 → T2). Server code writes it with the service role; the course's teacher reads it.
+
 | Column | Type | Notes |
 |---|---|---|
 | `id` | uuid PK | |
-| `course_id` | uuid → courses (cascade) | |
-| `step` | job_step | drives T2 |
-| `chunks_total` / `chunks_done` | int | |
-| `error` | text | |
-| `created_at` / `finished_at` | timestamptz | |
+| `course_id` | uuid → courses (cascade) | one running job per course (partial unique index on unfinished steps) |
+| `teacher_id` | uuid → profiles (cascade) | |
+| `step` | job_step | `queued`, `reading`, `writing`, `drawing`, `done`, `failed` — drives T2 |
+| `source_kind` | text | `pdf`, `pptx`, `text` (TXT/MD file) or `paste` |
+| `source_path` | text | object in the `sources` bucket; null for pasted text, and once the file is deleted |
+| `notes` | text | ≤ 500; the teacher's "Notes for Claude" |
+| `pages_total` / `pages_scanned` | int | for "12 pages, 3 scanned" on T2 |
+| `chunks_total` / `chunks_done` | int | at most 4 chunks |
+| `modules_total` / `modules_drawn` | int | diagram progress |
+| `fallback_chunks` | int | chunks the basic splitter wrote (T3 shows a note) |
+| `error` | text | a key T2 translates (`teacher.generating.errors.*`) |
+| `created_at` / `started_at` / `finished_at` | timestamptz | |
 
 ### `ai_usage` (cost limits)
 | Column | Type | Notes |
 |---|---|---|
 | `id` | bigint identity PK | |
-| `user_id` | uuid → profiles | |
-| `kind` | text | `generate`, `visual`, `transcribe`, `tutor` |
-| `provider` | text | e.g. `anthropic`, `openai`, `google` |
-| `model` | text | model id used |
-| `input_tokens` / `output_tokens` | int | |
+| `user_id` | uuid → profiles (cascade) | |
+| `kind` | text | `generate`, `redraw` or `tutor` (reading a scan is part of its generation) |
+| `provider` / `model` | text | what was used |
+| `input_tokens` / `output_tokens` | int | added up over the action's model calls |
 | `created_at` | timestamptz | |
 
-Written only by server code (service role). Used to enforce daily limits.
+Written only by server code (service role):
+- `claim_ai_use(user, kind, limit, provider, model)` — counts today's (UTC) rows of that kind under a per-person lock and raises `daily_limit` at the limit, else inserts the row. Called before every counted action.
+- `add_ai_tokens(use, input, output)` — adds a model call's tokens to the claimed row.
+- `my_ai_usage_today()` — the caller's counts per kind, for "n generations left today".
+
+## Teacher write paths (stage 5)
+Teachers create, rename and delete their own courses directly: RLS plus column grants (`insert (teacher_id, title, content_locale, level, source_name)`, `update (title, content_locale, level)`). Titles are trimmed by a trigger. Everything else goes through security-definer functions that first check the caller owns the course (`owned_module_course()`):
+- `save_module(…)` — T4 "Save": heading, body, key points, flashcards, quiz with its answer and explanation, caption and alt text, in one transaction.
+- `set_module_checked(module, checked)` — T4 "Mark as checked" and undo.
+- `clear_module_visual(module)` — T4 "Remove diagram". New diagrams come from the server (redraw), never the browser.
+- `move_module(module, ±1)` — T3 "Move up / down".
+- `delete_module(module)` — closes the gap in positions; a course keeps at least one module.
+- `assign_course(course, class, due)` / `unassign_course(course, class)` — T5: one row per class with its own due date (#28). Assigning needs a finished job and at least one module and makes the course `assigned`; with no classes left it goes back to `draft`.
 
 ## Read functions (instead of views)
 Security definer, caller checked first (approved teacher of the class), set-based, and returning only what the screens show:
@@ -234,10 +258,10 @@ Other rules in the stage 3 migration:
 | `teacher_invites` | Admin | Via functions only |
 | `classes` | Teacher who owns it; students who are members | Created via `create_class()`; owning approved teacher renames (`name`, `section` only); owner deletes (members, announcements and assignments cascade; courses stay) |
 | `class_members` | Teacher of the class; the student themself | Insert via `join_class()` only; teacher removes, student leaves |
-| `courses` | Owning teacher; members of any class it's assigned to | Owning approved teacher |
-| `course_assignments` | Owning teacher; class members, only for courses that are assigned (not drafts) | Owning teacher of both the course and the class |
-| `quiz_answers` | Owning teacher only | Job (service role), stage 5 |
-| `modules` | Same as parent course | Owning teacher; job (service role) |
+| `courses` | Owning teacher; members of any class it's assigned to | Owning approved teacher creates drafts, renames (column grants) and deletes; status changes via `assign_course()` / `unassign_course()` |
+| `course_assignments` | Owning teacher; class members, only for courses that are assigned (not drafts) | Via `assign_course()` / `unassign_course()` (owning teacher of both the course and the class) |
+| `quiz_answers` | Owning teacher only | Job (service role); teacher via `save_module()` |
+| `modules` | Same as parent course | Job (service role); teacher via the module functions above |
 | `module_progress` | The student; the course's (approved) teacher | Via `complete_module()` only |
 | `quiz_attempts` | The student; the course's (approved) teacher | Via `answer_quiz()` (stage 4) |
 | `announcements` | Teacher of the class; class members | Approved teacher of the class posts (`author_id` = caller); teacher deletes; no edits |
@@ -248,5 +272,5 @@ Other rules in the stage 3 migration:
 Every policy gets a test. Database tests live in `tests/db/` and run with `pnpm test:db` against real Postgres (see `docs/setup-supabase.md` → Tests).
 
 ## Storage
-- Bucket `sources` (private). Path `teacher_id/course_id/filename`. Teacher can upload/read own folder; jobs read with service role. Always deleted after generation; only `courses.source_name` remains.
+- Bucket `sources` (private, 20 MB, PDF / PPTX / text types). Path `teacher_id/upload_id/filename`. There are **no client storage policies**: the server hands the browser a signed upload URL for one path, and only the service role reads or deletes. The file is deleted when generation finishes; it stays after a failure so "Try again" works, and an upload that never became a job is removed after a day (swept on the teacher's next upload). Only `courses.source_name` remains (decision #25).
 - Certificates: PDFs made in the student's browser (jsPDF with the Noto fonts in `public/fonts`); nothing is generated on the server or stored.

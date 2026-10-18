@@ -44,7 +44,7 @@
 | 39 | Deleting a class keeps its courses (only the assignments go) | A course can be in several classes (#28); the canvas copy said courses were removed |
 | 40 | Course levels are beginner / intermediate / advanced (PRD), not the canvas's school stages | Matches the PRD and T1; the level describes the course, not the school |
 | 41 | Dates are formatted in UTC until profiles store a time zone | Server and client render the same text; due dates are calendar dates |
-| 42 | "New course" opens a placeholder until stage 5 | Every button on the canvas leads somewhere honest |
+| 42 | "New course" opens a placeholder until stage 5 (done: replaced by T1 in stage 5) | Every button on the canvas leads somewhere honest |
 | 43 | Deleting a class keeps students' progress on its courses | Progress belongs to the student and the course (#28); the course may be in other classes |
 | 44 | Joining a class is limited to 10 wrong codes per student per hour | 5-character codes can otherwise be guessed |
 | 45 | Teachers see students' name and email only (through the roster function), never the whole profile | Least data; the screens need nothing else |
@@ -53,7 +53,19 @@
 | 48 | "Complete & next" on the quick check needs an answer first | The quick check is the module's last step; skipping it would leave the score empty |
 | 49 | AI-drawn SVGs are cleaned with an allowlist (`sanitize-html`) when stored and again when shown | CLAUDE.md rule 6; defence in depth |
 | 50 | "Ask about this module" (S5) is left off the reader until stage 6 | No button that does nothing |
+| 51 | Without Inngest, the generation job runs right after the response (`after()`); with it, in Inngest steps | Previews and small sites work with no extra service; production gets per-step retries |
+| 52 | The uploaded file is deleted when generation finishes, and kept after a failure until the teacher retries or the day's sweep | "Try again" shouldn't mean uploading again; nothing is stored longer than needed (#25) |
+| 53 | Browsers upload straight to Storage through a signed URL for one path; there are no client storage policies | Files never pass through the app server (size limits), and no teacher can list or read any file, even their own |
+| 54 | A generation counts toward the daily limit when it starts, including basic-splitter results; retries and diagrams drawn during it don't | Predictable for teachers ("n left today") and can't be gamed by failing on purpose |
+| 55 | No API key → the basic splitter writes the course (no flashcards, quiz or diagrams) and T1 says so; scans need a model | The app stays usable before AI is set up (FR-13) |
+| 56 | Assigning to one class returns to that class's page; to several, back to T3 with "Assigned to N classes" | The teacher lands where the course now shows up |
+| 57 | The course's language defaults to the teacher's "default course language" (T14), not the interface language | A teacher may use the app in English and teach in Arabic, or the reverse |
+| 58 | Teachers can edit a course after it's assigned; edits keep students' progress on unchanged modules, deleting a module removes its progress | Answers open question 2; fixing a mistake shouldn't mean starting over |
+| 59 | HTML export is for the course's teacher only and includes the quiz answers (in a "Show the answer" fold), with no scripts | It's a hand-out the teacher shares as they choose; a static file stays safe to open anywhere |
+| 60 | An `AI_PROVIDER=fake` adapter writes canned content; it can't run in production | Fast, free, repeatable tests of the whole flow |
+| 61 | End-to-end tests run against a small Supabase stand-in (`tests/e2e/stack/`) on real Postgres with the real migrations | Docker isn't available everywhere; RLS still decides every read and write |
+| 62 | Data-driven page titles stream with the page under Cache Components (as in stages 3–4) | `next build` accepts it (partial prerender); `next dev` prints an "instant navigation" hint for these routes, which isn't an error |
 
 ## Open questions
 1. **Due date per class** when one course is assigned to several classes — assumed yes.
-2. **Editing a course after it's assigned** — allowed? Assumed yes; changed modules keep students' progress on the unchanged ones.
+2. ~~**Editing a course after it's assigned**~~ — decided: yes (#58).
