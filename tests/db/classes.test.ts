@@ -231,8 +231,7 @@ describe("courses and progress", () => {
     expect(await count(other, "modules")).toBe(0);
   });
 
-  it("clients can't write courses or modules yet", async () => {
-    expect(await errorOf(db.as(teacher, (c) => c.query("insert into public.courses (teacher_id, title) values ($1, 'X')", [teacher])))).toMatch(/permission denied/);
+  it("clients can't write modules directly (stage 5 edits go through functions, see generation.test.ts)", async () => {
     expect(await errorOf(db.as(teacher, (c) => c.query("update public.modules set heading = 'X'")))).toMatch(/permission denied/);
   });
 
