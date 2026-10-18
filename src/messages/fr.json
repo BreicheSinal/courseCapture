@@ -172,12 +172,6 @@
       "appearance": "Apparence",
       "signOut": "Se déconnecter"
     },
-    "home": {
-      "teacherTitle": "Bienvenue, {name}",
-      "teacherText": "Vos classes et vos cours arrivent dans la prochaine mise à jour.",
-      "studentTitle": "Bienvenue, {name}",
-      "studentText": "Rejoindre une classe arrive dans une prochaine mise à jour."
-    },
     "errors": {
       "invalidEmail": "Saisissez une adresse comme nom@ecole.fr.",
       "rateLimited": "Patientez une minute avant de demander un autre lien.",
@@ -483,6 +477,189 @@
       "greeting": "Bonjour {name},",
       "body": "L’administrateur de votre établissement a approuvé votre compte enseignant. Vous pouvez maintenant créer des classes et transformer vos documents et diapositives en cours.",
       "cta": "Ouvrir CourseCapture"
+    }
+  },
+  "student": {
+    "status": {
+      "complete": "Terminé",
+      "overdue": "En retard",
+      "notStarted": "Pas commencé"
+    },
+    "courses": {
+      "wasDue": "à rendre le {date}",
+      "due": "à rendre le {date}",
+      "progressLabel": "{title} : modules terminés",
+      "doneOf": "{done}/{total}"
+    },
+    "home": {
+      "metaTitle": "Accueil",
+      "title": "Accueil",
+      "emptyTitle": "Rien d’attribué pour l’instant",
+      "emptyText": "Votre enseignant n’a pas encore attribué de cours. Il apparaîtra ici.",
+      "join": "Rejoindre une autre classe",
+      "continue": "Continuer",
+      "resume": "Reprendre le module {n}",
+      "start": "Commencer le cours",
+      "assigned": "Attribués",
+      "finished": "Terminés",
+      "announcements": "Annonces",
+      "latestAnnouncement": "Dernière annonce",
+      "noAnnouncements": "Aucune annonce pour l’instant."
+    },
+    "classes": {
+      "metaTitle": "Classes",
+      "title": "Classes",
+      "join": "Rejoindre une classe",
+      "emptyTitle": "Aucune classe pour l’instant",
+      "emptyText": "Demandez un code à votre enseignant.",
+      "courses": "{count, plural, =0 {aucun cours pour l’instant} one {# cours} other {# cours}}"
+    },
+    "classPage": {
+      "back": "Retour aux classes",
+      "joined": "Vous avez rejoint <n>{name}</n>.",
+      "courses": "Cours",
+      "noCoursesTitle": "Aucun cours pour l’instant",
+      "noCoursesText": "Quand votre enseignant attribue un cours, il apparaît ici et sur l’accueil.",
+      "announcements": "Annonces · les plus récentes d’abord",
+      "noAnnouncements": "Aucune annonce pour l’instant."
+    },
+    "overview": {
+      "modules": "{count, plural, =0 {aucun module} one {# module} other {# modules}}",
+      "due": "à rendre le {date}",
+      "wasDue": "à rendre le {date}",
+      "back": "Retour à {name}",
+      "yourProgress": "Votre progression",
+      "doneOf": "{done}/{total} terminés",
+      "quiz": "quiz {pct}",
+      "progressLabel": "Progression du cours",
+      "allDone": "Tous les modules sont terminés. Votre certificat est prêt.",
+      "finishToGet": "{count, plural, one {Terminez le module pour obtenir votre certificat.} other {Terminez les # modules pour obtenir votre certificat.}}",
+      "seeCertificate": "Voir votre certificat",
+      "resume": "Reprendre le module {n}",
+      "start": "Commencer le module 1",
+      "noModules": "Ce cours n’a pas encore de modules.",
+      "modulesLabel": "Modules",
+      "complete": "Terminé",
+      "completeQuizRight": "Terminé · vérification réussie",
+      "completeQuizMissed": "Terminé · vérification manquée",
+      "youreHere": "Vous êtes ici",
+      "notStarted": "Pas commencé"
+    },
+    "reader": {
+      "modulesComplete": "Modules terminés",
+      "modulesNav": "Modules",
+      "done": "terminé",
+      "back": "Retour à {title}",
+      "position": "Module {n} sur {total}",
+      "allModules": "Tous les modules",
+      "keyPoints": "Points clés",
+      "diagramBy": "Schéma dessiné par Claude, vérifié par votre enseignant",
+      "toQuiz": "Suivant : vérification",
+      "saved": "Progression enregistrée",
+      "flashcards": "Cartes mémoire",
+      "cardOf": "{n}/{total}",
+      "prevCard": "Carte précédente",
+      "nextCard": "Carte suivante",
+      "answer": "Réponse",
+      "question": "Question",
+      "tapToReveal": "Touchez pour voir la réponse",
+      "saving": "Enregistrement…",
+      "completeFinish": "Terminer le module",
+      "completeNext": "Terminer et continuer",
+      "saveFailed": "Impossible d’enregistrer votre progression. Vérifiez votre connexion et réessayez.",
+      "quizFirst": "Répondez d’abord à la vérification, puis terminez le module."
+    },
+    "quiz": {
+      "metaTitle": "Vérification",
+      "back": "Retour à {heading}",
+      "position": "Module {n} sur {total}",
+      "eyebrow": "Vérification",
+      "correct": "Votre réponse · juste",
+      "correctAnswer": "Bonne réponse",
+      "yourAnswer": "Votre réponse · pas tout à fait",
+      "rightTitle": "Juste.",
+      "wrongTitle": "Pas tout à fait.",
+      "countedRight": "Votre première réponse était juste. Elle compte pour votre score.",
+      "countedWrong": "Votre première réponse compte pour votre score. Vous pouvez essayer les autres.",
+      "failed": "Impossible de vérifier votre réponse. Vérifiez votre connexion et réessayez.",
+      "pickFirst": "Choisissez d’abord une réponse."
+    },
+    "finish": {
+      "metaTitle": "Cours terminé",
+      "eyebrow": "Cours terminé",
+      "quizScore": "Vérifications",
+      "correctOf": "{right} sur {total} justes du premier coup",
+      "modules": "Modules",
+      "finishedOn": "Terminé le {date}",
+      "certificate": "Certificat de réussite",
+      "certifies": "Ce certificat atteste que",
+      "completed": "a terminé <b>{title}</b>",
+      "completedPlain": "a terminé {title}",
+      "fileName": "Certificat - {title}",
+      "shareText": "J’ai terminé {title} sur CourseCapture.",
+      "home": "Retour à l’accueil",
+      "saved": "Certificat enregistré",
+      "saveFailed": "Impossible de créer le PDF. Réessayez.",
+      "saving": "Création du PDF…",
+      "save": "Enregistrer le certificat (PDF)",
+      "share": "Partager le certificat",
+      "noQuiz": "Aucune vérification",
+      "modulesOf": "{done, number}/{total, number}"
+    },
+    "join": {
+      "metaTitle": "Rejoindre une classe",
+      "hi": "Bonjour {name}",
+      "title": "Rejoindre une classe",
+      "text": "Saisissez le code à cinq caractères donné par votre enseignant.",
+      "code": "Code de la classe",
+      "hint": "Lettres et chiffres, par exemple K7Q2M.",
+      "joining": "Connexion…",
+      "join": "Rejoindre",
+      "privacy": "Votre enseignant voit votre nom et votre progression. Rien d’autre n’est partagé.",
+      "errors": {
+        "invalidCode": {
+          "title": "Ce n’est pas un code de classe.",
+          "text": "Les codes ont cinq lettres et chiffres. Vérifiez-le avec votre enseignant."
+        },
+        "notFound": {
+          "title": "Aucune classe avec ce code.",
+          "text": "Vérifiez chaque lettre avec votre enseignant et réessayez."
+        },
+        "rateLimited": {
+          "title": "Trop d’essais.",
+          "text": "Attendez une heure ou demandez à votre enseignant de vérifier le code."
+        },
+        "generic": {
+          "title": "Impossible de rejoindre.",
+          "text": "Vérifiez votre connexion et réessayez."
+        }
+      }
+    },
+    "account": {
+      "metaTitle": "Compte",
+      "title": "Compte",
+      "profile": "Profil",
+      "name": "Votre nom",
+      "nameRequired": "Saisissez votre nom.",
+      "saveFailed": "Enregistrement impossible. Vérifiez votre connexion et réessayez.",
+      "saving": "Enregistrement…",
+      "saveName": "Enregistrer le nom",
+      "cancel": "Annuler",
+      "roleStudent": "Élève",
+      "editNameLabel": "Modifier votre nom",
+      "nameSaved": "Nom enregistré.",
+      "appearance": "Apparence et langue",
+      "systemHelp": "Système suit le réglage de votre appareil.",
+      "classes": "Vos classes",
+      "join": "Rejoindre une classe",
+      "noClasses": "Vous n’avez encore rejoint aucune classe.",
+      "signOut": "Se déconnecter"
+    },
+    "errors": {
+      "loadTitle": "Impossible de charger cette page.",
+      "loadText": "Vérifiez votre connexion et réessayez. Rien n’a été perdu.",
+      "tryAgain": "Réessayer",
+      "backHome": "Retour à l’accueil"
     }
   }
 }

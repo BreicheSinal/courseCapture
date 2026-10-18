@@ -172,12 +172,6 @@
       "appearance": "Apariencia",
       "signOut": "Cerrar sesión"
     },
-    "home": {
-      "teacherTitle": "Te damos la bienvenida, {name}",
-      "teacherText": "Tus clases y cursos llegan en la próxima actualización.",
-      "studentTitle": "Te damos la bienvenida, {name}",
-      "studentText": "Unirse a clases llega en una próxima actualización."
-    },
     "errors": {
       "invalidEmail": "Introduce un correo como nombre@escuela.edu.",
       "rateLimited": "Espera un minuto antes de pedir otro enlace.",
@@ -483,6 +477,189 @@
       "greeting": "Hola, {name}:",
       "body": "El administrador de tu centro aprobó tu cuenta de docente. Ya puedes crear clases y convertir tus documentos y diapositivas en cursos.",
       "cta": "Abrir CourseCapture"
+    }
+  },
+  "student": {
+    "status": {
+      "complete": "Completado",
+      "overdue": "Con retraso",
+      "notStarted": "Sin empezar"
+    },
+    "courses": {
+      "wasDue": "la entrega era el {date}",
+      "due": "entrega el {date}",
+      "progressLabel": "{title}: módulos completados",
+      "doneOf": "{done}/{total}"
+    },
+    "home": {
+      "metaTitle": "Inicio",
+      "title": "Inicio",
+      "emptyTitle": "Aún no hay nada asignado",
+      "emptyText": "Tu docente aún no ha asignado un curso. Aparecerá aquí.",
+      "join": "Unirse a otra clase",
+      "continue": "Continuar",
+      "resume": "Seguir con el módulo {n}",
+      "start": "Empezar el curso",
+      "assigned": "Asignados",
+      "finished": "Terminados",
+      "announcements": "Avisos",
+      "latestAnnouncement": "Último aviso",
+      "noAnnouncements": "Aún no hay avisos."
+    },
+    "classes": {
+      "metaTitle": "Clases",
+      "title": "Clases",
+      "join": "Unirse a una clase",
+      "emptyTitle": "Aún no tienes clases",
+      "emptyText": "Pide un código a tu docente.",
+      "courses": "{count, plural, =0 {aún sin cursos} one {# curso} other {# cursos}}"
+    },
+    "classPage": {
+      "back": "Volver a Clases",
+      "joined": "Te uniste a <n>{name}</n>.",
+      "courses": "Cursos",
+      "noCoursesTitle": "Aún no hay cursos",
+      "noCoursesText": "Cuando tu docente asigne un curso, aparecerá aquí y en Inicio.",
+      "announcements": "Avisos · más recientes primero",
+      "noAnnouncements": "Aún no hay avisos."
+    },
+    "overview": {
+      "modules": "{count, plural, =0 {sin módulos} one {# módulo} other {# módulos}}",
+      "due": "entrega el {date}",
+      "wasDue": "la entrega era el {date}",
+      "back": "Volver a {name}",
+      "yourProgress": "Tu progreso",
+      "doneOf": "{done}/{total} completados",
+      "quiz": "prueba {pct}",
+      "progressLabel": "Progreso del curso",
+      "allDone": "Todos los módulos completados. Tu certificado está listo.",
+      "finishToGet": "{count, plural, one {Completa el módulo para obtener tu certificado.} other {Completa los # módulos para obtener tu certificado.}}",
+      "seeCertificate": "Ver tu certificado",
+      "resume": "Seguir con el módulo {n}",
+      "start": "Empezar el módulo 1",
+      "noModules": "Este curso aún no tiene módulos.",
+      "modulesLabel": "Módulos",
+      "complete": "Completado",
+      "completeQuizRight": "Completado · comprobación acertada",
+      "completeQuizMissed": "Completado · comprobación fallada",
+      "youreHere": "Estás aquí",
+      "notStarted": "Sin empezar"
+    },
+    "reader": {
+      "modulesComplete": "Módulos completados",
+      "modulesNav": "Módulos",
+      "done": "completado",
+      "back": "Volver a {title}",
+      "position": "Módulo {n} de {total}",
+      "allModules": "Todos los módulos",
+      "keyPoints": "Ideas clave",
+      "diagramBy": "Diagrama dibujado por Claude, revisado por tu docente",
+      "toQuiz": "Siguiente: comprobación",
+      "saved": "Progreso guardado",
+      "flashcards": "Tarjetas",
+      "cardOf": "{n}/{total}",
+      "prevCard": "Tarjeta anterior",
+      "nextCard": "Tarjeta siguiente",
+      "answer": "Respuesta",
+      "question": "Pregunta",
+      "tapToReveal": "Toca para ver la respuesta",
+      "saving": "Guardando…",
+      "completeFinish": "Completar módulo",
+      "completeNext": "Completar y seguir",
+      "saveFailed": "No se pudo guardar tu progreso. Revisa tu conexión e inténtalo de nuevo.",
+      "quizFirst": "Responde primero la comprobación y luego completa el módulo."
+    },
+    "quiz": {
+      "metaTitle": "Comprobación",
+      "back": "Volver a {heading}",
+      "position": "Módulo {n} de {total}",
+      "eyebrow": "Comprobación",
+      "correct": "Tu respuesta · correcta",
+      "correctAnswer": "Respuesta correcta",
+      "yourAnswer": "Tu respuesta · no exactamente",
+      "rightTitle": "Correcto.",
+      "wrongTitle": "No exactamente.",
+      "countedRight": "Tu primera respuesta fue correcta. Cuenta para tu puntuación.",
+      "countedWrong": "Tu primera respuesta cuenta para tu puntuación. Aún puedes probar las otras.",
+      "failed": "No se pudo comprobar tu respuesta. Revisa tu conexión e inténtalo de nuevo.",
+      "pickFirst": "Elige primero una respuesta."
+    },
+    "finish": {
+      "metaTitle": "Curso completado",
+      "eyebrow": "Curso completado",
+      "quizScore": "Comprobaciones",
+      "correctOf": "{right} de {total} acertadas a la primera",
+      "modules": "Módulos",
+      "finishedOn": "Terminado el {date}",
+      "certificate": "Certificado de finalización",
+      "certifies": "Se certifica que",
+      "completed": "completó <b>{title}</b>",
+      "completedPlain": "completó {title}",
+      "fileName": "Certificado - {title}",
+      "shareText": "Terminé {title} en CourseCapture.",
+      "home": "Volver a Inicio",
+      "saved": "Certificado guardado",
+      "saveFailed": "No se pudo crear el PDF. Inténtalo de nuevo.",
+      "saving": "Creando el PDF…",
+      "save": "Guardar certificado (PDF)",
+      "share": "Compartir certificado",
+      "noQuiz": "Sin comprobaciones",
+      "modulesOf": "{done, number}/{total, number}"
+    },
+    "join": {
+      "metaTitle": "Unirse a una clase",
+      "hi": "Hola, {name}",
+      "title": "Unirse a una clase",
+      "text": "Escribe el código de cinco caracteres que compartió tu docente.",
+      "code": "Código de la clase",
+      "hint": "Letras y números, por ejemplo K7Q2M.",
+      "joining": "Uniéndote…",
+      "join": "Unirse",
+      "privacy": "Tu docente ve tu nombre y tu progreso. No se comparte nada más.",
+      "errors": {
+        "invalidCode": {
+          "title": "Ese no es un código de clase.",
+          "text": "Los códigos tienen cinco letras y números. Compruébalo con tu docente."
+        },
+        "notFound": {
+          "title": "No hay ninguna clase con ese código.",
+          "text": "Revisa cada letra con tu docente e inténtalo de nuevo."
+        },
+        "rateLimited": {
+          "title": "Demasiados intentos.",
+          "text": "Espera una hora o pide a tu docente que revise el código."
+        },
+        "generic": {
+          "title": "No se pudo unir.",
+          "text": "Revisa tu conexión e inténtalo de nuevo."
+        }
+      }
+    },
+    "account": {
+      "metaTitle": "Cuenta",
+      "title": "Cuenta",
+      "profile": "Perfil",
+      "name": "Tu nombre",
+      "nameRequired": "Escribe tu nombre.",
+      "saveFailed": "No se pudo guardar. Revisa tu conexión e inténtalo de nuevo.",
+      "saving": "Guardando…",
+      "saveName": "Guardar nombre",
+      "cancel": "Cancelar",
+      "roleStudent": "Estudiante",
+      "editNameLabel": "Editar tu nombre",
+      "nameSaved": "Nombre guardado.",
+      "appearance": "Apariencia e idioma",
+      "systemHelp": "Sistema sigue el ajuste de tu dispositivo.",
+      "classes": "Tus clases",
+      "join": "Unirse a una clase",
+      "noClasses": "Aún no te has unido a ninguna clase.",
+      "signOut": "Cerrar sesión"
+    },
+    "errors": {
+      "loadTitle": "No se pudo cargar esta página.",
+      "loadText": "Revisa tu conexión e inténtalo de nuevo. No se perdió nada.",
+      "tryAgain": "Intentar de nuevo",
+      "backHome": "Volver a Inicio"
     }
   }
 }

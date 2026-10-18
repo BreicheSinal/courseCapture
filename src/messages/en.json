@@ -172,12 +172,6 @@
       "appearance": "Appearance",
       "signOut": "Sign out"
     },
-    "home": {
-      "teacherTitle": "Welcome, {name}",
-      "teacherText": "Your classes and courses arrive in the next update.",
-      "studentTitle": "Welcome, {name}",
-      "studentText": "Joining classes arrives in a later update."
-    },
     "errors": {
       "invalidEmail": "Enter an email address like name@school.edu.",
       "rateLimited": "Wait a minute before asking for another link.",
@@ -483,6 +477,189 @@
       "greeting": "Hi {name},",
       "body": "Your school admin approved your teacher account. You can now create classes and turn your papers and slides into courses.",
       "cta": "Open CourseCapture"
+    }
+  },
+  "student": {
+    "status": {
+      "complete": "Complete",
+      "overdue": "Overdue",
+      "notStarted": "Not started"
+    },
+    "courses": {
+      "wasDue": "was due {date}",
+      "due": "due {date}",
+      "progressLabel": "{title}: modules done",
+      "doneOf": "{done}/{total}"
+    },
+    "home": {
+      "metaTitle": "Home",
+      "title": "Home",
+      "emptyTitle": "Nothing assigned yet",
+      "emptyText": "Your teacher hasn't assigned a course yet. It will show up here.",
+      "join": "Join another class",
+      "continue": "Continue",
+      "resume": "Resume module {n}",
+      "start": "Start the course",
+      "assigned": "Assigned",
+      "finished": "Finished",
+      "announcements": "Announcements",
+      "latestAnnouncement": "Latest announcement",
+      "noAnnouncements": "No announcements yet."
+    },
+    "classes": {
+      "metaTitle": "Classes",
+      "title": "Classes",
+      "join": "Join a class",
+      "emptyTitle": "No classes yet",
+      "emptyText": "Ask your teacher for a join code.",
+      "courses": "{count, plural, =0 {no courses yet} one {# course} other {# courses}}"
+    },
+    "classPage": {
+      "back": "Back to Classes",
+      "joined": "You joined <n>{name}</n>.",
+      "courses": "Courses",
+      "noCoursesTitle": "No courses yet",
+      "noCoursesText": "When your teacher assigns a course, it shows up here and on Home.",
+      "announcements": "Announcements · newest first",
+      "noAnnouncements": "No announcements yet."
+    },
+    "overview": {
+      "modules": "{count, plural, =0 {no modules} one {# module} other {# modules}}",
+      "due": "due {date}",
+      "wasDue": "was due {date}",
+      "back": "Back to {name}",
+      "yourProgress": "Your progress",
+      "doneOf": "{done}/{total} done",
+      "quiz": "quiz {pct}",
+      "progressLabel": "Course progress",
+      "allDone": "All modules done. Your certificate is ready.",
+      "finishToGet": "{count, plural, one {Finish the module to get your certificate.} other {Finish all # modules to get your certificate.}}",
+      "seeCertificate": "See your certificate",
+      "resume": "Resume module {n}",
+      "start": "Start module 1",
+      "noModules": "This course has no modules yet.",
+      "modulesLabel": "Modules",
+      "complete": "Complete",
+      "completeQuizRight": "Complete · quick check right",
+      "completeQuizMissed": "Complete · quick check missed",
+      "youreHere": "You're here",
+      "notStarted": "Not started"
+    },
+    "reader": {
+      "modulesComplete": "Modules complete",
+      "modulesNav": "Modules",
+      "done": "done",
+      "back": "Back to {title}",
+      "position": "Module {n} of {total}",
+      "allModules": "All modules",
+      "keyPoints": "Key points",
+      "diagramBy": "Diagram drawn by Claude, checked by your teacher",
+      "toQuiz": "Next: quick check",
+      "saved": "Progress saved",
+      "flashcards": "Flashcards",
+      "cardOf": "{n}/{total}",
+      "prevCard": "Previous flashcard",
+      "nextCard": "Next flashcard",
+      "answer": "Answer",
+      "question": "Question",
+      "tapToReveal": "Tap to reveal",
+      "saving": "Saving…",
+      "completeFinish": "Complete module",
+      "completeNext": "Complete & next",
+      "saveFailed": "Couldn't save your progress. Check your connection and try again.",
+      "quizFirst": "Answer the quick check first, then finish the module."
+    },
+    "quiz": {
+      "metaTitle": "Quick check",
+      "back": "Back to {heading}",
+      "position": "Module {n} of {total}",
+      "eyebrow": "Quick check",
+      "correct": "Your answer · correct",
+      "correctAnswer": "Correct answer",
+      "yourAnswer": "Your answer · not quite",
+      "rightTitle": "Correct.",
+      "wrongTitle": "Not quite.",
+      "countedRight": "Your first answer was right. It counts toward your score.",
+      "countedWrong": "Your first answer counts toward your score. You can still try the others.",
+      "failed": "Couldn't check your answer. Check your connection and try again.",
+      "pickFirst": "Pick an answer first."
+    },
+    "finish": {
+      "metaTitle": "Course complete",
+      "eyebrow": "Course complete",
+      "quizScore": "Quick checks",
+      "correctOf": "{right} of {total} right first time",
+      "modules": "Modules",
+      "finishedOn": "Finished {date}",
+      "certificate": "Certificate of completion",
+      "certifies": "This certifies that",
+      "completed": "completed <b>{title}</b>",
+      "completedPlain": "completed {title}",
+      "fileName": "Certificate - {title}",
+      "shareText": "I finished {title} on CourseCapture.",
+      "home": "Back to Home",
+      "saved": "Certificate saved",
+      "saveFailed": "Couldn't make the PDF. Try again.",
+      "saving": "Making the PDF…",
+      "save": "Save certificate (PDF)",
+      "share": "Share certificate",
+      "noQuiz": "No quick checks",
+      "modulesOf": "{done, number}/{total, number}"
+    },
+    "join": {
+      "metaTitle": "Join a class",
+      "hi": "Hi, {name}",
+      "title": "Join a class",
+      "text": "Enter the five-character code your teacher shared.",
+      "code": "Class code",
+      "hint": "Letters and numbers, for example K7Q2M.",
+      "joining": "Joining…",
+      "join": "Join",
+      "privacy": "Your teacher sees your name and your progress. Nothing else is shared.",
+      "errors": {
+        "invalidCode": {
+          "title": "That isn't a class code.",
+          "text": "Codes have five letters and numbers. Check it with your teacher."
+        },
+        "notFound": {
+          "title": "No class with that code.",
+          "text": "Check each letter with your teacher and try again."
+        },
+        "rateLimited": {
+          "title": "Too many tries.",
+          "text": "Wait an hour, or ask your teacher to check the code."
+        },
+        "generic": {
+          "title": "Couldn't join.",
+          "text": "Check your connection and try again."
+        }
+      }
+    },
+    "account": {
+      "metaTitle": "Account",
+      "title": "Account",
+      "profile": "Profile",
+      "name": "Your name",
+      "nameRequired": "Enter your name.",
+      "saveFailed": "Couldn't save. Check your connection and try again.",
+      "saving": "Saving…",
+      "saveName": "Save name",
+      "cancel": "Cancel",
+      "roleStudent": "Student",
+      "editNameLabel": "Edit your name",
+      "nameSaved": "Name saved.",
+      "appearance": "Appearance and language",
+      "systemHelp": "System follows your device's setting.",
+      "classes": "Your classes",
+      "join": "Join a class",
+      "noClasses": "You haven't joined a class yet.",
+      "signOut": "Sign out"
+    },
+    "errors": {
+      "loadTitle": "Couldn't load this page.",
+      "loadText": "Check your connection and try again. Nothing was lost.",
+      "tryAgain": "Try again",
+      "backHome": "Back to Home"
     }
   }
 }

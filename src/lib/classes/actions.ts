@@ -134,22 +134,6 @@ export async function deleteAnnouncement(id: string): Promise<boolean> {
 
 export type SettingsState = { error?: ClassErrorKey; saved?: number } | undefined;
 
-/** T14 · profile name. */
-export async function saveProfileName(prev: SettingsState, formData: FormData): Promise<SettingsState> {
-  const name = z.string().trim().min(1).max(80).safeParse(formData.get("full_name") ?? "");
-  if (!name.success) return { error: "nameRequired" };
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  const uid = user?.id;
-  if (!uid) return { error: "generic" };
-  const { error } = await supabase.from("profiles").update({ full_name: name.data }).eq("id", uid);
-  if (error) return { error: "generic" };
-  refresh();
-  return { saved: (prev?.saved ?? 0) + 1 };
-}
-
 /** T14 · new course defaults (language and level for T1, stage 5). */
 export async function saveCourseDefaults(prev: SettingsState, formData: FormData): Promise<SettingsState> {
   const locale = z.enum(locales).safeParse(formData.get("default_course_locale"));
