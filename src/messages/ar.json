@@ -172,12 +172,6 @@
       "appearance": "المظهر",
       "signOut": "تسجيل الخروج"
     },
-    "home": {
-      "teacherTitle": "مرحبًا يا {name}",
-      "teacherText": "ستصل صفوفك ودوراتك في التحديث القادم.",
-      "studentTitle": "مرحبًا يا {name}",
-      "studentText": "سيصل الانضمام إلى الصفوف في تحديث لاحق."
-    },
     "errors": {
       "invalidEmail": "أدخل عنوان بريد مثل name@school.edu.",
       "rateLimited": "انتظر دقيقة قبل طلب رابط آخر.",
@@ -483,6 +477,189 @@
       "greeting": "مرحبًا {name}،",
       "body": "وافق مسؤول مدرستك على حساب المعلّم الخاص بك. يمكنك الآن إنشاء الصفوف وتحويل أوراقك وشرائحك إلى دورات.",
       "cta": "افتح CourseCapture"
+    }
+  },
+  "student": {
+    "status": {
+      "complete": "مكتملة",
+      "overdue": "متأخرة",
+      "notStarted": "لم تبدأ"
+    },
+    "courses": {
+      "wasDue": "كان التسليم {date}",
+      "due": "التسليم {date}",
+      "progressLabel": "{title}: الوحدات المنجزة",
+      "doneOf": "{done}/{total}"
+    },
+    "home": {
+      "metaTitle": "الرئيسية",
+      "title": "الرئيسية",
+      "emptyTitle": "لا شيء مُسند بعد",
+      "emptyText": "لم يُسند معلّمك أي دورة بعد. ستظهر هنا.",
+      "join": "الانضمام إلى صف آخر",
+      "continue": "تابع",
+      "resume": "تابع الوحدة {n}",
+      "start": "ابدأ الدورة",
+      "assigned": "المُسندة",
+      "finished": "المنتهية",
+      "announcements": "الإعلانات",
+      "latestAnnouncement": "آخر إعلان",
+      "noAnnouncements": "لا إعلانات بعد."
+    },
+    "classes": {
+      "metaTitle": "الصفوف",
+      "title": "الصفوف",
+      "join": "الانضمام إلى صف",
+      "emptyTitle": "لا صفوف بعد",
+      "emptyText": "اطلب رمز الانضمام من معلّمك.",
+      "courses": "{count, plural, =0 {لا دورات بعد} one {دورة واحدة} two {دورتان} few {# دورات} many {# دورة} other {# دورة}}"
+    },
+    "classPage": {
+      "back": "العودة إلى الصفوف",
+      "joined": "انضممت إلى <n>{name}</n>.",
+      "courses": "الدورات",
+      "noCoursesTitle": "لا دورات بعد",
+      "noCoursesText": "عندما يُسند معلّمك دورة، تظهر هنا وفي الرئيسية.",
+      "announcements": "الإعلانات · الأحدث أولًا",
+      "noAnnouncements": "لا إعلانات بعد."
+    },
+    "overview": {
+      "modules": "{count, plural, =0 {بلا وحدات} one {وحدة واحدة} two {وحدتان} few {# وحدات} many {# وحدة} other {# وحدة}}",
+      "due": "التسليم {date}",
+      "wasDue": "كان التسليم {date}",
+      "back": "العودة إلى {name}",
+      "yourProgress": "تقدّمك",
+      "doneOf": "أنجزت {done} من {total}",
+      "quiz": "الاختبار {pct}",
+      "progressLabel": "تقدّم الدورة",
+      "allDone": "أنجزت كل الوحدات. شهادتك جاهزة.",
+      "finishToGet": "{count, plural, one {أنجز الوحدة لتحصل على شهادتك.} two {أنجز الوحدتين لتحصل على شهادتك.} other {أنجز الوحدات الـ# لتحصل على شهادتك.}}",
+      "seeCertificate": "اعرض شهادتك",
+      "resume": "تابع الوحدة {n}",
+      "start": "ابدأ الوحدة 1",
+      "noModules": "لا تحتوي هذه الدورة على وحدات بعد.",
+      "modulesLabel": "الوحدات",
+      "complete": "مكتملة",
+      "completeQuizRight": "مكتملة · الاختبار صحيح",
+      "completeQuizMissed": "مكتملة · الاختبار خاطئ",
+      "youreHere": "أنت هنا",
+      "notStarted": "لم تبدأ"
+    },
+    "reader": {
+      "modulesComplete": "الوحدات المنجزة",
+      "modulesNav": "الوحدات",
+      "done": "منجزة",
+      "back": "العودة إلى {title}",
+      "position": "الوحدة {n} من {total}",
+      "allModules": "كل الوحدات",
+      "keyPoints": "النقاط الأساسية",
+      "diagramBy": "رسم بياني رسمه Claude وراجعه معلّمك",
+      "toQuiz": "التالي: اختبار قصير",
+      "saved": "حُفظ التقدّم",
+      "flashcards": "البطاقات",
+      "cardOf": "{n}/{total}",
+      "prevCard": "البطاقة السابقة",
+      "nextCard": "البطاقة التالية",
+      "answer": "الإجابة",
+      "question": "السؤال",
+      "tapToReveal": "انقر لإظهار الإجابة",
+      "saving": "جارٍ الحفظ…",
+      "completeFinish": "إنهاء الوحدة",
+      "completeNext": "إنهاء والمتابعة",
+      "saveFailed": "تعذّر حفظ تقدّمك. تحقّق من اتصالك وحاول مرة أخرى.",
+      "quizFirst": "أجب عن الاختبار القصير أولًا، ثم أنهِ الوحدة."
+    },
+    "quiz": {
+      "metaTitle": "اختبار قصير",
+      "back": "العودة إلى {heading}",
+      "position": "الوحدة {n} من {total}",
+      "eyebrow": "اختبار قصير",
+      "correct": "إجابتك · صحيحة",
+      "correctAnswer": "الإجابة الصحيحة",
+      "yourAnswer": "إجابتك · ليست صحيحة",
+      "rightTitle": "صحيح.",
+      "wrongTitle": "ليس تمامًا.",
+      "countedRight": "إجابتك الأولى صحيحة وتُحتسب في نتيجتك.",
+      "countedWrong": "إجابتك الأولى تُحتسب في نتيجتك. ما زال بإمكانك تجربة الخيارات الأخرى.",
+      "failed": "تعذّر التحقّق من إجابتك. تحقّق من اتصالك وحاول مرة أخرى.",
+      "pickFirst": "اختر إجابة أولًا."
+    },
+    "finish": {
+      "metaTitle": "اكتملت الدورة",
+      "eyebrow": "اكتملت الدورة",
+      "quizScore": "الاختبارات القصيرة",
+      "correctOf": "{right} من {total} صحيحة من المحاولة الأولى",
+      "modules": "الوحدات",
+      "finishedOn": "انتهت في {date}",
+      "certificate": "شهادة إتمام",
+      "certifies": "تشهد هذه الشهادة بأن",
+      "completed": "أتمّ <b>{title}</b>",
+      "completedPlain": "أتمّ {title}",
+      "fileName": "شهادة - {title}",
+      "shareText": "أنهيت {title} على CourseCapture.",
+      "home": "العودة إلى الرئيسية",
+      "saved": "حُفظت الشهادة",
+      "saveFailed": "تعذّر إنشاء ملف PDF. حاول مرة أخرى.",
+      "saving": "جارٍ إنشاء ملف PDF…",
+      "save": "حفظ الشهادة (PDF)",
+      "share": "مشاركة الشهادة",
+      "noQuiz": "لا اختبارات قصيرة",
+      "modulesOf": "{done, number}/{total, number}"
+    },
+    "join": {
+      "metaTitle": "الانضمام إلى صف",
+      "hi": "مرحبًا {name}",
+      "title": "الانضمام إلى صف",
+      "text": "أدخل الرمز المكوّن من خمسة أحرف الذي شاركه معلّمك.",
+      "code": "رمز الصف",
+      "hint": "أحرف وأرقام، مثل K7Q2M.",
+      "joining": "جارٍ الانضمام…",
+      "join": "انضمام",
+      "privacy": "يرى معلّمك اسمك وتقدّمك فقط. لا يُشارك أي شيء آخر.",
+      "errors": {
+        "invalidCode": {
+          "title": "هذا ليس رمز صف.",
+          "text": "الرموز خمسة أحرف وأرقام. تحقّق منه مع معلّمك."
+        },
+        "notFound": {
+          "title": "لا يوجد صف بهذا الرمز.",
+          "text": "تحقّق من كل حرف مع معلّمك وحاول مرة أخرى."
+        },
+        "rateLimited": {
+          "title": "محاولات كثيرة.",
+          "text": "انتظر ساعة، أو اطلب من معلّمك التحقّق من الرمز."
+        },
+        "generic": {
+          "title": "تعذّر الانضمام.",
+          "text": "تحقّق من اتصالك وحاول مرة أخرى."
+        }
+      }
+    },
+    "account": {
+      "metaTitle": "الحساب",
+      "title": "الحساب",
+      "profile": "الملف الشخصي",
+      "name": "اسمك",
+      "nameRequired": "اكتب اسمك.",
+      "saveFailed": "تعذّر الحفظ. تحقّق من اتصالك وحاول مرة أخرى.",
+      "saving": "جارٍ الحفظ…",
+      "saveName": "حفظ الاسم",
+      "cancel": "إلغاء",
+      "roleStudent": "طالب",
+      "editNameLabel": "تعديل اسمك",
+      "nameSaved": "حُفظ الاسم.",
+      "appearance": "المظهر واللغة",
+      "systemHelp": "خيار النظام يتبع إعداد جهازك.",
+      "classes": "صفوفك",
+      "join": "الانضمام إلى صف",
+      "noClasses": "لم تنضم إلى أي صف بعد.",
+      "signOut": "تسجيل الخروج"
+    },
+    "errors": {
+      "loadTitle": "تعذّر تحميل هذه الصفحة.",
+      "loadText": "تحقّق من اتصالك وحاول مرة أخرى. لم يُفقد شيء.",
+      "tryAgain": "حاول مرة أخرى",
+      "backHome": "العودة إلى الرئيسية"
     }
   }
 }

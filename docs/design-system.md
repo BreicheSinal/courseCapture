@@ -32,6 +32,9 @@ The app uses the **CourseCapture design system** (Claude Design). Its look: calm
 - Motion: 120ms ease for hover/press, 400ms ease for progress width; honour reduced motion.
 - No gradients, no coloured left borders, no decorative emoji.
 - Icons: 24px grid, 1.8px stroke, round caps, `currentColor`; icon-only buttons need `aria-label`.
+- Controls that are temporarily off (saving, nothing picked yet, first/last card) use `aria-disabled="true"` rather than `disabled`, so focus stays on them; styles in `src/styles/extensions.css`.
+- AI diagrams: the sanitiser turns fixed white/black fills and strokes into `none`/`currentColor` so they work in both themes.
+- Exception: the certificate PDF (`certificatePdf.ts`) can't read CSS tokens, so it uses RGB values that mirror `accent`, `ink` and `ink-muted` in Light.
 
 ## Components (`src/components/ui/`)
 From the system (37): Button, IconButton, Menu, ThemeSwitcher · Field, Input, SearchInput, Select, Checkbox, Radio, Toggle, Switch, FileDropzone · Pagination, Breadcrumbs, Tabs · Badge, QuizOption, Toast, EmptyState, Skeleton, StatusDot, Tooltip, Modal, Sheet, DestructiveActionModal · CourseCard, ModuleNav, Flashcard, Book, Table, StudentRow · JoinCode, Announcement, StatTile · AppHeader, Avatar, Entity.

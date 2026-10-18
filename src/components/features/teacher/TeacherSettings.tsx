@@ -12,8 +12,8 @@ import { Select } from "@/components/ui/Select";
 import { ThemeSwitcher } from "@/components/ui/ThemeSwitcher";
 import { localeNames, locales } from "@/i18n/locales";
 import { signOut, saveThemePreference } from "@/lib/auth/actions";
-import { saveCourseDefaults, saveProfileName } from "@/lib/classes/actions";
-import { saveInterfaceLocale } from "@/lib/profile/actions";
+import { saveCourseDefaults } from "@/lib/classes/actions";
+import { saveInterfaceLocale, saveProfileName } from "@/lib/profile/actions";
 import type { CourseLevel } from "@/types/supabase";
 import { PageHeader } from "./PageHeader";
 

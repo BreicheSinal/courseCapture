@@ -48,3 +48,26 @@ a.cc-course:focus-visible {
   font-size: 34px;
   line-height: 41px;
 }
+
+/* S3 diagrams: AI-drawn SVGs scale to the card and use the text colour. */
+.cc-diagram svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+
+/* Buttons that stay focusable while off (aria-disabled instead of disabled, WCAG 2.4.3). */
+.cc-btn[aria-disabled="true"],
+.cc-iconbtn[aria-disabled="true"],
+.cc-option[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.cc-btn[aria-disabled="true"][aria-busy="true"] {
+  opacity: 1;
+  cursor: progress;
+}
+.cc-btn[aria-disabled="true"]:hover {
+  filter: none;
+}
