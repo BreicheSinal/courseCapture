@@ -10,8 +10,8 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 /** T16 Courses: all of the teacher's courses, drafts included. */
-export default async function Page() {
-  const session = await getSession(); // checked by the layout
+export default async function Page({ searchParams }: PageProps<"/[locale]/teacher/courses">) {
+  const [session, sp] = await Promise.all([getSession(), searchParams]); // session checked by the layout
   const courses = session ? await getTeacherCourses(session.userId) : [];
-  return <CourseList courses={courses} />;
+  return <CourseList courses={courses} deleted={sp.deleted === "1"} />;
 }

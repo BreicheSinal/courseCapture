@@ -33,7 +33,8 @@ All routes are prefixed with the interface locale, e.g. `/en/teacher/classes`, `
 | T3 Review course | `/teacher/courses/[courseId]/review` |
 | T4 Edit module | `/teacher/courses/[courseId]/modules/[position]/edit` |
 | T5 Assign | `/teacher/courses/[courseId]/assign` |
-| — Preview | `/teacher/courses/[courseId]/preview` (student player, read-only) |
+| — Preview | `/teacher/courses/[courseId]/preview?module=` (student view, read-only, nothing recorded) |
+| — Export as HTML | `GET /api/courses/[courseId]/export` (owning teacher; a download, includes the quiz answers) |
 | T14 / Desktop T8 Settings | `/teacher/settings` |
 
 ## Student
@@ -71,3 +72,5 @@ All routes are prefixed with the interface locale, e.g. `/en/teacher/classes`, `
 - **Desktop:** left sidebar with the same items + AppHeader.
 - Proxy: no session on a protected path → `/sign-in`. Pages: `decide()` in `src/lib/auth/routing.ts` handles onboarding, pending teachers and wrong areas (`docs/auth-and-roles.md`).
 - Admin (phone tab bar / sidebar): Teachers · Invites.
+
+Server endpoints: `/api/inngest` (Inngest's handler for the generation job; signed requests only) and `/api/courses/[courseId]/export`.

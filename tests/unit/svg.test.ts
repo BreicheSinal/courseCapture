@@ -78,6 +78,14 @@ describe("sanitizeSvg hardening", () => {
     expect(out).toContain('<text fill="currentColor"');
   });
 
+  it("keeps the theme accent but no other CSS variables", () => {
+    const out = sanitizeSvg(
+      '<svg><rect fill="var(--accent)" stroke="var(--accent-text)" width="9" height="9"/><circle fill="var(--x, url(https://e))" r="2"/></svg>',
+    )!;
+    expect(out).toContain('fill="var(--accent)"');
+    expect(out).not.toMatch(/accent-text|--x|https/);
+  });
+
   it("marks text right-to-left for RTL courses", () => {
     expect(sanitizeSvg('<svg><text x="1">نص</text></svg>', { rtl: true })).toContain('direction="rtl"');
   });

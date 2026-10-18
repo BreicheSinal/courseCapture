@@ -21,8 +21,14 @@ beforeAll(async () => {
   outsider = await db.createUser("lea@school.edu", { role: "student", full_name: "Lea S." });
   await q("update public.profiles set status = 'approved' where id = any($1)", [[teacher, other]]);
 
-  biology = await db.commitAs(teacher, async (c) => (await c.query("select * from public.create_class('Biology', 'Period 3')")).rows[0]);
-  chemistry = await db.commitAs(other, async (c) => (await c.query("select * from public.create_class('Chemistry')")).rows[0]);
+  biology = await db.commitAs(
+    teacher,
+    async (c) => (await c.query("select * from public.create_class('Biology', 'Period 3')")).rows[0],
+  );
+  chemistry = await db.commitAs(
+    other,
+    async (c) => (await c.query("select * from public.create_class('Chemistry')")).rows[0],
+  );
   await db.commitAs(student, (c) => c.query("select * from public.join_class($1)", [biology.join_code.toLowerCase()]));
 }, 30_000);
 
@@ -71,16 +77,37 @@ describe("classes RLS", () => {
   });
 
   it("lets the owner rename, but not change the code or owner", async () => {
-    const n = await db.as(teacher, async (c) => (await c.query("update public.classes set name = 'Bio' where id = $1", [biology.id])).rowCount);
+    const n = await db.as(
+      teacher,
+      async (c) => (await c.query("update public.classes set name = 'Bio' where id = $1", [biology.id])).rowCount,
+    );
     expect(n).toBe(1);
-    expect(await errorOf(db.as(teacher, (c) => c.query("update public.classes set join_code = 'BBBBB' where id = $1", [biology.id])))).toMatch(/permission denied/);
-    expect(await errorOf(db.as(teacher, (c) => c.query("update public.classes set teacher_id = $2 where id = $1", [biology.id, other])))).toMatch(/permission denied/);
+    expect(
+      await errorOf(
+        db.as(teacher, (c) => c.query("update public.classes set join_code = 'BBBBB' where id = $1", [biology.id])),
+      ),
+    ).toMatch(/permission denied/);
+    expect(
+      await errorOf(
+        db.as(teacher, (c) => c.query("update public.classes set teacher_id = $2 where id = $1", [biology.id, other])),
+      ),
+    ).toMatch(/permission denied/);
   });
 
   it("doesn't let another teacher or a student rename or delete it", async () => {
     for (const who of [other, student]) {
-      expect(await db.as(who, async (c) => (await c.query("update public.classes set name = 'X' where id = $1", [biology.id])).rowCount)).toBe(0);
-      expect(await db.as(who, async (c) => (await c.query("delete from public.classes where id = $1", [biology.id])).rowCount)).toBe(0);
+      expect(
+        await db.as(
+          who,
+          async (c) => (await c.query("update public.classes set name = 'X' where id = $1", [biology.id])).rowCount,
+        ),
+      ).toBe(0);
+      expect(
+        await db.as(
+          who,
+          async (c) => (await c.query("delete from public.classes where id = $1", [biology.id])).rowCount,
+        ),
+      ).toBe(0);
     }
   });
 
@@ -104,12 +131,16 @@ describe("join codes", () => {
   });
 
   it("refuses a new code for someone else's class", async () => {
-    expect(await errorOf(db.as(other, (c) => c.query("select public.regenerate_join_code($1)", [biology.id])))).toMatch(/not_allowed/);
+    expect(await errorOf(db.as(other, (c) => c.query("select public.regenerate_join_code($1)", [biology.id])))).toMatch(
+      /not_allowed/,
+    );
   });
 
   it("join_class finds a class by code, ignoring case and dashes; joining twice is fine", async () => {
     const rows = await db.as(outsider, async (c) => {
-      await c.query("select * from public.join_class($1)", [`${chemistry.join_code.slice(0, 2)}-${chemistry.join_code.slice(2).toLowerCase()}`]);
+      await c.query("select * from public.join_class($1)", [
+        `${chemistry.join_code.slice(0, 2)}-${chemistry.join_code.slice(2).toLowerCase()}`,
+      ]);
       await c.query("select * from public.join_class($1)", [chemistry.join_code]);
       return (await c.query("select class_id from public.class_members")).rows;
     });
@@ -117,13 +148,19 @@ describe("join codes", () => {
   });
 
   it("join_class finds nothing for unknown codes and refuses non-students", async () => {
-    expect(await db.as(outsider, async (c) => (await c.query("select * from public.join_class('ZZZZZ')")).rowCount)).toBe(0);
-    expect(await errorOf(db.as(teacher, (c) => c.query("select * from public.join_class($1)", [chemistry.join_code])))).toMatch(/not_a_student/);
+    expect(
+      await db.as(outsider, async (c) => (await c.query("select * from public.join_class('ZZZZZ')")).rowCount),
+    ).toBe(0);
+    expect(
+      await errorOf(db.as(teacher, (c) => c.query("select * from public.join_class($1)", [chemistry.join_code]))),
+    ).toMatch(/not_a_student/);
   });
 
   it("members can't be added directly", async () => {
     const err = await errorOf(
-      db.as(outsider, (c) => c.query("insert into public.class_members (class_id, student_id) values ($1, $2)", [biology.id, outsider])),
+      db.as(outsider, (c) =>
+        c.query("insert into public.class_members (class_id, student_id) values ($1, $2)", [biology.id, outsider]),
+      ),
     );
     expect(err).toMatch(/permission denied/);
   });
@@ -131,16 +168,35 @@ describe("join codes", () => {
 
 describe("roster", () => {
   it("teachers can't read students' profile rows; the roster gives name and email only", async () => {
-    const rows = await db.as(teacher, async (c) => (await c.query("select email from public.profiles order by email")).rows);
+    const rows = await db.as(
+      teacher,
+      async (c) => (await c.query("select email from public.profiles order by email")).rows,
+    );
     expect(rows.map((r) => r.email)).toEqual(["rahme@school.edu"]);
-    const cols = await db.as(teacher, async (c) => Object.keys((await c.query("select * from public.class_roster($1)", [biology.id])).rows[0]));
-    expect(cols).toEqual(["student_id", "full_name", "email", "joined_at", "modules_done", "quiz_first_correct", "quiz_first_total"]);
+    const cols = await db.as(teacher, async (c) =>
+      Object.keys((await c.query("select * from public.class_roster($1)", [biology.id])).rows[0]),
+    );
+    expect(cols).toEqual([
+      "student_id",
+      "full_name",
+      "email",
+      "joined_at",
+      "modules_done",
+      "quiz_first_correct",
+      "quiz_first_total",
+    ]);
   });
 
   it("class_roster lists the class's students only for its teacher", async () => {
-    const mine = await db.as(teacher, async (c) => (await c.query("select * from public.class_roster($1)", [biology.id])).rows);
+    const mine = await db.as(
+      teacher,
+      async (c) => (await c.query("select * from public.class_roster($1)", [biology.id])).rows,
+    );
     expect(mine.map((r) => r.full_name)).toEqual(["Maya Haddad"]);
-    const theirs = await db.as(other, async (c) => (await c.query("select * from public.class_roster($1)", [biology.id])).rows);
+    const theirs = await db.as(
+      other,
+      async (c) => (await c.query("select * from public.class_roster($1)", [biology.id])).rows,
+    );
     expect(theirs).toEqual([]);
   });
 
@@ -151,24 +207,38 @@ describe("roster", () => {
 
   it("the teacher can remove a student; another teacher can't", async () => {
     expect(
-      await db.as(other, async (c) => (await c.query("delete from public.class_members where class_id = $1", [biology.id])).rowCount),
+      await db.as(
+        other,
+        async (c) => (await c.query("delete from public.class_members where class_id = $1", [biology.id])).rowCount,
+      ),
     ).toBe(0);
     expect(
-      await db.as(teacher, async (c) => (await c.query("delete from public.class_members where student_id = $1", [student])).rowCount),
+      await db.as(
+        teacher,
+        async (c) => (await c.query("delete from public.class_members where student_id = $1", [student])).rowCount,
+      ),
     ).toBe(1);
   });
 
   it("a student can leave a class", async () => {
     expect(
-      await db.as(student, async (c) => (await c.query("delete from public.class_members where class_id = $1", [biology.id])).rowCount),
+      await db.as(
+        student,
+        async (c) => (await c.query("delete from public.class_members where class_id = $1", [biology.id])).rowCount,
+      ),
     ).toBe(1);
   });
 });
 
 describe("announcements", () => {
   it("the teacher posts; members read; outsiders and other teachers don't", async () => {
-    await db.commitAs(teacher, (c) => c.query("insert into public.announcements (class_id, body) values ($1, 'Bring your lab notebook.')", [biology.id]));
-    const seen = async (who: string) => (await db.as(who, async (c) => (await c.query("select body from public.announcements")).rows)).length;
+    await db.commitAs(teacher, (c) =>
+      c.query("insert into public.announcements (class_id, body) values ($1, 'Bring your lab notebook.')", [
+        biology.id,
+      ]),
+    );
+    const seen = async (who: string) =>
+      (await db.as(who, async (c) => (await c.query("select body from public.announcements")).rows)).length;
     expect(await seen(teacher)).toBe(1);
     expect(await seen(student)).toBe(1);
     expect(await seen(outsider)).toBe(0);
@@ -179,22 +249,54 @@ describe("announcements", () => {
     const author = (await q("select author_id from public.announcements limit 1")).rows[0].author_id;
     expect(author).toBe(teacher);
     const err = await errorOf(
-      db.as(teacher, (c) => c.query("insert into public.announcements (class_id, body, author_id) values ($1, 'x', $2)", [biology.id, other])),
+      db.as(teacher, (c) =>
+        c.query("insert into public.announcements (class_id, body, author_id) values ($1, 'x', $2)", [
+          biology.id,
+          other,
+        ]),
+      ),
     );
     expect(err).toMatch(/permission denied/);
   });
 
   it("refuses posts to someone else's class, from students, and over 500 characters", async () => {
-    expect(await errorOf(db.as(other, (c) => c.query("insert into public.announcements (class_id, body) values ($1, 'x')", [biology.id])))).toMatch(/row-level security/);
-    expect(await errorOf(db.as(student, (c) => c.query("insert into public.announcements (class_id, body) values ($1, 'x')", [biology.id])))).toMatch(/row-level security/);
-    expect(await errorOf(db.as(teacher, (c) => c.query("insert into public.announcements (class_id, body) values ($1, $2)", [biology.id, "a".repeat(501)])))).toMatch(/check/);
+    expect(
+      await errorOf(
+        db.as(other, (c) =>
+          c.query("insert into public.announcements (class_id, body) values ($1, 'x')", [biology.id]),
+        ),
+      ),
+    ).toMatch(/row-level security/);
+    expect(
+      await errorOf(
+        db.as(student, (c) =>
+          c.query("insert into public.announcements (class_id, body) values ($1, 'x')", [biology.id]),
+        ),
+      ),
+    ).toMatch(/row-level security/);
+    expect(
+      await errorOf(
+        db.as(teacher, (c) =>
+          c.query("insert into public.announcements (class_id, body) values ($1, $2)", [biology.id, "a".repeat(501)]),
+        ),
+      ),
+    ).toMatch(/check/);
   });
 
   it("members mark announcements seen; the teacher sees the count", async () => {
     const id = (await q("select id from public.announcements limit 1")).rows[0].id;
-    await db.commitAs(student, (c) => c.query("insert into public.announcement_reads (announcement_id) values ($1)", [id]));
-    expect(await errorOf(db.as(outsider, (c) => c.query("insert into public.announcement_reads (announcement_id) values ($1)", [id])))).toMatch(/row-level security/);
-    const n = await db.as(teacher, async (c) => (await c.query("select count(*)::int as n from public.announcement_reads")).rows[0].n);
+    await db.commitAs(student, (c) =>
+      c.query("insert into public.announcement_reads (announcement_id) values ($1)", [id]),
+    );
+    expect(
+      await errorOf(
+        db.as(outsider, (c) => c.query("insert into public.announcement_reads (announcement_id) values ($1)", [id])),
+      ),
+    ).toMatch(/row-level security/);
+    const n = await db.as(
+      teacher,
+      async (c) => (await c.query("select count(*)::int as n from public.announcement_reads")).rows[0].n,
+    );
     expect(n).toBe(1);
   });
 
@@ -210,14 +312,32 @@ describe("courses and progress", () => {
 
   beforeAll(async () => {
     // Course content is written by later stages; set it up as the database owner.
-    course = (await q("insert into public.courses (teacher_id, title, status) values ($1, 'Photosynthesis', 'assigned') returning id", [teacher])).rows[0].id;
+    course = (
+      await q(
+        "insert into public.courses (teacher_id, title, status) values ($1, 'Photosynthesis', 'assigned') returning id",
+        [teacher],
+      )
+    ).rows[0].id;
     modules = (
-      await q("insert into public.modules (course_id, position, heading) select $1, g, 'M' || g from generate_series(1, 3) g returning id", [course])
+      await q(
+        "insert into public.modules (course_id, position, heading) select $1, g, 'M' || g from generate_series(1, 3) g returning id",
+        [course],
+      )
     ).rows.map((r) => r.id);
-    await q("insert into public.course_assignments (course_id, class_id, due_date) values ($1, $2, current_date - 1)", [course, biology.id]);
+    await q("insert into public.course_assignments (course_id, class_id, due_date) values ($1, $2, current_date - 1)", [
+      course,
+      biology.id,
+    ]);
     await q("insert into public.class_members (class_id, student_id) values ($1, $2)", [biology.id, outsider]);
-    await q("insert into public.module_progress (student_id, module_id, course_id) values ($1, $2, $3)", [outsider, modules[0], course]);
-    await q("insert into public.quiz_attempts (student_id, module_id, course_id, chosen_index, is_correct, is_first) values ($1, $2, $3, 1, true, true)", [outsider, modules[0], course]);
+    await q("insert into public.module_progress (student_id, module_id, course_id) values ($1, $2, $3)", [
+      outsider,
+      modules[0],
+      course,
+    ]);
+    await q(
+      "insert into public.quiz_attempts (student_id, module_id, course_id, chosen_index, is_correct, is_first) values ($1, $2, $3, 1, true, true)",
+      [outsider, modules[0], course],
+    );
   });
 
   it("the owner and assigned students see the course and modules; others don't", async () => {
@@ -231,13 +351,15 @@ describe("courses and progress", () => {
     expect(await count(other, "modules")).toBe(0);
   });
 
-  it("clients can't write courses or modules yet", async () => {
-    expect(await errorOf(db.as(teacher, (c) => c.query("insert into public.courses (teacher_id, title) values ($1, 'X')", [teacher])))).toMatch(/permission denied/);
-    expect(await errorOf(db.as(teacher, (c) => c.query("update public.modules set heading = 'X'")))).toMatch(/permission denied/);
+  it("clients can't write modules directly (stage 5 edits go through functions, see generation.test.ts)", async () => {
+    expect(await errorOf(db.as(teacher, (c) => c.query("update public.modules set heading = 'X'")))).toMatch(
+      /permission denied/,
+    );
   });
 
   it("progress and quiz results are visible to the student and the course's teacher only", async () => {
-    const n = async (who: string) => db.as(who, async (c) => (await c.query("select count(*)::int as n from public.module_progress")).rows[0].n);
+    const n = async (who: string) =>
+      db.as(who, async (c) => (await c.query("select count(*)::int as n from public.module_progress")).rows[0].n);
     expect(await n(outsider)).toBe(1);
     expect(await n(teacher)).toBe(1);
     expect(await n(other)).toBe(0);
@@ -245,31 +367,71 @@ describe("courses and progress", () => {
   });
 
   it("class summaries count students, courses and overdue students", async () => {
-    const rows = await db.as(teacher, async (c) => (await c.query("select * from public.teacher_class_summaries()")).rows);
+    const rows = await db.as(
+      teacher,
+      async (c) => (await c.query("select * from public.teacher_class_summaries()")).rows,
+    );
     expect(rows).toHaveLength(1);
     expect([rows[0].student_count, rows[0].course_count, rows[0].overdue_students]).toEqual([2, 1, 2]); // Maya (not started) and Lea (1 of 3), due yesterday
-    expect(await db.as(other, async (c) => (await c.query("select * from public.teacher_class_summaries()")).rows.map((r) => r.name))).toEqual(["Chemistry"]);
+    expect(
+      await db.as(other, async (c) =>
+        (await c.query("select * from public.teacher_class_summaries()")).rows.map((r) => r.name),
+      ),
+    ).toEqual(["Chemistry"]);
   });
 
   it("class course stats and roster report progress", async () => {
-    const stats = await db.as(teacher, async (c) => (await c.query("select * from public.class_course_stats($1)", [biology.id])).rows);
-    expect(stats[0]).toMatchObject({ title: "Photosynthesis", module_count: 3, students_started: 1, students_complete: 0, students_overdue: 2 });
-    const roster = await db.as(teacher, async (c) => (await c.query("select * from public.class_roster($1, $2)", [biology.id, course])).rows);
-    expect(roster[0]).toMatchObject({ full_name: "Lea S.", modules_done: 1, quiz_first_correct: 1, quiz_first_total: 1 });
-    expect(await db.as(other, async (c) => (await c.query("select * from public.class_course_stats($1)", [biology.id])).rows)).toEqual([]);
+    const stats = await db.as(
+      teacher,
+      async (c) => (await c.query("select * from public.class_course_stats($1)", [biology.id])).rows,
+    );
+    expect(stats[0]).toMatchObject({
+      title: "Photosynthesis",
+      module_count: 3,
+      students_started: 1,
+      students_complete: 0,
+      students_overdue: 2,
+    });
+    const roster = await db.as(
+      teacher,
+      async (c) => (await c.query("select * from public.class_roster($1, $2)", [biology.id, course])).rows,
+    );
+    expect(roster[0]).toMatchObject({
+      full_name: "Lea S.",
+      modules_done: 1,
+      quiz_first_correct: 1,
+      quiz_first_total: 1,
+    });
+    expect(
+      await db.as(
+        other,
+        async (c) => (await c.query("select * from public.class_course_stats($1)", [biology.id])).rows,
+      ),
+    ).toEqual([]);
   });
 });
 
 describe("profile defaults", () => {
   it("lets a user set their new-course defaults", async () => {
-    const n = await db.as(teacher, async (c) =>
-      (await c.query("update public.profiles set default_course_locale = 'fr', default_course_level = 'advanced' where id = $1", [teacher])).rowCount,
+    const n = await db.as(
+      teacher,
+      async (c) =>
+        (
+          await c.query(
+            "update public.profiles set default_course_locale = 'fr', default_course_level = 'advanced' where id = $1",
+            [teacher],
+          )
+        ).rowCount,
     );
     expect(n).toBe(1);
   });
 
   it("still can't change role or status", async () => {
-    expect(await errorOf(db.as(teacher, (c) => c.query("update public.profiles set role = 'admin' where id = $1", [teacher])))).toMatch(/permission denied/);
+    expect(
+      await errorOf(
+        db.as(teacher, (c) => c.query("update public.profiles set role = 'admin' where id = $1", [teacher])),
+      ),
+    ).toMatch(/permission denied/);
   });
 });
 
@@ -280,7 +442,10 @@ describe("rejected and pending teachers", () => {
   beforeAll(async () => {
     rejected = await db.createUser("gone@school.edu", { role: "teacher", full_name: "Gone Teacher" });
     await q("update public.profiles set status = 'approved' where id = $1", [rejected]);
-    cls = await db.commitAs(rejected, async (c) => (await c.query("select * from public.create_class('History')")).rows[0]);
+    cls = await db.commitAs(
+      rejected,
+      async (c) => (await c.query("select * from public.create_class('History')")).rows[0],
+    );
     await q("insert into public.class_members (class_id, student_id) values ($1, $2)", [cls.id, student]);
     await q("insert into public.announcements (class_id, author_id, body) values ($1, $2, 'hi')", [cls.id, rejected]);
     await q("update public.profiles set status = 'rejected' where id = $1", [rejected]);
@@ -299,12 +464,19 @@ describe("rejected and pending teachers", () => {
       expect((await c.query("delete from public.announcements where class_id = $1", [cls.id])).rowCount).toBe(0);
       expect((await c.query("update public.classes set name = 'X' where id = $1", [cls.id])).rowCount).toBe(0);
     });
-    expect(await errorOf(db.as(rejected, (c) => c.query("select public.regenerate_join_code($1)", [cls.id])))).toMatch(/not_allowed/);
+    expect(await errorOf(db.as(rejected, (c) => c.query("select public.regenerate_join_code($1)", [cls.id])))).toMatch(
+      /not_allowed/,
+    );
     expect(await errorOf(db.as(rejected, (c) => c.query("select public.create_class('X')")))).toMatch(/not_allowed/);
   });
 
   it("students can't join a rejected teacher's class", async () => {
-    expect(await db.as(outsider, async (c) => (await c.query("select * from public.join_class($1)", [cls.join_code])).rowCount)).toBe(0);
+    expect(
+      await db.as(
+        outsider,
+        async (c) => (await c.query("select * from public.join_class($1)", [cls.join_code])).rowCount,
+      ),
+    ).toBe(0);
   });
 
   it("a pending teacher reaches nothing", async () => {
@@ -329,7 +501,9 @@ describe("join code guessing", () => {
   });
 
   it("join attempts are invisible to clients", async () => {
-    expect(await errorOf(db.as(student, (c) => c.query("select * from public.join_attempts")))).toMatch(/permission denied/);
+    expect(await errorOf(db.as(student, (c) => c.query("select * from public.join_attempts")))).toMatch(
+      /permission denied/,
+    );
   });
 });
 
@@ -338,29 +512,49 @@ describe("data integrity", () => {
     const [c1, c2] = (
       await q("insert into public.courses (teacher_id, title) values ($1, 'A'), ($1, 'B') returning id", [teacher])
     ).rows.map((r) => r.id);
-    const m1 = (await q("insert into public.modules (course_id, position) values ($1, 1) returning id", [c1])).rows[0].id;
+    const m1 = (await q("insert into public.modules (course_id, position) values ($1, 1) returning id", [c1])).rows[0]
+      .id;
     expect(
-      await errorOf(q("insert into public.module_progress (student_id, module_id, course_id) values ($1, $2, $3)", [student, m1, c2])),
+      await errorOf(
+        q("insert into public.module_progress (student_id, module_id, course_id) values ($1, $2, $3)", [
+          student,
+          m1,
+          c2,
+        ]),
+      ),
     ).toMatch(/foreign key/);
   });
 
   it("a course can only be assigned to its own teacher's class", async () => {
-    const theirs = (await q("insert into public.courses (teacher_id, title) values ($1, 'Theirs') returning id", [other])).rows[0].id;
+    const theirs = (
+      await q("insert into public.courses (teacher_id, title) values ($1, 'Theirs') returning id", [other])
+    ).rows[0].id;
     expect(
-      await errorOf(q("insert into public.course_assignments (course_id, class_id) values ($1, $2)", [theirs, biology.id])),
+      await errorOf(
+        q("insert into public.course_assignments (course_id, class_id) values ($1, $2)", [theirs, biology.id]),
+      ),
     ).toMatch(/course_and_class_teachers_differ/);
   });
 
   it("students don't see draft courses assigned to their class", async () => {
-    const draft = (await q("insert into public.courses (teacher_id, title, status) values ($1, 'Draft', 'draft') returning id", [teacher])).rows[0].id;
+    const draft = (
+      await q("insert into public.courses (teacher_id, title, status) values ($1, 'Draft', 'draft') returning id", [
+        teacher,
+      ])
+    ).rows[0].id;
     await q("insert into public.course_assignments (course_id, class_id) values ($1, $2)", [draft, biology.id]);
-    const titles = await db.as(student, async (c) => (await c.query("select title from public.courses")).rows.map((r) => r.title));
+    const titles = await db.as(student, async (c) =>
+      (await c.query("select title from public.courses")).rows.map((r) => r.title),
+    );
     expect(titles).not.toContain("Draft");
   });
 
   it("class names are trimmed on rename", async () => {
-    const name = await db.as(teacher, async (c) =>
-      (await c.query("update public.classes set name = '  Bio  ' where id = $1 returning name", [biology.id])).rows[0].name,
+    const name = await db.as(
+      teacher,
+      async (c) =>
+        (await c.query("update public.classes set name = '  Bio  ' where id = $1 returning name", [biology.id])).rows[0]
+          .name,
     );
     expect(name).toBe("Bio");
   });

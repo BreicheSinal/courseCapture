@@ -18,6 +18,8 @@ export type Db = {
   as<T>(uid: string | null, fn: (c: Client) => Promise<T>): Promise<T>;
   /** Creates an auth user (fires the profile trigger) and returns its id. Confirmed by default. */
   createUser(email: string, meta?: Record<string, unknown>, opts?: { confirmed?: boolean }): Promise<string>;
+  /** Runs `fn` as the service role (server code), inside a rolled-back transaction. */
+  asService<T>(fn: (c: Client) => Promise<T>): Promise<T>;
   /** Runs `fn` as `uid` and commits (for setup that later steps must see). */
   commitAs<T>(uid: string, fn: (c: Client) => Promise<T>): Promise<T>;
   drop(): Promise<void>;
@@ -48,6 +50,15 @@ export async function createTestDb(): Promise<Db> {
       try {
         await client.query(`set local role ${uid ? "authenticated" : "anon"}`);
         await client.query("select set_config('request.jwt.claim.sub', $1, true)", [uid ?? ""]);
+        return await fn(client);
+      } finally {
+        await client.query("rollback");
+      }
+    },
+    async asService(fn) {
+      await client.query("begin");
+      try {
+        await client.query("set local role service_role");
         return await fn(client);
       } finally {
         await client.query("rollback");

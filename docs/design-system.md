@@ -42,9 +42,9 @@ From the system (37): Button, IconButton, Menu, ThemeSwitcher · Field, Input, S
 **Sketched on the canvas, not yet in the system** — built here, then proposed back to the system:
 | Component | Used on |
 |---|---|
-| Stepper | T1–T3 |
-| DatePicker | T5 |
-| ClassPicker (Combobox) | T5 |
+| Stepper | T1–T3 — built as `Steps` (`src/components/ui/Steps.tsx`) |
+| DatePicker | T5 — the native date input styled as `cc-input` for now (decision #63) |
+| ClassPicker (Combobox) | T5 — a checkbox list with a due date per class instead (decision #64) |
 | DiagramFrame (AI label, caption, alt text) | T4, S3 |
 | AskClaudePanel (Sheet + input + answer cards) | S5 |
 | TabBar (phone, 3 tabs, 52px targets) | T6, S2 and all phone screens |

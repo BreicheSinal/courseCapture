@@ -7,6 +7,7 @@ export type AccountStatus = "pending" | "approved" | "rejected";
 export type ThemePref = "system" | "light" | "dark";
 export type CourseStatus = "draft" | "assigned" | "archived";
 export type CourseLevel = "beginner" | "intermediate" | "advanced";
+export type JobStep = "queued" | "reading" | "writing" | "drawing" | "done" | "failed";
 
 export type ProfileRow = {
   id: string;
@@ -68,6 +69,41 @@ export type ModuleRow = {
   visual_svg: string | null;
   visual_caption: string | null;
   visual_alt: string | null;
+  /** Why the teacher should check it; "@fallback" when the basic splitter wrote it. */
+  review_note: string | null;
+  checked_at: string | null;
+};
+
+export type GenerationJobRow = {
+  id: string;
+  course_id: string;
+  teacher_id: string;
+  step: JobStep;
+  source_kind: "pdf" | "pptx" | "text" | "paste";
+  source_path: string | null;
+  notes: string;
+  pages_total: number | null;
+  pages_scanned: number | null;
+  chunks_total: number;
+  chunks_done: number;
+  modules_total: number;
+  modules_drawn: number;
+  fallback_chunks: number;
+  error: string | null;
+  created_at: string;
+  started_at: string | null;
+  finished_at: string | null;
+};
+
+export type AiUsageRow = {
+  id: number;
+  user_id: string;
+  kind: "generate" | "redraw" | "tutor";
+  provider: string;
+  model: string;
+  input_tokens: number;
+  output_tokens: number;
+  created_at: string;
 };
 
 export type ModuleProgressRow = { student_id: string; module_id: string; course_id: string; completed_at: string };
@@ -194,12 +230,33 @@ export type Database = {
         Update: never;
         Relationships: [];
       };
-      courses: ReadOnly<CourseRow>;
+      courses: {
+        Row: CourseRow;
+        Insert: Pick<CourseRow, "teacher_id" | "title"> &
+          Partial<Pick<CourseRow, "content_locale" | "level" | "source_name">>;
+        Update: Partial<Pick<CourseRow, "title" | "content_locale" | "level">>;
+        Relationships: [];
+      };
       course_assignments: ReadOnly<CourseAssignmentRow>;
-      modules: ReadOnly<ModuleRow>;
+      // Clients edit modules through functions; inserts and diagram updates are service-role only.
+      modules: {
+        Row: ModuleRow;
+        Insert: Omit<ModuleRow, "id" | "review_note" | "checked_at" | "visual_svg" | "visual_caption" | "visual_alt"> &
+          Partial<Pick<ModuleRow, "review_note" | "visual_svg" | "visual_caption" | "visual_alt">>;
+        Update: Partial<Pick<ModuleRow, "visual_svg" | "visual_caption" | "visual_alt">>;
+        Relationships: [];
+      };
+      generation_jobs: {
+        Row: GenerationJobRow;
+        Insert: Pick<GenerationJobRow, "course_id" | "teacher_id" | "source_kind"> &
+          Partial<Pick<GenerationJobRow, "source_path" | "notes" | "step">>;
+        Update: Partial<Omit<GenerationJobRow, "id" | "course_id" | "teacher_id" | "created_at">>;
+        Relationships: [];
+      };
+      ai_usage: ReadOnly<AiUsageRow>;
       module_progress: ReadOnly<ModuleProgressRow>;
       quiz_attempts: ReadOnly<QuizAttemptRow>;
-      quiz_answers: ReadOnly<QuizAnswerRow>;
+      quiz_answers: { Row: QuizAnswerRow; Insert: QuizAnswerRow; Update: never; Relationships: [] };
     };
     Views: Record<string, never>;
     Functions: {
@@ -231,6 +288,40 @@ export type Database = {
       student_courses: { Args: Record<string, never>; Returns: StudentCourse[] };
       student_course_modules: { Args: { p_course: string }; Returns: StudentModuleState[] };
       student_announcements: { Args: { p_class?: string | null; p_limit?: number }; Returns: StudentAnnouncement[] };
+      claim_ai_use: {
+        Args: {
+          p_user: string;
+          p_kind: AiUsageRow["kind"];
+          p_limit: number | null;
+          p_provider: string;
+          p_model: string;
+        };
+        Returns: number;
+      };
+      add_ai_tokens: { Args: { p_use: number; p_input: number; p_output: number }; Returns: undefined };
+      my_ai_usage_today: { Args: Record<string, never>; Returns: { kind: AiUsageRow["kind"]; used: number }[] };
+      module_review_notes: { Args: { p_course: string }; Returns: { module_id: string; review_note: string }[] };
+      save_module: {
+        Args: {
+          p_module: string;
+          p_heading: string;
+          p_body: string;
+          p_key_points: string[];
+          p_flashcards: { q: string; a: string }[];
+          p_quiz: { question: string; options: string[] } | null;
+          p_answer_index: number | null;
+          p_explanation: string;
+          p_caption: string;
+          p_alt: string;
+        };
+        Returns: undefined;
+      };
+      set_module_checked: { Args: { p_module: string; p_checked: boolean }; Returns: undefined };
+      clear_module_visual: { Args: { p_module: string }; Returns: undefined };
+      move_module: { Args: { p_module: string; p_offset: number }; Returns: number };
+      delete_module: { Args: { p_module: string }; Returns: undefined };
+      assign_course: { Args: { p_course: string; p_class: string; p_due: string | null }; Returns: undefined };
+      unassign_course: { Args: { p_course: string; p_class: string }; Returns: undefined };
     };
     Enums: {
       user_role: UserRole;
@@ -238,6 +329,7 @@ export type Database = {
       theme_pref: ThemePref;
       course_status: CourseStatus;
       course_level: CourseLevel;
+      job_step: JobStep;
     };
     CompositeTypes: Record<string, never>;
   };

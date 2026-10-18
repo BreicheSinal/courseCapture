@@ -45,11 +45,24 @@ const paths = {
   share: "M12 15V4M8 8l4-4 4 4M5 13v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-6",
   award: "M12 3a6 6 0 1 0 0 12 6 6 0 0 0 0-12z M8.5 14L7 21l5-3 5 3-1.5-7",
   megaphone: "M3 10v4a1 1 0 0 0 1 1h3l6 4V5L7 9H4a1 1 0 0 0-1 1z M17 9a4 4 0 0 1 0 6",
+  upload: "M12 16V4M7 9l5-5 5 5M4 20h16",
+  file: "M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z M14 3v5h5",
+  more: "M5 12h.01M12 12h.01M19 12h.01",
+  arrowUp: "M12 19V5M6 11l6-6 6 6",
+  arrowDown: "M12 5v14M6 13l6 6 6-6",
+  info: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 11v5M12 8h.01",
 } as const;
 
 export type IconName = keyof typeof paths;
 
-const directional: ReadonlySet<IconName> = new Set(["arrowForward", "chevronBack", "chevronForward", "signOut", "megaphone", "list"]);
+const directional: ReadonlySet<IconName> = new Set([
+  "arrowForward",
+  "chevronBack",
+  "chevronForward",
+  "signOut",
+  "megaphone",
+  "list",
+]);
 
 export function Icon({ name, className, ...props }: { name: IconName } & Omit<SVGProps<SVGSVGElement>, "children">) {
   return (

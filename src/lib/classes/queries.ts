@@ -1,7 +1,7 @@
 import "server-only";
 import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
-import type { ClassCourseStat, ClassRow, ClassSummary, CourseRow, RosterRow } from "@/types/supabase";
+import type { ClassCourseStat, ClassRow, ClassSummary, CourseRow, JobStep, RosterRow } from "@/types/supabase";
 
 /**
  * Reads for the teacher screens. Everything goes through the signed-in
@@ -89,6 +89,8 @@ export async function getAnnouncements(classId: string): Promise<AnnouncementIte
 export type TeacherCourse = Pick<CourseRow, "id" | "title" | "status" | "updated_at"> & {
   module_count: number;
   classes: { name: string; section: string; due_date: string | null }[];
+  /** Latest generation job: drives "Generating", "Failed" and where the card links. */
+  job: { step: JobStep; percent: number } | null;
 };
 
 /** T16: every course the teacher owns, with the classes it's assigned to. */
@@ -101,17 +103,35 @@ export async function getTeacherCourses(teacherId: string): Promise<TeacherCours
     .order("updated_at", { ascending: false });
   if (!courses?.length) return [];
   const ids = courses.map((c) => c.id);
-  const [{ data: assignments }, { data: classes }, { data: modules }] = await Promise.all([
+  const [{ data: assignments }, { data: classes }, { data: modules }, { data: jobs }] = await Promise.all([
     supabase.from("course_assignments").select("course_id, class_id, due_date").in("course_id", ids),
     supabase.from("classes").select("id, name, section").eq("teacher_id", teacherId),
     supabase.from("modules").select("course_id").in("course_id", ids),
+    supabase
+      .from("generation_jobs")
+      .select("course_id, step, chunks_done, chunks_total, modules_drawn, modules_total, created_at")
+      .in("course_id", ids)
+      .order("created_at", { ascending: false }),
   ]);
+  const latestJob = new Map<string, NonNullable<typeof jobs>[number]>();
+  for (const j of jobs ?? []) if (!latestJob.has(j.course_id)) latestJob.set(j.course_id, j);
+  const percent = (j: NonNullable<typeof jobs>[number]) =>
+    j.step === "writing"
+      ? 10 + Math.round((60 * j.chunks_done) / Math.max(1, j.chunks_total))
+      : j.step === "drawing"
+        ? 70 + Math.round((30 * j.modules_drawn) / Math.max(1, j.modules_total))
+        : j.step === "reading"
+          ? 5
+          : j.step === "done"
+            ? 100
+            : 0;
   const classById = new Map((classes ?? []).map((c) => [c.id, c]));
   const moduleCount = new Map<string, number>();
   for (const m of modules ?? []) moduleCount.set(m.course_id, (moduleCount.get(m.course_id) ?? 0) + 1);
   return courses.map((c) => ({
     ...c,
     module_count: moduleCount.get(c.id) ?? 0,
+    job: latestJob.has(c.id) ? { step: latestJob.get(c.id)!.step, percent: percent(latestJob.get(c.id)!) } : null,
     classes: (assignments ?? [])
       .filter((a) => a.course_id === c.id && classById.has(a.class_id))
       .map((a) => ({ ...classById.get(a.class_id)!, due_date: a.due_date })),

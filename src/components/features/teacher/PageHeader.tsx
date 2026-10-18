@@ -13,6 +13,7 @@ export function PageHeader({
   back,
   actions,
   size = "title",
+  titleAs: Title = "h1",
 }: {
   title: ReactNode;
   subtitle?: ReactNode;
@@ -20,6 +21,8 @@ export function PageHeader({
   actions?: ReactNode;
   /** `large` for top-level screens (Classes, Courses, Settings). */
   size?: "title" | "large";
+  /** `p` when the page's h1 is further down (T3/T4: the course or module title is the heading). */
+  titleAs?: "h1" | "p";
 }) {
   return (
     <div className="flex flex-wrap items-end justify-between gap-3">
@@ -34,9 +37,13 @@ export function PageHeader({
           </Link>
         )}
         <div className="flex min-w-0 flex-col gap-1">
-          <h1 id="page-title" tabIndex={-1} className={cn(size === "large" ? "large-title" : "headline", "focus:outline-none")}>
+          <Title
+            id={Title === "h1" ? "page-title" : undefined}
+            tabIndex={-1}
+            className={cn(size === "large" ? "large-title" : "headline", "focus:outline-none")}
+          >
             {title}
-          </h1>
+          </Title>
           {subtitle && <p className="subhead text-ink-muted">{subtitle}</p>}
         </div>
       </div>
