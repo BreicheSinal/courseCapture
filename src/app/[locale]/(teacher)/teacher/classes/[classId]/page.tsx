@@ -11,9 +11,10 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/teacher/
 }
 
 /** T6 Class page · Courses. */
-export default async function Page({ params }: PageProps<"/[locale]/teacher/classes/[classId]">) {
-  const { classId } = await params;
+export default async function Page({ params, searchParams }: PageProps<"/[locale]/teacher/classes/[classId]">) {
+  const [{ classId }, sp] = await Promise.all([params, searchParams]);
   const [cls, courses] = await Promise.all([getClass(classId), getClassCourses(classId)]);
   if (!cls) notFound();
-  return <ClassCourses classId={cls.id} className={cls.name} courses={courses} studentCount={cls.student_count} />;
+  const assigned = typeof sp.assigned === "string" ? (courses.find((c) => c.course_id === sp.assigned)?.title ?? null) : null;
+  return <ClassCourses classId={cls.id} className={cls.name} courses={courses} studentCount={cls.student_count} assigned={assigned} />;
 }
