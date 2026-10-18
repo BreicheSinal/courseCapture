@@ -87,11 +87,17 @@ export async function readPdf(bytes: Uint8Array): Promise<PdfText> {
 }
 
 /** The first `limit` pages as a new PDF, for the vision model (FR-8: first 8 pages of a scan). */
-export async function firstPages(bytes: Uint8Array, limit = SCAN_PAGE_LIMIT): Promise<{ pdf: Uint8Array; pages: number }> {
+export async function firstPages(
+  bytes: Uint8Array,
+  limit = SCAN_PAGE_LIMIT,
+): Promise<{ pdf: Uint8Array; pages: number }> {
   const source = await PDFDocument.load(bytes, { ignoreEncryption: true, updateMetadata: false });
   const count = Math.min(source.getPageCount(), limit);
   const out = await PDFDocument.create();
-  const copied = await out.copyPages(source, Array.from({ length: count }, (_, i) => i));
+  const copied = await out.copyPages(
+    source,
+    Array.from({ length: count }, (_, i) => i),
+  );
   for (const p of copied) out.addPage(p);
   return { pdf: await out.save(), pages: count };
 }
@@ -117,10 +123,15 @@ export async function readPptx(bytes: Uint8Array): Promise<{ text: string; slide
   const slides: string[] = [];
   for (const name of slideNames) {
     const xml = await zip.files[name].async("string");
-    const paragraphs = xml.split(/<\/a:p>/).map((p) =>
-      [...p.matchAll(/<a:t(?:\s[^>]*)?>([^<]*)<\/a:t>/g)].map((m) => decodeXml(m[1])).join(""),
+    const paragraphs = xml
+      .split(/<\/a:p>/)
+      .map((p) => [...p.matchAll(/<a:t(?:\s[^>]*)?>([^<]*)<\/a:t>/g)].map((m) => decodeXml(m[1])).join(""));
+    slides.push(
+      paragraphs
+        .map((p) => p.trim())
+        .filter(Boolean)
+        .join("\n"),
     );
-    slides.push(paragraphs.map((p) => p.trim()).filter(Boolean).join("\n"));
   }
   return { text: normaliseText(slides.filter(Boolean).join("\n\n")), slides: slideNames.length };
 }
@@ -129,8 +140,15 @@ export async function readPptx(bytes: Uint8Array): Promise<{ text: string; slide
  * Splits text into at most `max` chunks of about `size` characters, on
  * paragraph breaks where possible (FR-10). Text past the last chunk is dropped.
  */
-export function chunkText(text: string, size = CHUNK_CHARS, max = MAX_CHUNKS): { chunks: string[]; truncated: boolean } {
-  const paragraphs = text.split(/\n\s*\n/).flatMap((p) => splitLong(p.trim(), size)).filter(Boolean);
+export function chunkText(
+  text: string,
+  size = CHUNK_CHARS,
+  max = MAX_CHUNKS,
+): { chunks: string[]; truncated: boolean } {
+  const paragraphs = text
+    .split(/\n\s*\n/)
+    .flatMap((p) => splitLong(p.trim(), size))
+    .filter(Boolean);
   const chunks: string[] = [];
   let current = "";
   for (const p of paragraphs) {

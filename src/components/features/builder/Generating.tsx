@@ -53,7 +53,8 @@ export function Generating({
   const at = status.step === "failed" ? -1 : order.indexOf(status.step);
   const rowState = (row: "reading" | "writing" | "drawing"): RowState => {
     const i = order.indexOf(row);
-    if (row === "drawing" && status.step === "done" && status.modulesDrawn === 0 && status.modulesTotal > 0) return "skipped";
+    if (row === "drawing" && status.step === "done" && status.modulesDrawn === 0 && status.modulesTotal > 0)
+      return "skipped";
     return at > i ? "done" : at === i ? "working" : "queued";
   };
 
@@ -67,8 +68,13 @@ export function Generating({
           : sourceKind === "pdf"
             ? t("pages", { count: status.pagesTotal })
             : null;
-  const writeDetail = status.chunksTotal > 1 ? t("partOf", { n: Math.min(status.chunksDone + 1, status.chunksTotal), total: status.chunksTotal }) : null;
-  const drawDetail = status.modulesTotal ? t("moduleOf", { n: Math.min(status.modulesDrawn + 1, status.modulesTotal), total: status.modulesTotal }) : null;
+  const writeDetail =
+    status.chunksTotal > 1
+      ? t("partOf", { n: Math.min(status.chunksDone + 1, status.chunksTotal), total: status.chunksTotal })
+      : null;
+  const drawDetail = status.modulesTotal
+    ? t("moduleOf", { n: Math.min(status.modulesDrawn + 1, status.modulesTotal), total: status.modulesTotal })
+    : null;
 
   const line =
     status.step === "queued"
@@ -77,7 +83,10 @@ export function Generating({
         ? t("line_reading")
         : status.step === "writing"
           ? status.chunksTotal > 1
-            ? t("line_writingPart", { n: Math.min(status.chunksDone + 1, status.chunksTotal), total: status.chunksTotal })
+            ? t("line_writingPart", {
+                n: Math.min(status.chunksDone + 1, status.chunksTotal),
+                total: status.chunksTotal,
+              })
             : t("line_writing")
           : status.step === "drawing"
             ? t("line_drawing", { n: status.modulesDrawn, total: status.modulesTotal })
@@ -87,7 +96,11 @@ export function Generating({
 
   return (
     <div className="flex flex-col gap-5">
-      <Steps label={tn("steps.label")} steps={[tn("steps.source"), tn("steps.generate"), tn("steps.review")]} current={1} />
+      <Steps
+        label={tn("steps.label")}
+        steps={[tn("steps.source"), tn("steps.generate"), tn("steps.review")]}
+        current={1}
+      />
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
         {failed ? (
           <Card as="section" aria-labelledby="gen-title" className="flex flex-col gap-4 border border-danger">
@@ -118,7 +131,7 @@ export function Generating({
             </div>
             {retryState?.error && (
               <p className="subhead text-danger" role="alert">
-                {t("errors.generic")}
+                {tn(`errors.${retryState.error}`)}
               </p>
             )}
           </Card>
@@ -170,7 +183,15 @@ function Row({ label, detail, state }: { label: string; detail: string | null; s
   const t = useTranslations("teacher.generating");
   return (
     <li>
-      <span className={state === "working" ? "callout flex-1 font-semibold" : state === "queued" ? "callout flex-1 text-ink-muted" : "callout flex-1"}>
+      <span
+        className={
+          state === "working"
+            ? "callout flex-1 font-semibold"
+            : state === "queued"
+              ? "callout flex-1 text-ink-muted"
+              : "callout flex-1"
+        }
+      >
         {label}
         {detail && state !== "queued" && <span className="footnote block text-ink-muted">{detail}</span>}
       </span>
@@ -181,7 +202,7 @@ function Row({ label, detail, state }: { label: string; detail: string | null; s
         </span>
       )}
       {state === "working" && (
-        <span className="footnote flex items-center gap-1.5 font-semibold text-accent-text">
+        <span className="footnote flex items-center gap-2 font-semibold text-accent-text">
           <span className="size-2 rounded-pill bg-accent" aria-hidden="true" />
           {t("state_working")}
         </span>

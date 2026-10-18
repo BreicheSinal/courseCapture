@@ -21,13 +21,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 /** T2 Generating. A finished course goes straight to review. */
 export default async function Page({ params, searchParams }: Props) {
-  const [{ courseId }, sp, t, locale] = await Promise.all([params, searchParams, getTranslations("teacher.generating"), getLocale()]);
+  const [{ courseId }, sp, t, locale] = await Promise.all([
+    params,
+    searchParams,
+    getTranslations("teacher.generating"),
+    getLocale(),
+  ]);
   const course = await getBuilderCourse(courseId);
   if (!course) notFound();
   if (!course.job || course.job.step === "done") redirect({ href: `/teacher/courses/${courseId}/review`, locale });
   const job = course.job!;
   const cls = typeof sp.class === "string" ? await getClass(sp.class) : null;
-  const back = cls ? { href: `/teacher/classes/${cls.id}`, label: t("backTo", { name: cls.name }) } : { href: "/teacher/courses", label: t("backToCourses") };
+  const back = cls
+    ? { href: `/teacher/classes/${cls.id}`, label: t("backTo", { name: cls.name }) }
+    : { href: "/teacher/courses", label: t("backToCourses") };
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-5">
       <PageHeader title={<bdi>{course.title}</bdi>} subtitle={course.source_name ?? undefined} back={back} />

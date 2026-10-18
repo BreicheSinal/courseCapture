@@ -64,7 +64,10 @@ type Context = {
 
 const db = () => serviceClient();
 
-async function updateJob(jobId: string, patch: Partial<Omit<GenerationJobRow, "id" | "course_id" | "teacher_id" | "created_at">>) {
+async function updateJob(
+  jobId: string,
+  patch: Partial<Omit<GenerationJobRow, "id" | "course_id" | "teacher_id" | "created_at">>,
+) {
   const { error } = await db().from("generation_jobs").update(patch).eq("id", jobId);
   if (error) throw new Error(`Couldn't update job: ${error.message}`);
 }
@@ -198,7 +201,9 @@ async function save(ctx: Context, parts: { data: GeneratedChunk; fallback: boole
   if (error || !rows) throw new Error(error?.message ?? "Insert failed");
   const byPosition = new Map(rows.map((r) => [r.position, r.id]));
   const answers = modules.flatMap((m, i) =>
-    m.quiz ? [{ module_id: byPosition.get(i + 1)!, answer_index: m.quiz.answer_index, explanation: m.quiz.explanation }] : [],
+    m.quiz
+      ? [{ module_id: byPosition.get(i + 1)!, answer_index: m.quiz.answer_index, explanation: m.quiz.explanation }]
+      : [],
   );
   if (answers.length) {
     const { error: aError } = await client.from("quiz_answers").insert(answers);
@@ -227,7 +232,10 @@ async function draw(ctx: Context, usageId: number | null, ids: string[], doneBef
       await track(usageId, out.usage);
       const svg = out.data && sanitizeSvg(out.data.svg, { idPrefix: `m${m.position}`, rtl: RTL.has(ctx.locale) });
       if (svg && out.data) {
-        await client.from("modules").update({ visual_svg: svg, visual_caption: out.data.caption || null, visual_alt: out.data.alt }).eq("id", m.id);
+        await client
+          .from("modules")
+          .update({ visual_svg: svg, visual_caption: out.data.caption || null, visual_alt: out.data.alt })
+          .eq("id", m.id);
       }
     }),
   );
@@ -263,7 +271,8 @@ export async function runGeneration({ jobId, usageId }: GenerationEvent, step: S
 
 /** Marks a job failed with a key T2 can explain. The source stays, so "Try again" works. */
 export async function failJob(jobId: string, error: unknown) {
-  const key: JobErrorKey = error instanceof JobError ? error.key : error instanceof SourceError ? sourceKey(error) : "generic";
+  const key: JobErrorKey =
+    error instanceof JobError ? error.key : error instanceof SourceError ? sourceKey(error) : "generic";
   if (key === "generic") console.error("[generation] job failed", error);
   await updateJob(jobId, { step: "failed", error: key, finished_at: new Date().toISOString() });
 }

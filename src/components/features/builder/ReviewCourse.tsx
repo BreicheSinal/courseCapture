@@ -55,7 +55,11 @@ export function ReviewCourse({
         </div>
       </div>
 
-      <Steps label={tn("steps.label")} steps={[tn("steps.source"), tn("steps.generate"), tn("steps.review")]} current={2} />
+      <Steps
+        label={tn("steps.label")}
+        steps={[tn("steps.source"), tn("steps.generate"), tn("steps.review")]}
+        current={2}
+      />
 
       {notice && (
         <p role="status" className="subhead flex items-center gap-1 font-semibold text-success">
@@ -74,7 +78,8 @@ export function ReviewCourse({
       <div className="cc-notice subhead">
         <Icon name="info" />
         <p>
-          {t("checkNote")} {flagged > 0 && <strong>{t("flagged", { count: flagged })}</strong>} {t("checkedCount", { checked, total: modules.length })}
+          {t("checkNote")} {flagged > 0 && <strong>{t("flagged", { count: flagged })}</strong>}{" "}
+          {t("checkedCount", { checked, total: modules.length })}
         </p>
       </div>
 
@@ -130,7 +135,7 @@ function ReviewState({ module: m }: { module: BuilderModule }) {
     );
   if (m.review_note)
     return (
-      <span className="footnote flex max-w-[14rem] flex-none items-center gap-1 font-semibold text-warning">
+      <span className="footnote flex max-w-56 flex-none items-center gap-1 font-semibold text-warning">
         <Icon name="alert" width={14} height={14} className="flex-none" />
         <span className="truncate" title={m.review_note === FALLBACK_NOTE ? t("fallbackModule") : m.review_note}>
           {m.review_note === FALLBACK_NOTE ? t("state_fallback") : t("state_check")}

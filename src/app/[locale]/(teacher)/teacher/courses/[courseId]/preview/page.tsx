@@ -16,7 +16,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 /** Preview: the student player, read-only (`?module=` picks the module). */
 export default async function Page({ params, searchParams }: Props) {
-  const [{ courseId }, sp, t, locale] = await Promise.all([params, searchParams, getTranslations("teacher.preview"), getLocale()]);
+  const [{ courseId }, sp, t, locale] = await Promise.all([
+    params,
+    searchParams,
+    getTranslations("teacher.preview"),
+    getLocale(),
+  ]);
   const course = await getBuilderCourse(courseId);
   if (!course) notFound();
   if (course.job && course.job.step !== "done") redirect({ href: `/teacher/courses/${courseId}/generating`, locale });
@@ -25,8 +30,17 @@ export default async function Page({ params, searchParams }: Props) {
   const current = modules.find((m) => m.position === Number(sp.module)) ?? modules[0];
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-5">
-      <PageHeader title={t("title")} back={{ href: `/teacher/courses/${courseId}/review`, label: t("backTo", { title: course.title }) }} />
-      <CoursePreview courseId={courseId} title={course.title} modules={modules} current={current} lang={course.content_locale} />
+      <PageHeader
+        title={t("title")}
+        back={{ href: `/teacher/courses/${courseId}/review`, label: t("backTo", { title: course.title }) }}
+      />
+      <CoursePreview
+        courseId={courseId}
+        title={course.title}
+        modules={modules}
+        current={current}
+        lang={course.content_locale}
+      />
     </div>
   );
 }

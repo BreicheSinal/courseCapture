@@ -433,7 +433,7 @@
       "status_generating": "Generating",
       "status_failed": "Failed",
       "status_ready": "Ready",
-      "status_overdue": "Past due",
+      "status_overdue": "Overdue",
       "deleted": "Course deleted."
     },
     "newCourse": {
@@ -594,7 +594,7 @@
       "noQuestion": "no quiz",
       "diagram": "1 diagram",
       "state_checked": "Checked",
-      "state_check": "Check",
+      "state_check": "Needs a check",
       "state_fallback": "Basic splitter",
       "fallbackModule": "Written by the basic splitter from your text",
       "state_notReviewed": "Not reviewed",

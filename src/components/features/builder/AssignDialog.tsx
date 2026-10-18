@@ -37,14 +37,27 @@ export function AssignDialog({
     Object.fromEntries(classes.map((c) => [c.id, assigned[c.id] ?? ""])),
   );
   const [state, action, saving] = useActionState<AssignState, FormData>(saveAssignments, undefined);
-  const close = useCallback(() => router.push(`/teacher/courses/${course.id}/review`, { scroll: false }), [router, course.id]);
+  const close = useCallback(
+    () => router.push(`/teacher/courses/${course.id}/review`, { scroll: false }),
+    [router, course.id],
+  );
 
-  const label = (c: TeacherClassOption) => (c.section ? tt("classWithSection", { name: c.name, section: c.section }) : c.name);
+  const label = (c: TeacherClassOption) =>
+    c.section ? tt("classWithSection", { name: c.name, section: c.section }) : c.name;
   const was = Object.keys(assigned);
-  const changed = ticked.size !== was.length || was.some((id) => !ticked.has(id)) || classes.some((c) => (assigned[c.id] ?? "") !== due[c.id] && ticked.has(c.id));
+  const changed =
+    ticked.size !== was.length ||
+    was.some((id) => !ticked.has(id)) ||
+    classes.some((c) => (assigned[c.id] ?? "") !== due[c.id] && ticked.has(c.id));
   const only = ticked.size === 1 ? classes.find((c) => ticked.has(c.id)) : null;
   const submitLabel =
-    was.length > 0 ? t("save") : only ? t("assignTo", { name: only.name }) : ticked.size > 1 ? t("assignToCount", { count: ticked.size }) : t("assign");
+    was.length > 0
+      ? t("save")
+      : only
+        ? t("assignTo", { name: only.name })
+        : ticked.size > 1
+          ? t("assignToCount", { count: ticked.size })
+          : t("assign");
   const failedClass = state?.className ? classes.find((c) => c.id === state.className) : null;
 
   return (
@@ -77,7 +90,8 @@ export function AssignDialog({
             <div className="cc-notice cc-notice--warning subhead">
               <Icon name="alert" />
               <p>
-                <strong>{t("uncheckedTitle", { count: unchecked })}</strong> <span className="text-ink">{t("uncheckedText")}</span>
+                <strong>{t("uncheckedTitle", { count: unchecked })}</strong>{" "}
+                <span className="text-ink">{t("uncheckedText")}</span>
               </p>
             </div>
           )}
@@ -115,10 +129,11 @@ export function AssignDialog({
                     <input
                       id={dueId}
                       type="date"
-                      className="cc-input cc-input--sm"
+                      className="cc-input"
                       name={`due_${c.id}`}
                       value={due[c.id]}
                       min={assigned[c.id] && assigned[c.id]! < today ? assigned[c.id]! : today}
+                      // Really disabled (not aria-disabled): an unticked class must not send a date.
                       disabled={!on}
                       onChange={(e) => setDue({ ...due, [c.id]: e.currentTarget.value })}
                       aria-describedby={`${dueId}-hint`}
@@ -145,7 +160,7 @@ export function AssignDialog({
               type="submit"
               variant="primary"
               busy={saving}
-              aria-disabled={(!changed || (ticked.size === 0 && was.length === 0)) || undefined}
+              aria-disabled={!changed || (ticked.size === 0 && was.length === 0) || undefined}
               onClick={(e) => {
                 if (!changed || (ticked.size === 0 && was.length === 0)) e.preventDefault();
               }}

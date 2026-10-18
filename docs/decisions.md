@@ -65,6 +65,8 @@
 | 60 | An `AI_PROVIDER=fake` adapter writes canned content; it can't run in production | Fast, free, repeatable tests of the whole flow |
 | 61 | End-to-end tests run against a small Supabase stand-in (`tests/e2e/stack/`) on real Postgres with the real migrations | Docker isn't available everywhere; RLS still decides every read and write |
 | 62 | Data-driven page titles stream with the page under Cache Components (as in stages 3–4) | `next build` accepts it (partial prerender); `next dev` prints an "instant navigation" hint for these routes, which isn't an error |
+| 63 | T5 uses the browser's date input (styled as `cc-input`) rather than a custom DatePicker | Accessible, localised and right-to-left out of the box; a custom picker can be proposed to the system later |
+| 64 | T5 lists classes as checkboxes, each with its own due date, rather than a ClassPicker combobox | Teachers have a handful of classes, and every chosen class needs its own date (#28) |
 
 ## Open questions
 1. **Due date per class** when one course is assigned to several classes — assumed yes.

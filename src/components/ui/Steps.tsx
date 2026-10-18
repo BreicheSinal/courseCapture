@@ -1,3 +1,4 @@
+import { useFormatter } from "next-intl";
 import { cn } from "@/lib/utils/cn";
 
 /**
@@ -5,7 +6,18 @@ import { cn } from "@/lib/utils/cn";
  * 3 · Review & assign"). Steps before `current` are done, `current` is marked
  * with aria-current. The number is text, so the state never depends on colour.
  */
-export function Steps({ label, steps, current, className }: { label: string; steps: string[]; current: number; className?: string }) {
+export function Steps({
+  label,
+  steps,
+  current,
+  className,
+}: {
+  label: string;
+  steps: string[];
+  current: number;
+  className?: string;
+}) {
+  const format = useFormatter();
   return (
     <ol aria-label={label} className={cn("cc-steps", className)}>
       {steps.map((s, i) => (
@@ -16,7 +28,7 @@ export function Steps({ label, steps, current, className }: { label: string; ste
         >
           <span className="cc-steps__bar" aria-hidden="true" />
           <span className="cc-steps__label">
-            {i + 1} · {s}
+            {format.number(i + 1)} · {s}
           </span>
         </li>
       ))}

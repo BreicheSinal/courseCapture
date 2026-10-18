@@ -232,7 +232,8 @@ export type Database = {
       };
       courses: {
         Row: CourseRow;
-        Insert: Pick<CourseRow, "teacher_id" | "title"> & Partial<Pick<CourseRow, "content_locale" | "level" | "source_name">>;
+        Insert: Pick<CourseRow, "teacher_id" | "title"> &
+          Partial<Pick<CourseRow, "content_locale" | "level" | "source_name">>;
         Update: Partial<Pick<CourseRow, "title" | "content_locale" | "level">>;
         Relationships: [];
       };
@@ -288,7 +289,13 @@ export type Database = {
       student_course_modules: { Args: { p_course: string }; Returns: StudentModuleState[] };
       student_announcements: { Args: { p_class?: string | null; p_limit?: number }; Returns: StudentAnnouncement[] };
       claim_ai_use: {
-        Args: { p_user: string; p_kind: AiUsageRow["kind"]; p_limit: number | null; p_provider: string; p_model: string };
+        Args: {
+          p_user: string;
+          p_kind: AiUsageRow["kind"];
+          p_limit: number | null;
+          p_provider: string;
+          p_model: string;
+        };
         Returns: number;
       };
       add_ai_tokens: { Args: { p_use: number; p_input: number; p_output: number }; Returns: undefined };

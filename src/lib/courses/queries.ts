@@ -26,7 +26,12 @@ export const getBuilderCourse = cache(async (courseId: string): Promise<BuilderC
   const supabase = await createClient();
   const [{ data: course }, { data: jobs }] = await Promise.all([
     supabase.from("courses").select("*").eq("id", courseId).maybeSingle(),
-    supabase.from("generation_jobs").select("*").eq("course_id", courseId).order("created_at", { ascending: false }).limit(4),
+    supabase
+      .from("generation_jobs")
+      .select("*")
+      .eq("course_id", courseId)
+      .order("created_at", { ascending: false })
+      .limit(4),
   ]);
   if (!course) return null;
   return { ...course, job: jobs?.[0] ?? null, jobCount: jobs?.length ?? 0 };
@@ -50,7 +55,9 @@ export const getBuilderModules = cache(async (courseId: string, locale: string):
   const byModule = new Map((answers ?? []).map((a) => [a.module_id, a]));
   return modules.map((m) => ({
     ...m,
-    visual_svg: m.visual_svg ? sanitizeSvg(m.visual_svg, { idPrefix: `m${m.position}`, rtl: RTL_LOCALES.has(locale) }) : null,
+    visual_svg: m.visual_svg
+      ? sanitizeSvg(m.visual_svg, { idPrefix: `m${m.position}`, rtl: RTL_LOCALES.has(locale) })
+      : null,
     answer: byModule.get(m.id) ?? null,
   }));
 });

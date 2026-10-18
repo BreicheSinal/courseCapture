@@ -144,7 +144,10 @@ export async function saveModule(prev: SaveState, formData: FormData): Promise<S
   if (error) return { error: errorKey(error.message) };
 
   if (formData.get("intent") === "check") {
-    const { error: checkError } = await supabase.rpc("set_module_checked", { p_module: moduleId.data, p_checked: true });
+    const { error: checkError } = await supabase.rpc("set_module_checked", {
+      p_module: moduleId.data,
+      p_checked: true,
+    });
     if (checkError) return { error: "generic" };
     const { data: next } = await supabase
       .from("modules")
@@ -154,7 +157,9 @@ export async function saveModule(prev: SaveState, formData: FormData): Promise<S
       .order("position")
       .limit(1);
     redirect({
-      href: next?.[0] ? `/teacher/courses/${courseId.data}/modules/${next[0].position}/edit` : `/teacher/courses/${courseId.data}/review?checked=1`,
+      href: next?.[0]
+        ? `/teacher/courses/${courseId.data}/modules/${next[0].position}/edit`
+        : `/teacher/courses/${courseId.data}/review?checked=1`,
       locale,
     });
   }
@@ -179,14 +184,23 @@ export type VisualState = { error?: CourseErrorKey; drawn?: number } | undefined
 export async function redrawVisual(prev: VisualState, formData: FormData): Promise<VisualState> {
   const moduleId = uuid.safeParse(formData.get("module"));
   const session = await getSession();
-  if (!moduleId.success || !session || session.profile.role !== "teacher" || session.profile.status !== "approved") return { error: "generic" };
+  if (!moduleId.success || !session || session.profile.role !== "teacher" || session.profile.status !== "approved")
+    return { error: "generic" };
   if (!isAiConfigured("visual")) return { error: "noAi" };
 
   // Read as the teacher: no row means it isn't theirs.
   const supabase = await createClient();
-  const { data: mod } = await supabase.from("modules").select("id, position, heading, body, course_id").eq("id", moduleId.data).maybeSingle();
+  const { data: mod } = await supabase
+    .from("modules")
+    .select("id, position, heading, body, course_id")
+    .eq("id", moduleId.data)
+    .maybeSingle();
   if (!mod) return { error: "generic" };
-  const { data: course } = await supabase.from("courses").select("content_locale").eq("id", mod.course_id).maybeSingle();
+  const { data: course } = await supabase
+    .from("courses")
+    .select("content_locale")
+    .eq("id", mod.course_id)
+    .maybeSingle();
   if (!course) return { error: "generic" };
 
   const service = serviceClient();
@@ -203,7 +217,9 @@ export async function redrawVisual(prev: VisualState, formData: FormData): Promi
   try {
     const out = await drawVisual({ language: course.content_locale, heading: mod.heading, body: mod.body });
     await service.rpc("add_ai_tokens", { p_use: useId, p_input: out.usage.input, p_output: out.usage.output });
-    const svg = out.data && sanitizeSvg(out.data.svg, { idPrefix: `m${mod.position}`, rtl: RTL_LOCALES.has(course.content_locale) });
+    const svg =
+      out.data &&
+      sanitizeSvg(out.data.svg, { idPrefix: `m${mod.position}`, rtl: RTL_LOCALES.has(course.content_locale) });
     if (!svg || !out.data) return { error: "drawFailed" };
     const { error } = await service
       .from("modules")
@@ -253,13 +269,23 @@ export async function saveAssignments(_prev: AssignState, formData: FormData): P
   const locale = localeSchema.parse(formData.get("locale"));
   const courseId = uuid.safeParse(formData.get("course"));
   if (!courseId.success) return { error: "generic" };
-  const ticked = formData.getAll("class").map(String).filter((c) => uuid.safeParse(c).success);
-  const before = formData.getAll("was").map(String).filter((c) => uuid.safeParse(c).success);
+  const ticked = formData
+    .getAll("class")
+    .map(String)
+    .filter((c) => uuid.safeParse(c).success);
+  const before = formData
+    .getAll("was")
+    .map(String)
+    .filter((c) => uuid.safeParse(c).success);
   const date = /^\d{4}-\d{2}-\d{2}$/;
   const supabase = await createClient();
   for (const classId of ticked) {
     const due = String(formData.get(`due_${classId}`) ?? "");
-    const { error } = await supabase.rpc("assign_course", { p_course: courseId.data, p_class: classId, p_due: date.test(due) ? due : null });
+    const { error } = await supabase.rpc("assign_course", {
+      p_course: courseId.data,
+      p_class: classId,
+      p_due: date.test(due) ? due : null,
+    });
     if (error) return { error: errorKey(error.message), className: classId };
   }
   for (const classId of before.filter((c) => !ticked.includes(c))) {
@@ -268,7 +294,9 @@ export async function saveAssignments(_prev: AssignState, formData: FormData): P
   }
   const only = ticked.length === 1 && before.length === 0 ? ticked[0] : null;
   redirect({
-    href: only ? `/teacher/classes/${only}?assigned=${courseId.data}` : `/teacher/courses/${courseId.data}/review?assigned=${ticked.length}`,
+    href: only
+      ? `/teacher/classes/${only}?assigned=${courseId.data}`
+      : `/teacher/courses/${courseId.data}/review?assigned=${ticked.length}`,
     locale,
   });
 }

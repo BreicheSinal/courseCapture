@@ -59,8 +59,7 @@ function storageName(name: string) {
 const folderOf = (teacherId: string, uploadId: string) => `${teacherId}/${uploadId}`;
 
 export type UploadTicket =
-  | { ok: true; uploadId: string; signedUrl: string; contentType: string }
-  | { ok: false; error: NewCourseError };
+  { ok: true; uploadId: string; signedUrl: string; contentType: string } | { ok: false; error: NewCourseError };
 
 const contentTypes = {
   pdf: "application/pdf",
@@ -144,7 +143,9 @@ export async function startGeneration(_prev: StartState, formData: FormData): Pr
     if (text.length < MIN_TEXT_CHARS) return { error: "tooShort", field: "text" };
     if (text.length > MAX_PASTE_CHARS) return { error: "tooLong", field: "text" };
     sourcePath = `${folderOf(session.userId, randomUUID())}/pasted.txt`;
-    const { error } = await storage.upload(sourcePath, new Blob([text], { type: "text/plain" }), { contentType: "text/plain" });
+    const { error } = await storage.upload(sourcePath, new Blob([text], { type: "text/plain" }), {
+      contentType: "text/plain",
+    });
     if (error) return { error: "generic" };
     sourceKind = "paste";
     const firstLine = text.split("\n")[0].trim();
@@ -163,7 +164,12 @@ export async function startGeneration(_prev: StartState, formData: FormData): Pr
     sourcePath = `${folder}/${name}`;
     sourceKind = kind;
     sourceName = fileName;
-    title = fileName.replace(/\.[^.]+$/, "").replace(/[_-]+/g, " ").trim().slice(0, 120) || t("untitled");
+    title =
+      fileName
+        .replace(/\.[^.]+$/, "")
+        .replace(/[_-]+/g, " ")
+        .trim()
+        .slice(0, 120) || t("untitled");
   }
 
   // Daily limit (decision #27). Counted even when the basic splitter ends up writing the course.
@@ -201,7 +207,13 @@ export async function startGeneration(_prev: StartState, formData: FormData): Pr
   }
   const { data: job, error: jobError } = await service
     .from("generation_jobs")
-    .insert({ course_id: course.id, teacher_id: session.userId, source_kind: sourceKind, source_path: sourcePath, notes })
+    .insert({
+      course_id: course.id,
+      teacher_id: session.userId,
+      source_kind: sourceKind,
+      source_path: sourcePath,
+      notes,
+    })
     .select("id")
     .single();
   if (jobError || !job) {
@@ -210,7 +222,10 @@ export async function startGeneration(_prev: StartState, formData: FormData): Pr
     return { error: "generic" };
   }
   await queueGeneration({ jobId: job.id, usageId, teacherId: session.userId });
-  redirect({ href: `/teacher/courses/${course.id}/generating${classId.success ? `?class=${classId.data}` : ""}`, locale });
+  redirect({
+    href: `/teacher/courses/${course.id}/generating${classId.success ? `?class=${classId.data}` : ""}`,
+    locale,
+  });
 }
 
 export type JobStatus = {
@@ -291,7 +306,13 @@ export async function retryGeneration(_prev: RetryState, formData: FormData): Pr
   if (!last || !(await toJobStatus(last, jobs.length)).canRetry) return { error: "generic" };
   const { data: job, error } = await serviceClient()
     .from("generation_jobs")
-    .insert({ course_id: id.data, teacher_id: session.userId, source_kind: last.source_kind, source_path: last.source_path, notes: last.notes })
+    .insert({
+      course_id: id.data,
+      teacher_id: session.userId,
+      source_kind: last.source_kind,
+      source_path: last.source_path,
+      notes: last.notes,
+    })
     .select("id")
     .single();
   if (error || !job) return { error: "generic" };

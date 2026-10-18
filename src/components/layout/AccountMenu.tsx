@@ -97,7 +97,11 @@ export function AccountMenu({ name, role }: AccountMenuProps) {
           <hr className="cc-menu__divider" />
 
           {role === "student" && (
-            <Link href="/student/join" className="cc-menu__item min-h-control no-underline" onClick={() => setOpen(false)}>
+            <Link
+              href="/student/join"
+              className="cc-menu__item min-h-control no-underline"
+              onClick={() => setOpen(false)}
+            >
               <Icon name="plus" />
               {t("auth.menu.joinClass")}
             </Link>

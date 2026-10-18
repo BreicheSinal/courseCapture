@@ -5,7 +5,18 @@ import type { ModuleRow } from "@/types/supabase";
  * course — no scripts, no external files, readable offline and in print.
  * Every piece of text is escaped; diagrams must already be sanitised.
  */
-export type ExportModule = Pick<ModuleRow, "position" | "heading" | "body" | "key_points" | "flashcards" | "quiz" | "visual_svg" | "visual_caption" | "visual_alt"> & {
+export type ExportModule = Pick<
+  ModuleRow,
+  | "position"
+  | "heading"
+  | "body"
+  | "key_points"
+  | "flashcards"
+  | "quiz"
+  | "visual_svg"
+  | "visual_caption"
+  | "visual_alt"
+> & {
   answer: { answer_index: number; explanation: string } | null;
 };
 
@@ -18,11 +29,16 @@ export type ExportLabels = {
   footer: string;
 };
 
-const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
+const esc = (s: string) =>
+  s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
 
 const RTL = new Set(["ar", "he", "fa", "ur"]);
 
-export function buildCourseHtml(course: { title: string; locale: string }, modules: ExportModule[], l: ExportLabels): string {
+export function buildCourseHtml(
+  course: { title: string; locale: string },
+  modules: ExportModule[],
+  l: ExportLabels,
+): string {
   const dir = RTL.has(course.locale) ? "rtl" : "ltr";
   const body = modules
     .map((m) => {
@@ -35,7 +51,9 @@ export function buildCourseHtml(course: { title: string; locale: string }, modul
               m.visual_caption ? `<figcaption>${esc(m.visual_caption)}</figcaption>` : ""
             }</figure>`
           : "",
-        m.key_points.length ? `<h3>${esc(l.keyPoints)}</h3><ul>${m.key_points.map((k) => `<li>${esc(k)}</li>`).join("")}</ul>` : "",
+        m.key_points.length
+          ? `<h3>${esc(l.keyPoints)}</h3><ul>${m.key_points.map((k) => `<li>${esc(k)}</li>`).join("")}</ul>`
+          : "",
         m.flashcards.length
           ? `<h3>${esc(l.flashcards)}</h3>${m.flashcards
               .map((c) => `<details class="card"><summary>${esc(c.q)}</summary><p>${esc(c.a)}</p></details>`)

@@ -19,7 +19,9 @@ export async function GET(_req: Request, { params }: RouteContext<"/api/courses/
   if (!course || course.teacher_id !== user.id) return new Response("Not found.", { status: 404 });
 
   const modules = await getBuilderModules(courseId, course.content_locale);
-  const locale: Locale = (locales as readonly string[]).includes(course.content_locale) ? (course.content_locale as Locale) : "en";
+  const locale: Locale = (locales as readonly string[]).includes(course.content_locale)
+    ? (course.content_locale as Locale)
+    : "en";
   const t = await getTranslations({ locale, namespace: "teacher.export" });
   const html = buildCourseHtml({ title: course.title, locale: course.content_locale }, modules, {
     keyPoints: t("keyPoints"),

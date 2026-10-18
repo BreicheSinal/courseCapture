@@ -35,7 +35,12 @@ async function pdf(pages: string[]) {
 }
 
 /** Pastes the source on T1, generates, and waits for T3. Returns the course id. */
-async function generateFromPaste(page: import("@playwright/test").Page, text = SOURCE, locale = "en", courseLocale?: string) {
+async function generateFromPaste(
+  page: import("@playwright/test").Page,
+  text = SOURCE,
+  locale = "en",
+  courseLocale?: string,
+) {
   await page.goto(`/${locale}/teacher/courses/new`);
   await page.getByRole("button", { name: /paste text instead|لصق نص/i }).click();
   await page.locator("textarea[name=text]").fill(text);
@@ -69,11 +74,20 @@ test("paste text → generating → review with modules, flashcards, quiz and di
     [courseId],
   );
   expect(job).toEqual({ step: "done", source_path: null, fallback_chunks: 0 });
-  const answers = await sql("select a.answer_index from public.quiz_answers a join public.modules m on m.id = a.module_id where m.course_id = $1", [courseId]);
+  const answers = await sql(
+    "select a.answer_index from public.quiz_answers a join public.modules m on m.id = a.module_id where m.course_id = $1",
+    [courseId],
+  );
   expect(answers).toHaveLength(3);
-  const [{ svg }] = await sql<{ svg: string }>("select visual_svg as svg from public.modules where course_id = $1 and position = 1", [courseId]);
+  const [{ svg }] = await sql<{ svg: string }>(
+    "select visual_svg as svg from public.modules where course_id = $1 and position = 1",
+    [courseId],
+  );
   expect(svg).toContain('fill="var(--accent)"');
-  const [usage] = await sql<{ kind: string; input_tokens: number }>("select kind, input_tokens from public.ai_usage where user_id = $1", [t.id]);
+  const [usage] = await sql<{ kind: string; input_tokens: number }>(
+    "select kind, input_tokens from public.ai_usage where user_id = $1",
+    [t.id],
+  );
   expect(usage.kind).toBe("generate");
   expect(usage.input_tokens).toBeGreaterThan(0);
 });
@@ -184,7 +198,7 @@ test("export as HTML (#34): the teacher's file has the course; nobody else can e
   expect(res.headers()["content-type"]).toContain("text/html");
   expect(res.headers()["content-disposition"]).toMatch(/^attachment; filename="/);
   const html = await res.text();
-  expect(html).toContain("<html lang=\"en\"");
+  expect(html).toContain('<html lang="en"');
   expect(html).toContain("Made with CourseCapture.");
   expect(html).not.toMatch(/<script[\s>]/i);
 
@@ -207,7 +221,9 @@ test("daily limit (#35): the 21st generation of the day is refused", async ({ pa
   await submit.click({ force: true });
   await page.waitForTimeout(1_000);
   await expect(page).toHaveURL(/\/courses\/new/);
-  const [{ n }] = await sql<{ n: number }>("select count(*)::int as n from public.courses where teacher_id = $1", [t.id]);
+  const [{ n }] = await sql<{ n: number }>("select count(*)::int as n from public.courses where teacher_id = $1", [
+    t.id,
+  ]);
   expect(n).toBe(0);
 });
 
@@ -220,7 +236,9 @@ test("Arabic (#29–#32): right to left, Arabic course content, accessible", asy
   const courseId = await generateFromPaste(page, SOURCE, "ar", "ar");
   await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
   await expectAccessible(page);
-  const [c] = await sql<{ content_locale: string }>("select content_locale from public.courses where id = $1", [courseId]);
+  const [c] = await sql<{ content_locale: string }>("select content_locale from public.courses where id = $1", [
+    courseId,
+  ]);
   expect(c.content_locale).toBe("ar");
 });
 

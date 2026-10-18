@@ -37,7 +37,11 @@ export function PageHeader({
           </Link>
         )}
         <div className="flex min-w-0 flex-col gap-1">
-          <Title id={Title === "h1" ? "page-title" : undefined} tabIndex={-1} className={cn(size === "large" ? "large-title" : "headline", "focus:outline-none")}>
+          <Title
+            id={Title === "h1" ? "page-title" : undefined}
+            tabIndex={-1}
+            className={cn(size === "large" ? "large-title" : "headline", "focus:outline-none")}
+          >
             {title}
           </Title>
           {subtitle && <p className="subhead text-ink-muted">{subtitle}</p>}

@@ -31,7 +31,10 @@ async function pptxWith(slides: string[][]): Promise<Uint8Array> {
   const numbers = slides.map((_, i) => (i === 1 ? 10 : i + 1));
   slides.forEach((paras, i) => {
     const body = paras.map((p) => `<a:p><a:r><a:t>${p}</a:t></a:r></a:p>`).join("");
-    zip.file(`ppt/slides/slide${numbers[i]}.xml`, `<p:sld><p:cSld><p:spTree><p:sp><p:txBody>${body}</p:txBody></p:sp></p:spTree></p:cSld></p:sld>`);
+    zip.file(
+      `ppt/slides/slide${numbers[i]}.xml`,
+      `<p:sld><p:cSld><p:spTree><p:sp><p:txBody>${body}</p:txBody></p:sp></p:spTree></p:cSld></p:sld>`,
+    );
   });
   zip.file("ppt/slides/_rels/slide1.xml.rels", "<Relationships/>");
   return zip.generateAsync({ type: "uint8array" });
@@ -63,7 +66,12 @@ describe("text", () => {
 
 describe("PDF", () => {
   it("reads the text layer page by page", async () => {
-    const r = await readPdf(await pdfWith(["Photosynthesis turns light into chemical energy in plants.", "Chlorophyll absorbs red and blue light in the chloroplasts."]));
+    const r = await readPdf(
+      await pdfWith([
+        "Photosynthesis turns light into chemical energy in plants.",
+        "Chlorophyll absorbs red and blue light in the chloroplasts.",
+      ]),
+    );
     expect(r.pages).toBe(2);
     expect(r.scanned).toBe(false);
     expect(r.text).toContain("Chlorophyll absorbs");
@@ -124,10 +132,17 @@ describe("chunking", () => {
 
 describe("basic splitter", () => {
   it("uses a short first line as the title and makes modules from paragraphs", () => {
-    const r = splitChunk("Photosynthesis\n\nPlants use light. They make sugar.\n\nChlorophyll is green. It absorbs light.\n\nThe Calvin cycle fixes carbon.");
+    const r = splitChunk(
+      "Photosynthesis\n\nPlants use light. They make sugar.\n\nChlorophyll is green. It absorbs light.\n\nThe Calvin cycle fixes carbon.",
+    );
     expect(r.title).toBe("Photosynthesis");
     expect(r.modules).toHaveLength(3);
-    expect(r.modules[0]).toMatchObject({ heading: "Plants use light.", key_points: ["Plants use light.", "They make sugar."], quiz: null, check: FALLBACK_NOTE });
+    expect(r.modules[0]).toMatchObject({
+      heading: "Plants use light.",
+      key_points: ["Plants use light.", "They make sugar."],
+      quiz: null,
+      check: FALLBACK_NOTE,
+    });
   });
 
   it("never makes more than the maximum", () => {

@@ -433,7 +433,7 @@
       "status_generating": "En génération",
       "status_failed": "Échec",
       "status_ready": "Prêt",
-      "status_overdue": "Échéance passée",
+      "status_overdue": "En retard",
       "deleted": "Cours supprimé."
     },
     "newCourse": {

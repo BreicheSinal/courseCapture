@@ -7,7 +7,13 @@ import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Field";
 import { Icon } from "@/components/ui/Icon";
 import { IconButton } from "@/components/ui/IconButton";
-import { deleteCourse, moveModule, renameCourse, type DeleteCourseState, type RenameState } from "@/lib/courses/actions";
+import {
+  deleteCourse,
+  moveModule,
+  renameCourse,
+  type DeleteCourseState,
+  type RenameState,
+} from "@/lib/courses/actions";
 
 /** T3 title with "Rename course": the title becomes a field and a Save button. */
 export function RenameCourse({ courseId, title }: { courseId: string; title: string }) {
@@ -32,7 +38,13 @@ export function RenameCourse({ courseId, title }: { courseId: string; title: str
         <h1 ref={headingRef} tabIndex={-1} className="large-title min-w-0 break-words focus:outline-none" dir="auto">
           {title}
         </h1>
-        <IconButton icon="pencil" label={t("rename")} size="xs" onClick={() => setEditing(true)} />
+        <IconButton
+          icon="pencil"
+          label={t("rename")}
+          size="xs"
+          className="min-h-control min-w-control"
+          onClick={() => setEditing(true)}
+        />
       </div>
     );
   return (
@@ -49,7 +61,7 @@ export function RenameCourse({ courseId, title }: { courseId: string; title: str
         className="min-w-64 flex-1"
         error={state?.error ? te(state.error) : undefined}
       />
-      <Button type="submit" variant="primary" busy={saving}>
+      <Button type="submit" variant="secondary" busy={saving}>
         {t("saveTitle")}
       </Button>
       <Button variant="ghost" onClick={() => setEditing(false)}>
@@ -104,7 +116,7 @@ export function CourseMenu({ courseId, previewHref }: { courseId: string; previe
       <button
         ref={trigger}
         type="button"
-        className="cc-iconbtn"
+        className="cc-iconbtn min-h-control min-w-control"
         aria-label={t("more")}
         title={t("more")}
         aria-haspopup="menu"
@@ -115,7 +127,7 @@ export function CourseMenu({ courseId, previewHref }: { courseId: string; previe
       </button>
       {open && (
         <div role="menu" aria-label={t("more")} className="cc-menu__panel cc-menu__panel--floating cc-menu__panel--end">
-          <Link href={previewHref} role="menuitem" className="cc-menu__item no-underline">
+          <Link href={previewHref} role="menuitem" className="cc-menu__item min-h-control no-underline">
             <Icon name="eye" />
             {t("preview")}
           </Link>
@@ -126,7 +138,7 @@ export function CourseMenu({ courseId, previewHref }: { courseId: string; previe
             <button
               type={sure ? "submit" : "button"}
               role="menuitem"
-              className="cc-menu__item cc-menu__item--danger w-full"
+              className="cc-menu__item cc-menu__item--danger min-h-control w-full"
               aria-busy={deleting || undefined}
               onClick={(e) => {
                 if (!sure) {
@@ -151,7 +163,17 @@ export function CourseMenu({ courseId, previewHref }: { courseId: string; previe
 }
 
 /** T3 reorder: up/down IconButtons, announced in a live region. */
-export function MoveButtons({ moduleId, heading, first, last }: { moduleId: string; heading: string; first: boolean; last: boolean }) {
+export function MoveButtons({
+  moduleId,
+  heading,
+  first,
+  last,
+}: {
+  moduleId: string;
+  heading: string;
+  first: boolean;
+  last: boolean;
+}) {
   const t = useTranslations("teacher.review");
   const te = useTranslations("teacher.courseErrors");
   const [pending, start] = useTransition();
@@ -166,6 +188,7 @@ export function MoveButtons({ moduleId, heading, first, last }: { moduleId: stri
       <IconButton
         icon="arrowUp"
         size="xs"
+        className="min-h-control min-w-control"
         label={t("moveUp", { heading })}
         aria-disabled={first || pending || undefined}
         onClick={() => !first && !pending && move(-1)}
@@ -173,6 +196,7 @@ export function MoveButtons({ moduleId, heading, first, last }: { moduleId: stri
       <IconButton
         icon="arrowDown"
         size="xs"
+        className="min-h-control min-w-control"
         label={t("moveDown", { heading })}
         aria-disabled={last || pending || undefined}
         onClick={() => !last && !pending && move(1)}

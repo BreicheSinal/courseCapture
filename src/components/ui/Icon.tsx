@@ -55,7 +55,14 @@ const paths = {
 
 export type IconName = keyof typeof paths;
 
-const directional: ReadonlySet<IconName> = new Set(["arrowForward", "chevronBack", "chevronForward", "signOut", "megaphone", "list"]);
+const directional: ReadonlySet<IconName> = new Set([
+  "arrowForward",
+  "chevronBack",
+  "chevronForward",
+  "signOut",
+  "megaphone",
+  "list",
+]);
 
 export function Icon({ name, className, ...props }: { name: IconName } & Omit<SVGProps<SVGSVGElement>, "children">) {
   return (

@@ -21,7 +21,10 @@ export default async function Page({ params }: Props) {
   const course = await getBuilderCourse(courseId);
   if (!course) notFound();
   if (course.job && course.job.step !== "done") redirect({ href: `/teacher/courses/${courseId}/generating`, locale });
-  const [modules, targets] = await Promise.all([getBuilderModules(courseId, course.content_locale), getAssignTargets(courseId)]);
+  const [modules, targets] = await Promise.all([
+    getBuilderModules(courseId, course.content_locale),
+    getAssignTargets(courseId),
+  ]);
   const today = new Date().toISOString().slice(0, 10); // dates are UTC (decision #41)
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-5">

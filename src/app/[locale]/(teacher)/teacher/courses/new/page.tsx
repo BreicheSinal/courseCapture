@@ -17,10 +17,17 @@ export async function generateMetadata(): Promise<Metadata> {
 
 /** T1 New course. `?class=` (from a class page) sets where "Back" goes. */
 export default async function Page({ searchParams }: PageProps<"/[locale]/teacher/courses/new">) {
-  const [sp, session, t, usage] = await Promise.all([searchParams, getSession(), getTranslations("teacher.newCourse"), getUsageToday()]);
+  const [sp, session, t, usage] = await Promise.all([
+    searchParams,
+    getSession(),
+    getTranslations("teacher.newCourse"),
+    getUsageToday(),
+  ]);
   const classId = typeof sp.class === "string" ? sp.class : null;
   const cls = classId ? await getClass(classId) : null;
-  const back = cls ? { href: `/teacher/classes/${cls.id}`, label: t("backTo", { name: cls.name }) } : { href: "/teacher/courses", label: t("backToCourses") };
+  const back = cls
+    ? { href: `/teacher/classes/${cls.id}`, label: t("backTo", { name: cls.name }) }
+    : { href: "/teacher/courses", label: t("backToCourses") };
   const left = Math.max(0, dailyLimits().generate - (usage.generate ?? 0));
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-5">

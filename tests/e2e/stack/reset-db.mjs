@@ -23,7 +23,9 @@ export async function resetDb() {
   await c.connect();
   const root = process.cwd();
   await c.query(readFileSync(join(root, "supabase/tests/helpers/auth-shim.sql"), "utf8"));
-  for (const f of readdirSync(join(root, "supabase/migrations")).filter((f) => f.endsWith(".sql")).sort()) {
+  for (const f of readdirSync(join(root, "supabase/migrations"))
+    .filter((f) => f.endsWith(".sql"))
+    .sort()) {
     await c.query(readFileSync(join(root, "supabase/migrations", f), "utf8"));
   }
   await c.end();

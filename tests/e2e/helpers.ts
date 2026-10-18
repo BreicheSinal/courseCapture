@@ -9,9 +9,15 @@ const { sign } = jwt;
 const url = `${(process.env.TEST_DATABASE_URL ?? "postgres://postgres:postgres@localhost:5432/postgres").replace(/\/[^/]*$/, "")}/${process.env.E2E_DB ?? "cc_e2e"}`;
 const pool = new pg.Pool({ connectionString: url, max: 3 });
 
-export const sql = async <T = Record<string, unknown>>(text: string, params: unknown[] = []) => (await pool.query(text, params)).rows as T[];
+export const sql = async <T = Record<string, unknown>>(text: string, params: unknown[] = []) =>
+  (await pool.query(text, params)).rows as T[];
 
-export async function createUser(email: string, role: "teacher" | "student", name: string, opts: { approved?: boolean; uiLocale?: string } = {}) {
+export async function createUser(
+  email: string,
+  role: "teacher" | "student",
+  name: string,
+  opts: { approved?: boolean; uiLocale?: string } = {},
+) {
   const [{ id }] = await sql<{ id: string }>(
     "insert into auth.users (email, raw_user_meta_data, email_confirmed_at) values ($1, $2, now()) returning id",
     [email, { role, full_name: name }],
@@ -64,7 +70,15 @@ export async function signIn(page: Page, user: { id: string; email: string }, op
     expires_in: 86400,
     expires_at: now + 86400,
     refresh_token: "standin-refresh",
-    user: { id: user.id, email: user.email, aud: "authenticated", role: "authenticated", app_metadata: {}, user_metadata: {}, created_at: new Date().toISOString() },
+    user: {
+      id: user.id,
+      email: user.email,
+      aud: "authenticated",
+      role: "authenticated",
+      app_metadata: {},
+      user_metadata: {},
+      created_at: new Date().toISOString(),
+    },
   };
   const value = `base64-${Buffer.from(JSON.stringify(session)).toString("base64url")}`;
   const cookies = [{ name: "sb-localhost-auth-token", value, domain: "localhost", path: "/" }];
@@ -74,8 +88,17 @@ export async function signIn(page: Page, user: { id: string; email: string }, op
 
 /** No axe violations at WCAG 2.2 AA (docs: Accessible). */
 export async function expectAccessible(page: Page) {
-  const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"]).analyze();
-  if (process.env.AXE_DEBUG) console.log(JSON.stringify(results.violations.map((v) => v.nodes.map((n) => [n.html, n.failureSummary])), null, 1));
+  const results = await new AxeBuilder({ page })
+    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
+    .analyze();
+  if (process.env.AXE_DEBUG)
+    console.log(
+      JSON.stringify(
+        results.violations.map((v) => v.nodes.map((n) => [n.html, n.failureSummary])),
+        null,
+        1,
+      ),
+    );
   expect(results.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(" ")).join(", ")}`)).toEqual([]);
 }
 

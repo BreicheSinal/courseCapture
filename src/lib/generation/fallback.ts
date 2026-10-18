@@ -8,7 +8,8 @@ import type { GeneratedChunk, GeneratedModule } from "@/lib/ai/schemas";
  */
 export const FALLBACK_NOTE = "@fallback";
 
-const sentencesOf = (p: string) => (p.match(/[^.!?。؟]+[.!?。؟]+|[^.!?。؟]+$/g) ?? [p]).map((s) => s.trim()).filter(Boolean);
+const sentencesOf = (p: string) =>
+  (p.match(/[^.!?。؟]+[.!?。؟]+|[^.!?。؟]+$/g) ?? [p]).map((s) => s.trim()).filter(Boolean);
 
 function words(s: string, n: number) {
   const w = s.split(/\s+/).filter(Boolean);

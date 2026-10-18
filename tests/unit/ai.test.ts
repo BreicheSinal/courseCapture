@@ -150,7 +150,14 @@ describe("the fake provider runs the whole layer", () => {
   it("retries once, then reports invalid output", async () => {
     vi.stubEnv("AI_PROVIDER", "fake");
     await expect(
-      ai.generateCourseChunk({ text: "[[fail]] text", language: "en", level: "beginner", moduleRange: "3–7", notes: "", teacherLanguage: "en" }),
+      ai.generateCourseChunk({
+        text: "[[fail]] text",
+        language: "en",
+        level: "beginner",
+        moduleRange: "3–7",
+        notes: "",
+        teacherLanguage: "en",
+      }),
     ).rejects.toThrow();
   });
 });

@@ -56,7 +56,8 @@ export function NewCourseForm({
   const dropErrorId = useId();
 
   const [state, action, pending] = useActionState<StartState, FormData>(startGeneration, undefined);
-  const size = (bytes: number) => format.number(bytes / 1024 / 1024, { maximumFractionDigits: 1 }) + " MB";
+  const size = (bytes: number) =>
+    format.number(bytes / 1024 / 1024, { style: "unit", unit: "megabyte", maximumFractionDigits: 1 });
   const errorText = (e: NewCourseError | "uploadFailed", bytes?: number) =>
     e === "size" ? t("errors.size", { size: size(bytes ?? 0) }) : t(`errors.${e}`);
 
@@ -83,10 +84,15 @@ export function NewCourseForm({
     req.open("PUT", ticket.signedUrl);
     req.setRequestHeader("content-type", ticket.contentType);
     req.setRequestHeader("x-upsert", "false");
-    req.upload.onprogress = (e) => setUpload({ state: "uploading", name: file.name, size: file.size, loaded: e.loaded });
+    req.upload.onprogress = (e) =>
+      setUpload({ state: "uploading", name: file.name, size: file.size, loaded: e.loaded });
     req.onload = () => {
       const ok = req.status >= 200 && req.status < 300;
-      setUpload(ok ? { state: "done", name: file.name, size: file.size, uploadId: ticket.uploadId } : { state: "error", error: "uploadFailed" });
+      setUpload(
+        ok
+          ? { state: "done", name: file.name, size: file.size, uploadId: ticket.uploadId }
+          : { state: "error", error: "uploadFailed" },
+      );
       if (waitingRef.current) {
         wait(false);
         // After React renders the upload's hidden fields.
@@ -108,7 +114,8 @@ export function NewCourseForm({
 
   const chars = [...text].length;
   const limitReached = generationsLeft <= 0;
-  const ready = !limitReached && (mode === "paste" ? chars >= MIN_CHARS && chars <= MAX_CHARS : upload.state === "done");
+  const ready =
+    !limitReached && (mode === "paste" ? chars >= MIN_CHARS && chars <= MAX_CHARS : upload.state === "done");
   const busy = pending || waiting;
   const serverError = state?.error ? t(`errors.${state.error}`) : null;
   const pct = upload.state === "uploading" ? Math.round((upload.loaded / upload.size) * 100) : 100;
@@ -189,7 +196,7 @@ export function NewCourseForm({
               )}
               {(upload.state === "uploading" || upload.state === "done") && (
                 <Card className="cc-file">
-                  <span className="grid size-10 flex-none place-items-center rounded-sm bg-surface-sunken">
+                  <span className="grid size-control flex-none place-items-center rounded-sm bg-surface-sunken">
                     <Icon name="file" width={20} height={20} />
                   </span>
                   <span className="cc-file__body">
@@ -197,7 +204,9 @@ export function NewCourseForm({
                       <span className="cc-file__name">
                         <bdi>{upload.name}</bdi>
                       </span>
-                      {upload.state === "uploading" && <span className="caption text-ink-muted tabular-nums">{pct}%</span>}
+                      {upload.state === "uploading" && (
+                        <span className="caption text-ink-muted tabular-nums">{pct}%</span>
+                      )}
                     </span>
                     {upload.state === "uploading" && (
                       <div
@@ -212,11 +221,14 @@ export function NewCourseForm({
                       </div>
                     )}
                     <span className="cc-file__meta" id={liveId} aria-live="polite">
-                      {upload.state === "uploading" ? t("uploading", { size: size(upload.size) }) : t("uploaded", { size: size(upload.size) })}
+                      {upload.state === "uploading"
+                        ? t("uploading", { size: size(upload.size) })
+                        : t("uploaded", { size: size(upload.size) })}
                     </span>
                   </span>
                   <IconButton
                     icon="close"
+                    className="min-h-control min-w-control"
                     label={upload.state === "uploading" ? t("cancelUpload") : t("removeFile", { name: upload.name })}
                     onClick={clear}
                   />
@@ -291,7 +303,9 @@ export function NewCourseForm({
             variant="primary"
             block
             busy={busy}
-            aria-disabled={!ready && !(!limitReached && mode === "file" && upload.state === "uploading") ? true : undefined}
+            aria-disabled={
+              !ready && !(!limitReached && mode === "file" && upload.state === "uploading") ? true : undefined
+            }
           >
             {waiting ? t("waitingUpload") : pending ? t("starting") : t("generate")}
           </Button>

@@ -1,9 +1,24 @@
 import "server-only";
 import { NonRetriableError } from "inngest";
-import { failJob, isPermanent, JobError, runGeneration, type GenerationEvent, type JobErrorKey } from "@/lib/generation/run";
+import {
+  failJob,
+  isPermanent,
+  JobError,
+  runGeneration,
+  type GenerationEvent,
+  type JobErrorKey,
+} from "@/lib/generation/run";
 import { GENERATE_EVENT, inngest } from "./client";
 
-const keys: JobErrorKey[] = ["unsupported_type", "too_large", "not_pptx", "unreadable", "no_text", "scan_needs_ai", "source_missing"];
+const keys: JobErrorKey[] = [
+  "unsupported_type",
+  "too_large",
+  "not_pptx",
+  "unreadable",
+  "no_text",
+  "scan_needs_ai",
+  "source_missing",
+];
 
 /**
  * Background course generation (issue #31). Each step retries on its own;

@@ -433,7 +433,7 @@
       "status_generating": "Generando",
       "status_failed": "Error",
       "status_ready": "Listo",
-      "status_overdue": "Vencido",
+      "status_overdue": "Con retraso",
       "deleted": "Curso eliminado."
     },
     "newCourse": {
@@ -594,7 +594,7 @@
       "noQuestion": "sin cuestionario",
       "diagram": "1 diagrama",
       "state_checked": "Revisado",
-      "state_check": "Revisar",
+      "state_check": "Necesita revisión",
       "state_fallback": "Divisor básico",
       "fallbackModule": "Escrito por el divisor básico a partir de tu texto",
       "state_notReviewed": "Sin revisar",

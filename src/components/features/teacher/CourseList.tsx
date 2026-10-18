@@ -48,7 +48,9 @@ export function CourseList({ courses, deleted = false }: { courses: TeacherCours
           {courses.map((c) => {
             const where = c.classes.length
               ? format.list(
-                  c.classes.map((k) => (k.section ? tt("classWithSection", { name: k.name, section: k.section }) : k.name)),
+                  c.classes.map((k) =>
+                    k.section ? tt("classWithSection", { name: k.name, section: k.section }) : k.name,
+                  ),
                   { type: "unit" },
                 )
               : t("noClass");
@@ -60,11 +62,7 @@ export function CourseList({ courses, deleted = false }: { courses: TeacherCours
             const failed = c.job?.step === "failed";
             const href = running || failed ? `/teacher/courses/${c.id}/generating` : `/teacher/courses/${c.id}/review`;
             const overdue = c.classes.some((k) => k.due_date && k.due_date < today);
-            const line = running
-              ? t("generatingLine", { percent: c.job!.percent })
-              : failed
-                ? t("failedLine")
-                : meta;
+            const line = running ? t("generatingLine", { percent: c.job!.percent }) : failed ? t("failedLine") : meta;
             return (
               <li key={c.id} className="h-full">
                 <Link href={href} className="cc-card cc-card--stack cc-course h-full">
@@ -73,7 +71,7 @@ export function CourseList({ courses, deleted = false }: { courses: TeacherCours
                       <bdi>{c.title}</bdi>
                     </span>
                     {running ? (
-                      <span className="footnote flex flex-none items-center gap-1.5 font-semibold text-accent-text">
+                      <span className="footnote flex flex-none items-center gap-2 font-semibold text-accent-text">
                         <span className="size-2 rounded-pill bg-accent" aria-hidden="true" />
                         {t("status_generating")}
                       </span>

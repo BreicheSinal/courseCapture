@@ -60,7 +60,10 @@ export function ModuleEditor({
     m.quiz
       ? {
           question: m.quiz.question,
-          options: m.quiz.options.length >= 4 ? m.quiz.options : [...m.quiz.options, ...Array(4 - m.quiz.options.length).fill("")],
+          options:
+            m.quiz.options.length >= 4
+              ? m.quiz.options
+              : [...m.quiz.options, ...Array(4 - m.quiz.options.length).fill("")],
           answer_index: m.answer?.answer_index ?? -1,
           explanation: m.answer?.explanation ?? "",
         }
@@ -111,7 +114,13 @@ export function ModuleEditor({
             <Icon name="check" width={16} height={16} />
             {t("checked")}
           </span>
-          <Button variant="ghost" size="sm" busy={unchecking} onClick={() => startUncheck(async () => void (await uncheckModule(m.id)))}>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="min-h-control"
+            busy={unchecking}
+            onClick={() => startUncheck(async () => void (await uncheckModule(m.id)))}
+          >
             {t("uncheck")}
           </Button>
         </div>
@@ -137,7 +146,15 @@ export function ModuleEditor({
             lang={contentLocale}
             error={state?.error === "headingRequired" ? err : undefined}
           />
-          <TextArea label={t("body")} value={body} onChange={(e) => setBody(e.currentTarget.value)} maxLength={2000} rows={4} dir={dir} lang={contentLocale} />
+          <TextArea
+            label={t("body")}
+            value={body}
+            onChange={(e) => setBody(e.currentTarget.value)}
+            maxLength={2000}
+            rows={4}
+            dir={dir}
+            lang={contentLocale}
+          />
         </Card>
 
         <ListSection
@@ -158,7 +175,12 @@ export function ModuleEditor({
                 lang={contentLocale}
                 onChange={(e) => setPoints(points.map((x, j) => (j === i ? e.currentTarget.value : x)))}
               />
-              <IconButton icon="trash" label={t("removeKeyPoint", { n: i + 1 })} onClick={() => setPoints(points.filter((_, j) => j !== i))} />
+              <IconButton
+                icon="trash"
+                className="min-h-control min-w-control"
+                label={t("removeKeyPoint", { n: i + 1 })}
+                onClick={() => setPoints(points.filter((_, j) => j !== i))}
+              />
             </div>
           ))}
         </ListSection>
@@ -168,19 +190,30 @@ export function ModuleEditor({
             <h2 id="diagram-title" className="headline">
               {t("diagram")}
             </h2>
-            {m.visual_svg && <Badge variant="info" tint size="sm">{t("aiDrawn")}</Badge>}
+            {m.visual_svg && (
+              <Badge variant="info" tint size="sm">
+                {t("aiDrawn")}
+              </Badge>
+            )}
           </div>
           {m.visual_svg ? (
             <>
               <div
                 role="img"
-                aria-label={alt || m.visual_alt || ""}
+                aria-label={alt || m.visual_alt || caption || t("diagram")}
                 lang={contentLocale}
                 className="cc-diagram cc-diagram--edit rounded-md border border-line p-3 text-ink"
                 // Sanitised when stored and again when read (src/lib/svg/sanitize.ts).
                 dangerouslySetInnerHTML={{ __html: m.visual_svg }}
               />
-              <Field label={t("caption")} value={caption} onChange={(e) => setCaption(e.currentTarget.value)} maxLength={200} dir={dir} lang={contentLocale} />
+              <Field
+                label={t("caption")}
+                value={caption}
+                onChange={(e) => setCaption(e.currentTarget.value)}
+                maxLength={200}
+                dir={dir}
+                lang={contentLocale}
+              />
               <TextArea
                 label={t("alt")}
                 hint={t("altHint")}
@@ -199,7 +232,14 @@ export function ModuleEditor({
           )}
           <div className="flex flex-wrap gap-2">
             {aiReady && (
-              <Button type="submit" formAction={redraw} variant="secondary" busy={drawing} aria-disabled={redrawsLeft <= 0 || undefined}>
+              <Button
+                type="submit"
+                formAction={redraw}
+                variant="secondary"
+                busy={drawing}
+                aria-disabled={redrawsLeft <= 0 || undefined}
+                onClick={(e) => redrawsLeft <= 0 && e.preventDefault()}
+              >
                 <Icon name="refresh" />
                 {drawing ? t("drawing") : m.visual_svg ? t("regenerate") : t("draw")}
               </Button>
@@ -208,7 +248,11 @@ export function ModuleEditor({
               <Button
                 variant="secondary"
                 busy={removing}
-                onClick={() => (sureRemove ? startRemove(async () => void (await removeVisual(m.id), setSureRemove(false))) : setSureRemove(true))}
+                onClick={() =>
+                  sureRemove
+                    ? startRemove(async () => void (await removeVisual(m.id), setSureRemove(false)))
+                    : setSureRemove(true)
+                }
               >
                 <Icon name="trash" />
                 {sureRemove ? t("removeSure") : t("removeDiagram")}
@@ -216,7 +260,13 @@ export function ModuleEditor({
             )}
           </div>
           <p className="footnote text-ink-muted" aria-live="polite">
-            {visualState?.error ? <span className="text-danger">{te(visualState.error)}</span> : aiReady ? t("redrawsLeft", { count: redrawsLeft }) : t("noAiDraw")}
+            {visualState?.error ? (
+              <span className="text-danger">{te(visualState.error)}</span>
+            ) : aiReady ? (
+              t("redrawsLeft", { count: redrawsLeft })
+            ) : (
+              t("noAiDraw")
+            )}
           </p>
         </Card>
 
@@ -247,14 +297,25 @@ export function ModuleEditor({
                 lang={contentLocale}
                 onChange={(e) => setCards(cards.map((x, j) => (j === i ? { ...x, a: e.currentTarget.value } : x)))}
               />
-              <Button variant="ghost" size="sm" className="self-start" onClick={() => setCards(cards.filter((_, j) => j !== i))}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="min-h-control self-start"
+                onClick={() => setCards(cards.filter((_, j) => j !== i))}
+              >
                 {t("removeCard", { n: i + 1 })}
               </Button>
             </fieldset>
           ))}
         </ListSection>
 
-        <QuizSection quiz={quiz} setQuiz={setQuiz} dir={dir} lang={contentLocale} error={state?.error === "answerRequired" || state?.error === "optionsRequired" ? err : null} />
+        <QuizSection
+          quiz={quiz}
+          setQuiz={setQuiz}
+          dir={dir}
+          lang={contentLocale}
+          error={state?.error === "answerRequired" || state?.error === "optionsRequired" ? err : null}
+        />
 
         {err && !["headingRequired", "altRequired", "answerRequired", "optionsRequired"].includes(state!.error!) && (
           <p className="subhead text-danger" role="alert">
@@ -269,13 +330,30 @@ export function ModuleEditor({
         )}
 
         <div className="sticky bottom-0 z-10 -mx-4 flex flex-wrap gap-2 border-t border-line bg-surface px-4 py-3 sm:mx-0 sm:rounded-md sm:border">
-          <Button type="submit" name="intent" value="check" variant="primary" busy={saving} className="flex-1 sm:flex-none">
+          <Button
+            type="submit"
+            name="intent"
+            value="check"
+            variant="primary"
+            busy={saving}
+            className="flex-1 sm:flex-none"
+          >
             {t("markChecked")}
           </Button>
-          <Button type="submit" name="intent" value="save" variant="secondary" busy={saving} className="flex-1 sm:flex-none">
+          <Button
+            type="submit"
+            name="intent"
+            value="save"
+            variant="secondary"
+            busy={saving}
+            className="flex-1 sm:flex-none"
+          >
             {t("save")}
           </Button>
-          <Link href={`/teacher/courses/${courseId}/preview?module=${m.position}`} className={buttonClasses({ variant: "ghost" })}>
+          <Link
+            href={`/teacher/courses/${courseId}/preview?module=${m.position}`}
+            className={buttonClasses({ variant: "ghost" })}
+          >
             {t("preview")}
           </Link>
           <span className="footnote ms-auto self-center text-ink-muted">{t("position", { n: m.position, total })}</span>
@@ -351,12 +429,23 @@ function QuizSection({
         </>
       ) : (
         <>
-          <TextArea label={t("question")} value={quiz.question} rows={2} maxLength={300} dir={dir} lang={lang} onChange={(e) => setQuiz({ ...quiz, question: e.currentTarget.value })} />
+          <TextArea
+            label={t("question")}
+            value={quiz.question}
+            rows={2}
+            maxLength={300}
+            dir={dir}
+            lang={lang}
+            onChange={(e) => setQuiz({ ...quiz, question: e.currentTarget.value })}
+          />
           <fieldset className="cc-group flex flex-col gap-2" aria-describedby={error ? `${group}-err` : undefined}>
             <legend className="subhead mb-1 font-semibold">{t("options")}</legend>
             {quiz.options.map((o, i) => (
               <div key={i} className="flex items-center gap-3">
-                <label className="cc-check cc-check--radio flex-none" title={t("correctN", { n: i + 1 })}>
+                <label
+                  className="cc-check cc-check--radio min-h-control min-w-control flex-none items-center justify-center"
+                  title={t("correctN", { n: i + 1 })}
+                >
                   <input
                     type="radio"
                     className="cc-check__input"
@@ -374,7 +463,9 @@ function QuizSection({
                   maxLength={200}
                   dir={dir}
                   lang={lang}
-                  onChange={(e) => setQuiz({ ...quiz, options: quiz.options.map((x, j) => (j === i ? e.currentTarget.value : x)) })}
+                  onChange={(e) =>
+                    setQuiz({ ...quiz, options: quiz.options.map((x, j) => (j === i ? e.currentTarget.value : x)) })
+                  }
                 />
               </div>
             ))}
@@ -387,7 +478,16 @@ function QuizSection({
               </span>
             )}
           </fieldset>
-          <TextArea label={t("explanation")} hint={t("explanationHint")} value={quiz.explanation} rows={2} maxLength={600} dir={dir} lang={lang} onChange={(e) => setQuiz({ ...quiz, explanation: e.currentTarget.value })} />
+          <TextArea
+            label={t("explanation")}
+            hint={t("explanationHint")}
+            value={quiz.explanation}
+            rows={2}
+            maxLength={600}
+            dir={dir}
+            lang={lang}
+            onChange={(e) => setQuiz({ ...quiz, explanation: e.currentTarget.value })}
+          />
           <Button variant="ghost" className="self-start" onClick={() => setQuiz(null)}>
             {t("removeQuiz")}
           </Button>

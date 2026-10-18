@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { buttonClasses } from "@/components/ui/Button";
+import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Icon } from "@/components/ui/Icon";
 import { Flashcards } from "@/components/features/student/Flashcards";
@@ -25,6 +26,7 @@ export function CoursePreview({
   lang: string;
 }) {
   const t = useTranslations("teacher.preview");
+  const te = useTranslations("teacher.editModule");
   const base = `/teacher/courses/${courseId}/preview?module=`;
   const prev = modules.find((m) => m.position === current.position - 1);
   const next = modules.find((m) => m.position === current.position + 1);
@@ -56,7 +58,9 @@ export function CoursePreview({
 
         <article className="flex min-w-0 flex-col gap-5" lang={lang}>
           <header className="flex flex-col gap-1">
-            <span className="eyebrow text-accent-text">{t("moduleOf", { n: current.position, total: modules.length })}</span>
+            <span className="eyebrow text-accent-text">
+              {t("moduleOf", { n: current.position, total: modules.length })}
+            </span>
             <h2 className="title" dir="auto">
               {current.heading}
             </h2>
@@ -83,10 +87,13 @@ export function CoursePreview({
           )}
           {current.visual_svg && (
             <Card className="flex flex-col gap-3">
+              <Badge variant="info" tint size="sm" className="self-start">
+                {te("aiDrawn")}
+              </Badge>
               <figure className="m-0 flex flex-col gap-3">
                 <div
                   role="img"
-                  aria-label={current.visual_alt ?? ""}
+                  aria-label={current.visual_alt || current.visual_caption || te("diagram")}
                   className="cc-diagram overflow-x-auto rounded-md border border-line p-3 text-ink"
                   // Sanitised when stored and again when read (src/lib/svg/sanitize.ts).
                   dangerouslySetInnerHTML={{ __html: current.visual_svg }}
@@ -140,7 +147,10 @@ export function CoursePreview({
             ) : (
               <span />
             )}
-            <Link href={`/teacher/courses/${courseId}/modules/${current.position}/edit`} className={buttonClasses({ variant: "ghost" })}>
+            <Link
+              href={`/teacher/courses/${courseId}/modules/${current.position}/edit`}
+              className={buttonClasses({ variant: "ghost" })}
+            >
               <Icon name="pencil" />
               {t("edit")}
             </Link>

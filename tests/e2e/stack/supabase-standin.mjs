@@ -22,7 +22,10 @@ import pg from "pg";
 import jwt from "./jwt.cjs";
 
 const PORT = Number(process.env.PORT ?? 54321);
-const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL ?? "postgres://postgres:postgres@localhost:5432/postgres", max: 10 });
+const pool = new pg.Pool({
+  connectionString: process.env.DATABASE_URL ?? "postgres://postgres:postgres@localhost:5432/postgres",
+  max: 10,
+});
 
 // ---------------------------------------------------------------- JWT
 const { sign, verify, anonKey, serviceKey } = jwt;
@@ -155,8 +158,16 @@ async function rest(req, res, url, claims) {
         return `${ident(k)} => $${vals.length}::${type}`;
       });
       const call = `public.${ident(fn)}(${named.join(", ")})`;
-      if (m.set || m.typname === "record") return { rows: (await c.query(`select to_jsonb(r) as j from ${call} r`, vals)).rows.map((r) => r.j), set: true };
-      if (m.kind === "c") return { rows: (await c.query(`select to_jsonb(r) as j from ${call} r`, vals)).rows.map((r) => r.j), set: false };
+      if (m.set || m.typname === "record")
+        return {
+          rows: (await c.query(`select to_jsonb(r) as j from ${call} r`, vals)).rows.map((r) => r.j),
+          set: true,
+        };
+      if (m.kind === "c")
+        return {
+          rows: (await c.query(`select to_jsonb(r) as j from ${call} r`, vals)).rows.map((r) => r.j),
+          set: false,
+        };
       if (m.typname === "void") {
         await c.query(`select ${call}`, vals);
         return { value: null };
@@ -177,7 +188,10 @@ async function rest(req, res, url, claims) {
   const rows = await asRole(claims, async (c) => {
     if (req.method === "GET" || req.method === "HEAD") {
       const limit = params.get("limit") ? `limit ${Number(params.get("limit"))}` : "";
-      const r = await c.query(`select coalesce(json_agg(t), '[]') as j from (select ${ret} from ${table} ${where} ${order(params.get("order"))} ${limit}) t`, values);
+      const r = await c.query(
+        `select coalesce(json_agg(t), '[]') as j from (select ${ret} from ${table} ${where} ${order(params.get("order"))} ${limit}) t`,
+        values,
+      );
       let count = null;
       if (counting) count = (await c.query(`select count(*)::int as n from ${table} ${where}`, values)).rows[0].n;
       return { rows: r.rows[0].j, count };
@@ -190,14 +204,19 @@ async function rest(req, res, url, claims) {
       const sql = `insert into ${table} (${cols.map(ident).join(", ")})
         select ${cols.map(ident).join(", ")} from json_populate_recordset(null::${table}, $${values.length}::json)
         returning ${ret}`;
-      const r = await c.query(`with ins as (${sql}) select coalesce(json_agg(ins), '[]') as j, count(*)::int as n from ins`, values);
+      const r = await c.query(
+        `with ins as (${sql}) select coalesce(json_agg(ins), '[]') as j, count(*)::int as n from ins`,
+        values,
+      );
       return { rows: r.rows[0].j, count: r.rows[0].n };
     }
     if (req.method === "PATCH") {
       const data = JSON.parse(body);
       values.push(JSON.stringify(data));
       const p = `$${values.length}::json`;
-      const sets = Object.keys(data).map((k) => `${ident(k)} = (json_populate_record(null::${table}, ${p})).${ident(k)}`);
+      const sets = Object.keys(data).map(
+        (k) => `${ident(k)} = (json_populate_record(null::${table}, ${p})).${ident(k)}`,
+      );
       const r = await c.query(
         `with up as (update ${table} set ${sets.join(", ")} ${where} returning ${ret}) select coalesce(json_agg(up), '[]') as j, count(*)::int as n from up`,
         values,
@@ -205,16 +224,27 @@ async function rest(req, res, url, claims) {
       return { rows: r.rows[0].j, count: r.rows[0].n };
     }
     if (req.method === "DELETE") {
-      const r = await c.query(`with del as (delete from ${table} ${where} returning ${ret}) select coalesce(json_agg(del), '[]') as j, count(*)::int as n from del`, values);
+      const r = await c.query(
+        `with del as (delete from ${table} ${where} returning ${ret}) select coalesce(json_agg(del), '[]') as j, count(*)::int as n from del`,
+        values,
+      );
       return { rows: r.rows[0].j, count: r.rows[0].n };
     }
     throw Object.assign(new Error("method not allowed"), { status: 405 });
   });
 
-  const headers = rows.count !== null && rows.count !== undefined ? { "content-range": `0-${Math.max(0, rows.rows.length - 1)}/${rows.count}` } : {};
+  const headers =
+    rows.count !== null && rows.count !== undefined
+      ? { "content-range": `0-${Math.max(0, rows.rows.length - 1)}/${rows.count}` }
+      : {};
   if (req.method === "HEAD") return send(res, 200, undefined, headers);
   if (single) {
-    if (rows.rows.length !== 1) return send(res, 406, { message: "JSON object requested, multiple (or no) rows returned", code: "PGRST116", details: `The result contains ${rows.rows.length} rows` });
+    if (rows.rows.length !== 1)
+      return send(res, 406, {
+        message: "JSON object requested, multiple (or no) rows returned",
+        code: "PGRST116",
+        details: `The result contains ${rows.rows.length} rows`,
+      });
     return send(res, 200, rows.rows[0], headers);
   }
   if (!wantRows) return send(res, 204, undefined, headers);
@@ -241,7 +271,12 @@ async function storage(req, res, url, claims) {
     if (objects.has(key)) return send(res, 409, { message: "The resource already exists" });
     const data = await readBody(req);
     if (data.length > 20 * 1024 * 1024) return send(res, 413, { message: "Payload too large" });
-    objects.set(key, { data, type: req.headers["content-type"] ?? "application/octet-stream", created_at: new Date().toISOString(), id: randomUUID() });
+    objects.set(key, {
+      data,
+      type: req.headers["content-type"] ?? "application/octet-stream",
+      created_at: new Date().toISOString(),
+      id: randomUUID(),
+    });
     return send(res, 200, { Key: key });
   }
   if (req.method === "POST" && (m = /^\/object\/list\/([^/]+)$/.exec(path))) {
@@ -254,7 +289,13 @@ async function storage(req, res, url, claims) {
       const rest = key.slice(base.length);
       const [first, ...more] = rest.split("/");
       if (more.length) seen.set(first, { name: first, id: null, created_at: null, metadata: null });
-      else seen.set(first, { name: first, id: o.id, created_at: o.created_at, metadata: { size: o.data.length, mimetype: o.type } });
+      else
+        seen.set(first, {
+          name: first,
+          id: o.id,
+          created_at: o.created_at,
+          metadata: { size: o.data.length, mimetype: o.type },
+        });
     }
     return send(res, 200, [...seen.values()].slice(0, limit));
   }
@@ -270,7 +311,8 @@ async function storage(req, res, url, claims) {
       type = file.type || "application/octet-stream";
     }
     const key = `${m[1]}/${m[2]}`;
-    if (objects.has(key) && req.headers["x-upsert"] !== "true") return send(res, 409, { message: "The resource already exists" });
+    if (objects.has(key) && req.headers["x-upsert"] !== "true")
+      return send(res, 409, { message: "The resource already exists" });
     objects.set(key, { data, type, created_at: new Date().toISOString(), id: randomUUID() });
     return send(res, 200, { Key: key, Id: objects.get(key).id });
   }
@@ -298,7 +340,10 @@ async function handle(req, res) {
   try {
     if (url.pathname === "/auth/v1/user") {
       if (!claims?.sub) return send(res, 401, { code: 401, msg: "invalid JWT", error_code: "bad_jwt" });
-      const r = await pool.query("select id, email, raw_user_meta_data, email_confirmed_at, created_at from auth.users where id = $1", [claims.sub]);
+      const r = await pool.query(
+        "select id, email, raw_user_meta_data, email_confirmed_at, created_at from auth.users where id = $1",
+        [claims.sub],
+      );
       const u = r.rows[0];
       if (!u) return send(res, 403, { code: 403, msg: "User not found", error_code: "user_not_found" });
       return send(res, 200, {

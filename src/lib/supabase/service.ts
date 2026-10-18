@@ -17,7 +17,8 @@ export function isServiceConfigured() {
 export function serviceClient() {
   if (!client) {
     const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    if (!supabaseUrl || !key) throw new Error("Set SUPABASE_SERVICE_ROLE_KEY (server only) to generate courses (docs/setup-supabase.md).");
+    if (!supabaseUrl || !key)
+      throw new Error("Set SUPABASE_SERVICE_ROLE_KEY (server only) to generate courses (docs/setup-supabase.md).");
     client = createSupabaseClient<Database>(supabaseUrl, key, {
       auth: { persistSession: false, autoRefreshToken: false },
     });

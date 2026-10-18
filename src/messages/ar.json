@@ -433,7 +433,7 @@
       "status_generating": "جارٍ الإنشاء",
       "status_failed": "فشل",
       "status_ready": "جاهزة",
-      "status_overdue": "تجاوزت الموعد",
+      "status_overdue": "متأخر",
       "deleted": "حُذفت الدورة."
     },
     "newCourse": {
