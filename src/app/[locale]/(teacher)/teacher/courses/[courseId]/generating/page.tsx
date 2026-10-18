@@ -41,7 +41,7 @@ export default async function Page({ params, searchParams }: Props) {
       <Generating
         courseId={course.id}
         title={course.title}
-        initial={await toJobStatus(job, course.jobCount)}
+        initial={await toJobStatus(job, course.jobCount, course.status)}
         back={back}
         sourceKind={job.source_kind}
       />

@@ -202,6 +202,8 @@ export async function startGeneration(_prev: StartState, formData: FormData): Pr
     .select("id")
     .single();
   if (courseError || !course) {
+    // Nothing was generated, so the day's use is given back.
+    if (usageId !== null) await service.from("ai_usage").delete().eq("id", usageId);
     await removeSource(sourcePath);
     return { error: "generic" };
   }
@@ -243,7 +245,25 @@ export type JobStatus = {
   percent: number;
 };
 
-export async function toJobStatus(job: GenerationJobRow, jobCount: number): Promise<JobStatus> {
+/** A job that hasn't finished after this long has died (e.g. a timed-out inline run). */
+const STALE_MS = 30 * 60 * 1000;
+const running = (job: GenerationJobRow) => job.step !== "done" && job.step !== "failed";
+const isStale = (job: GenerationJobRow) => running(job) && Date.parse(job.created_at) < Date.now() - STALE_MS;
+
+/** Marks a dead job failed, so the teacher can try again and the course isn't stuck "generating". */
+async function expireIfStale(job: GenerationJobRow): Promise<GenerationJobRow> {
+  if (!isStale(job)) return job;
+  const patch = { step: "failed" as const, error: "generic", finished_at: new Date().toISOString() };
+  await serviceClient().from("generation_jobs").update(patch).eq("id", job.id).not("step", "in", "(done,failed)");
+  return { ...job, ...patch };
+}
+
+/**
+ * T2's view of a job. "Try again" needs a failed job whose file is still there, fewer than
+ * MAX_ATTEMPTS tries, and a course that isn't assigned: a new run replaces every module, which
+ * would take students' progress with it (the database refuses that too).
+ */
+export async function toJobStatus(job: GenerationJobRow, jobCount: number, courseStatus: string): Promise<JobStatus> {
   const ratio = (a: number, b: number) => (b > 0 ? Math.min(1, a / b) : 0);
   const percent =
     job.step === "done"
@@ -265,7 +285,7 @@ export async function toJobStatus(job: GenerationJobRow, jobCount: number): Prom
     pagesScanned: job.pages_scanned,
     fallbackChunks: job.fallback_chunks,
     error: job.error,
-    canRetry: job.step === "failed" && Boolean(job.source_path) && jobCount < MAX_ATTEMPTS,
+    canRetry: job.step === "failed" && Boolean(job.source_path) && jobCount < MAX_ATTEMPTS && courseStatus !== "assigned",
     percent,
   };
 }
@@ -284,7 +304,8 @@ export async function getJobStatus(courseId: string): Promise<JobStatus | null> 
     .order("created_at", { ascending: false })
     .limit(MAX_ATTEMPTS);
   if (!jobs?.length) return null;
-  return toJobStatus(jobs[0], jobs.length);
+  const { data: course } = await supabase.from("courses").select("status").eq("id", id.data).maybeSingle();
+  return toJobStatus(await expireIfStale(jobs[0]), jobs.length, course?.status ?? "draft");
 }
 
 export type RetryState = { error?: NewCourseError } | undefined;
@@ -302,8 +323,9 @@ export async function retryGeneration(_prev: RetryState, formData: FormData): Pr
     .eq("course_id", id.data)
     .order("created_at", { ascending: false })
     .limit(MAX_ATTEMPTS);
-  const last = jobs?.[0];
-  if (!last || !(await toJobStatus(last, jobs.length)).canRetry) return { error: "generic" };
+  const { data: course } = await supabase.from("courses").select("status").eq("id", id.data).maybeSingle();
+  const last = jobs?.[0] ? await expireIfStale(jobs[0]) : null;
+  if (!last || !course || !(await toJobStatus(last, jobs!.length, course.status)).canRetry) return { error: "generic" };
   const { data: job, error } = await serviceClient()
     .from("generation_jobs")
     .insert({

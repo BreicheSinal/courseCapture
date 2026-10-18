@@ -19,6 +19,15 @@ alter table public.modules
 comment on column public.modules.review_note is 'Why Claude (or the basic splitter) thinks the teacher should check this module; null when nothing to flag.';
 comment on column public.modules.checked_at is 'When the teacher marked the module as checked (T4).';
 
+-- review_note can describe the quiz ("option C is ambiguous"), so students must
+-- not read it. Stage 3 granted SELECT on the whole table; from here on clients
+-- get every column except review_note, and the owning teacher reads notes
+-- through module_review_notes() below.
+revoke select on public.modules from authenticated;
+grant select (id, course_id, position, heading, body, key_points, flashcards, quiz,
+              visual_svg, visual_caption, visual_alt, checked_at)
+  on public.modules to authenticated;
+
 alter table public.modules
   add constraint modules_flashcards_shape check (jsonb_typeof(flashcards) = 'array' and jsonb_array_length(flashcards) <= 8);
 
@@ -59,6 +68,30 @@ create index generation_jobs_teacher_idx on public.generation_jobs (teacher_id, 
 -- One running job per course.
 create unique index generation_jobs_one_active_idx on public.generation_jobs (course_id)
   where step not in ('done', 'failed');
+
+-- A job belongs to the course's teacher, and an assigned course is never
+-- regenerated: a new run replaces every module, and students' progress with it.
+create or replace function public.check_generation_job()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_course public.courses;
+begin
+  select * into v_course from public.courses where id = new.course_id;
+  if v_course.teacher_id is distinct from new.teacher_id then
+    raise exception 'job_teacher_mismatch' using errcode = '23514';
+  end if;
+  if v_course.status = 'assigned' then
+    raise exception 'course_assigned' using errcode = '55000';
+  end if;
+  return new;
+end;
+$$;
+create trigger generation_jobs_check before insert on public.generation_jobs
+  for each row execute function public.check_generation_job();
 
 -- ---------------------------------------------------------------------------
 -- ai_usage: one row per AI action a person takes (cost limits, decision #27)
@@ -120,7 +153,7 @@ create or replace function public.my_ai_usage_today()
 returns table (kind text, used int)
 language sql
 stable
-security definer
+security invoker
 set search_path = ''
 as $$
   select u.kind, count(*)::int
@@ -315,6 +348,19 @@ begin
 end;
 $$;
 
+-- T3/T4: the "Check" notes for the caller's own course (students never see them).
+create or replace function public.module_review_notes(p_course uuid)
+returns table (module_id uuid, review_note text)
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select m.id, m.review_note
+  from public.modules m
+  where m.course_id = p_course and m.review_note is not null and public.owns_course(p_course);
+$$;
+
 -- T4 "Mark as checked" (and undo).
 create or replace function public.set_module_checked(p_module uuid, p_checked boolean)
 returns void
@@ -417,7 +463,9 @@ begin
     raise exception 'not_allowed' using errcode = '42501';
   end if;
   perform 1 from public.courses where id = p_course for update;
-  if exists (select 1 from public.generation_jobs j where j.course_id = p_course and j.step not in ('done', 'failed')) then
+  -- A job still unfinished after 30 minutes has died (the app marks it failed); don't let it block.
+  if exists (select 1 from public.generation_jobs j where j.course_id = p_course and j.step not in ('done', 'failed')
+             and j.created_at > now() - interval '30 minutes') then
     raise exception 'still_generating' using errcode = '55000';
   end if;
   if not exists (select 1 from public.modules m where m.course_id = p_course) then
@@ -492,6 +540,8 @@ revoke execute on function public.claim_ai_use(uuid, text, int, text, text) from
 revoke execute on function public.add_ai_tokens(bigint, int, int) from public, anon, authenticated;
 revoke execute on function public.owned_module_course(uuid) from public, anon, authenticated;
 revoke execute on function public.trim_course_title() from public, anon, authenticated;
+revoke execute on function public.check_generation_job() from public, anon, authenticated;
+revoke execute on function public.module_review_notes(uuid) from public, anon;
 revoke execute on function public.my_ai_usage_today() from public, anon;
 revoke execute on function public.save_module(uuid, text, text, text[], jsonb, jsonb, int, text, text, text) from public, anon;
 revoke execute on function public.set_module_checked(uuid, boolean) from public, anon;
@@ -504,6 +554,7 @@ revoke execute on function public.unassign_course(uuid, uuid) from public, anon;
 grant execute on function public.claim_ai_use(uuid, text, int, text, text) to service_role;
 grant execute on function public.add_ai_tokens(bigint, int, int) to service_role;
 grant execute on function public.my_ai_usage_today() to authenticated;
+grant execute on function public.module_review_notes(uuid) to authenticated;
 grant execute on function public.save_module(uuid, text, text, text[], jsonb, jsonb, int, text, text, text) to authenticated;
 grant execute on function public.set_module_checked(uuid, boolean) to authenticated;
 grant execute on function public.clear_module_visual(uuid) to authenticated;

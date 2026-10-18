@@ -356,9 +356,12 @@ describe("module edits", () => {
     const after = await db.as(teacher, async (c) => {
       await c.query("select public.set_module_checked($1, true)", [modules[1]]);
       const on = (
-        await c.query("select review_note, checked_at is not null as checked from public.modules where id = $1", [
-          modules[1],
-        ])
+        await c.query(
+          `select (select n.review_note from public.module_review_notes($2) n where n.module_id = m.id) as review_note,
+                  m.checked_at is not null as checked
+           from public.modules m where m.id = $1`,
+          [modules[1], course],
+        )
       ).rows[0];
       await c.query("select public.set_module_checked($1, false)", [modules[1]]);
       const off = (await c.query("select checked_at from public.modules where id = $1", [modules[1]])).rows[0];
@@ -495,5 +498,170 @@ describe("assignments", () => {
         ),
       ),
     ).toMatch(/permission denied/);
+  });
+});
+
+describe("review notes stay with the teacher (schema review #1)", () => {
+  let shared: string;
+  let sharedModule: string;
+  beforeAll(async () => {
+    shared = (
+      await q("insert into public.courses (teacher_id, title, status) values ($1, 'Cells', 'assigned') returning id", [
+        teacher,
+      ])
+    ).rows[0].id;
+    sharedModule = (
+      await q(
+        "insert into public.modules (course_id, position, heading, review_note) values ($1, 1, 'Cells', 'Option C may also be right') returning id",
+        [shared],
+      )
+    ).rows[0].id;
+    await q("insert into public.course_assignments (course_id, class_id) values ($1, $2)", [shared, biology]);
+  });
+
+  it("a student in the class reads the module but not its review note", async () => {
+    const rows = await db.as(
+      maya,
+      async (c) => (await c.query("select id, heading from public.modules where course_id = $1", [shared])).rows,
+    );
+    expect(rows).toEqual([{ id: sharedModule, heading: "Cells" }]);
+    expect(
+      await errorOf(
+        db.as(maya, (c) => c.query("select review_note from public.modules where id = $1", [sharedModule])),
+      ),
+    ).toMatch(/permission denied/);
+    expect(
+      await errorOf(db.as(maya, (c) => c.query("select * from public.modules where id = $1", [sharedModule]))),
+    ).toMatch(/permission denied/);
+  });
+
+  it("module_review_notes() gives the notes to the course's teacher only", async () => {
+    const call = (uid: string) =>
+      db.as(uid, async (c) => (await c.query("select * from public.module_review_notes($1)", [shared])).rows);
+    expect(await call(teacher)).toEqual([{ module_id: sharedModule, review_note: "Option C may also be right" }]);
+    expect(await call(other)).toEqual([]);
+    expect(await call(maya)).toEqual([]);
+  });
+
+  it("an assigned course can't be regenerated, and a job must belong to the course's teacher", async () => {
+    expect(
+      await errorOf(
+        db.asService((c) =>
+          c.query("insert into public.generation_jobs (course_id, teacher_id, source_kind) values ($1, $2, 'paste')", [
+            shared,
+            teacher,
+          ]),
+        ),
+      ),
+    ).toMatch(/course_assigned/);
+    expect(
+      await errorOf(
+        db.asService((c) =>
+          c.query("insert into public.generation_jobs (course_id, teacher_id, source_kind) values ($1, $2, 'paste')", [
+            course,
+            other,
+          ]),
+        ),
+      ),
+    ).toMatch(/job_teacher_mismatch/);
+  });
+});
+
+describe("a dead job doesn't block assigning (schema review #6)", () => {
+  it("an unfinished job older than 30 minutes is ignored by assign_course()", async () => {
+    // Inside one transaction: a stale job, then assigning as the teacher.
+    const out = await db.asService(async (c) => {
+      await c.query(
+        "insert into public.generation_jobs (course_id, teacher_id, source_kind, step, created_at) values ($1, $2, 'paste', 'writing', now() - interval '31 minutes')",
+        [course, teacher],
+      );
+      await c.query("set local role authenticated");
+      await c.query("select set_config('request.jwt.claim.sub', $1, true)", [teacher]);
+      return errorOf(c.query("select public.assign_course($1, $2, null)", [course, biology]));
+    });
+    expect(out).toBeNull();
+    // A fresh unfinished job still blocks.
+    const fresh = await db.asService(async (c) => {
+      await c.query(
+        "insert into public.generation_jobs (course_id, teacher_id, source_kind, step) values ($1, $2, 'paste', 'writing')",
+        [course, teacher],
+      );
+      await c.query("set local role authenticated");
+      await c.query("select set_config('request.jwt.claim.sub', $1, true)", [teacher]);
+      return errorOf(c.query("select public.assign_course($1, $2, null)", [course, biology]));
+    });
+    expect(fresh).toMatch(/still_generating/);
+  });
+});
+
+describe("a teacher who is no longer approved loses the write paths (schema review #4)", () => {
+  let gone: string;
+  let goneCourse: string;
+  let goneModule: string;
+  let goneClass: string;
+  beforeAll(async () => {
+    gone = await db.createUser("gone@school.edu", { role: "teacher", full_name: "Former Teacher" });
+    await q("update public.profiles set status = 'approved' where id = $1", [gone]);
+    goneClass = (await db.commitAs(gone, (c) => c.query("select * from public.create_class('History', '')"))).rows[0]
+      .id;
+    goneCourse = (await q("insert into public.courses (teacher_id, title) values ($1, 'Rome') returning id", [gone]))
+      .rows[0].id;
+    goneModule = (
+      await q(
+        "insert into public.modules (course_id, position, heading) values ($1, 1, 'Rome'), ($1, 2, 'Empire') returning id",
+        [goneCourse],
+      )
+    ).rows[0].id;
+    await q(
+      "insert into public.generation_jobs (course_id, teacher_id, source_kind, step) values ($1, $2, 'paste', 'done')",
+      [goneCourse, gone],
+    );
+    await q("update public.profiles set status = 'rejected' where id = $1", [gone]);
+  });
+
+  const as = <T>(fn: (c: import("pg").Client) => Promise<T>) => db.as(gone, fn);
+
+  it("can't read jobs or edit, move, check, assign, rename or delete", async () => {
+    expect(
+      await as(
+        async (c) => (await c.query("select id from public.generation_jobs where course_id = $1", [goneCourse])).rows,
+      ),
+    ).toEqual([]);
+    expect(
+      await errorOf(
+        as((c) =>
+          c.query("select public.save_module($1, 'X', '', '{}', '[]'::jsonb, null, null, '', null, null)", [
+            goneModule,
+          ]),
+        ),
+      ),
+    ).toMatch(/not_allowed/);
+    expect(await errorOf(as((c) => c.query("select public.move_module($1, 1)", [goneModule])))).toMatch(/not_allowed/);
+    expect(await errorOf(as((c) => c.query("select public.set_module_checked($1, true)", [goneModule])))).toMatch(
+      /not_allowed/,
+    );
+    expect(
+      await errorOf(as((c) => c.query("select public.assign_course($1, $2, null)", [goneCourse, goneClass]))),
+    ).toMatch(/not_allowed/);
+    const renamed = await as(
+      async (c) => (await c.query("update public.courses set title = 'X' where id = $1", [goneCourse])).rowCount,
+    );
+    expect(renamed).toBe(0);
+    const deleted = await as(
+      async (c) => (await c.query("delete from public.courses where id = $1", [goneCourse])).rowCount,
+    );
+    expect(deleted).toBe(0);
+  });
+});
+
+describe("AI usage bookkeeping is server-only", () => {
+  it("signed-in users can't add tokens to a use", async () => {
+    const [{ id }] = (
+      await q("insert into public.ai_usage (user_id, kind) values ($1, 'generate') returning id", [teacher])
+    ).rows;
+    expect(await errorOf(db.as(teacher, (c) => c.query("select public.add_ai_tokens($1, 1, 1)", [id])))).toMatch(
+      /permission denied/,
+    );
+    await q("delete from public.ai_usage where id = $1", [id]);
   });
 });

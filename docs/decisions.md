@@ -67,6 +67,10 @@
 | 62 | Data-driven page titles stream with the page under Cache Components (as in stages 3–4) | `next build` accepts it (partial prerender); `next dev` prints an "instant navigation" hint for these routes, which isn't an error |
 | 63 | T5 uses the browser's date input (styled as `cc-input`) rather than a custom DatePicker | Accessible, localised and right-to-left out of the box; a custom picker can be proposed to the system later |
 | 64 | T5 lists classes as checkboxes, each with its own due date, rather than a ClassPicker combobox | Teachers have a handful of classes, and every chosen class needs its own date (#28) |
+| 65 | AI review notes (`modules.review_note`) are hidden from students by column grants; teachers read them through `module_review_notes()` | A note like "option C may also be right" gives the answer away |
+| 66 | An assigned course can't be regenerated (app and database) | A new run replaces every module, which would take students' progress |
+| 67 | A generation job unfinished after 30 minutes counts as dead: T2 offers "Try again" and assigning isn't blocked | An inline run that hits the time limit would otherwise leave the course stuck |
+| 68 | Teacher server actions use the service role for three things only, each after a session or RLS check: signed upload URLs and source files, `claim_ai_use()` / `add_ai_tokens()`, job rows, and the diagram a redraw produces (generated content is service-written) | These are service-only by design (#53, #54); the teacher's own reads and edits stay on their session and RLS |
 
 ## Open questions
 1. **Due date per class** when one course is assigned to several classes — assumed yes.

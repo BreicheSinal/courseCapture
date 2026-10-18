@@ -300,6 +300,7 @@ export type Database = {
       };
       add_ai_tokens: { Args: { p_use: number; p_input: number; p_output: number }; Returns: undefined };
       my_ai_usage_today: { Args: Record<string, never>; Returns: { kind: AiUsageRow["kind"]; used: number }[] };
+      module_review_notes: { Args: { p_course: string }; Returns: { module_id: string; review_note: string }[] };
       save_module: {
         Args: {
           p_module: string;

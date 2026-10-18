@@ -125,7 +125,7 @@ describe("student reads", () => {
   });
 
   it("drafts and their modules stay hidden from students", async () => {
-    expect(await db.as(maya, async (c) => (await c.query("select * from public.modules where course_id = $1", [draft])).rowCount)).toBe(0);
+    expect(await db.as(maya, async (c) => (await c.query("select id from public.modules where course_id = $1", [draft])).rowCount)).toBe(0);
     expect(await db.as(maya, async (c) => (await c.query("select * from public.student_course_modules($1)", [draft])).rowCount)).toBe(0);
   });
 

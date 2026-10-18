@@ -37,24 +37,37 @@ export const getBuilderCourse = cache(async (courseId: string): Promise<BuilderC
   return { ...course, job: jobs?.[0] ?? null, jobCount: jobs?.length ?? 0 };
 });
 
+/** Every column clients may read (all but review_note). */
+const MODULE_COLUMNS = "id, course_id, position, heading, body, key_points, flashcards, quiz, visual_svg, visual_caption, visual_alt, checked_at";
+
 export type BuilderModule = ModuleRow & { answer: Pick<QuizAnswerRow, "answer_index" | "explanation"> | null };
 
 /** Every module with its quiz answer. Diagrams are sanitised again on the way out. */
 export const getBuilderModules = cache(async (courseId: string, locale: string): Promise<BuilderModule[]> => {
   if (!isId(courseId)) return [];
   const supabase = await createClient();
-  const { data: modules } = await supabase.from("modules").select("*").eq("course_id", courseId).order("position");
+  // review_note isn't readable column-wise (students mustn't see it); it comes from module_review_notes().
+  const { data: modules } = await supabase
+    .from("modules")
+    .select(MODULE_COLUMNS)
+    .eq("course_id", courseId)
+    .order("position");
   if (!modules?.length) return [];
-  const { data: answers } = await supabase
-    .from("quiz_answers")
-    .select("module_id, answer_index, explanation")
-    .in(
-      "module_id",
-      modules.map((m) => m.id),
-    );
+  const [{ data: answers }, { data: notes }] = await Promise.all([
+    supabase
+      .from("quiz_answers")
+      .select("module_id, answer_index, explanation")
+      .in(
+        "module_id",
+        modules.map((m) => m.id),
+      ),
+    supabase.rpc("module_review_notes", { p_course: courseId }),
+  ]);
   const byModule = new Map((answers ?? []).map((a) => [a.module_id, a]));
+  const noteOf = new Map((notes ?? []).map((r) => [r.module_id, r.review_note]));
   return modules.map((m) => ({
     ...m,
+    review_note: noteOf.get(m.id) ?? null,
     visual_svg: m.visual_svg
       ? sanitizeSvg(m.visual_svg, { idPrefix: `m${m.position}`, rtl: RTL_LOCALES.has(locale) })
       : null,

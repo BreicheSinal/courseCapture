@@ -131,10 +131,10 @@ One course in many classes (decision #28).
 | `visual_svg` | text | sanitised; nullable |
 | `visual_caption` | text | |
 | `visual_alt` | text | required when `visual_svg` is set |
-| `review_note` | text | ≤ 200; why the module should be checked (T3 "Check"); null when nothing to flag |
+| `review_note` | text | ≤ 200; why the module should be checked (T3 "Needs a check"); null when nothing to flag. **Not readable by clients** (it may describe the quiz): the owning teacher reads it through `module_review_notes(course)` |
 | `checked_at` | timestamptz | when the teacher marked it checked (T4); null = not checked |
 
-`flashcards` holds at most 8 cards (`modules_flashcards_shape`). `(course_id, position)` is unique and deferrable, so `move_module()` can swap two positions in one statement.
+From stage 5, clients have a column-level `select` on `modules` that leaves out `review_note`, so `select *` as a signed-in user fails: list the columns. `flashcards` holds at most 8 cards (`modules_flashcards_shape`). `(course_id, position)` is unique and deferrable, so `move_module()` can swap two positions in one statement.
 
 ### `quiz_answers` (teacher-only)
 | Column | Type | Notes |
@@ -192,7 +192,7 @@ Feeds "seen by N" on T13. Students insert their own row (stage 4).
 | `created_at` | timestamptz | |
 
 ### `generation_jobs`
-One row per "Generate course" (T1 → T2). Server code writes it with the service role; the course's teacher reads it.
+One row per "Generate course" (T1 → T2). Server code writes it with the service role; the course's teacher reads it. A trigger (`check_generation_job`) requires the job's `teacher_id` to be the course's teacher and refuses a job for an **assigned** course, because a new run replaces every module and students' progress with it. A job still unfinished after 30 minutes counts as dead: the app marks it failed, and `assign_course()` ignores it.
 
 | Column | Type | Notes |
 |---|---|---|
@@ -251,6 +251,7 @@ Other rules in the stage 3 migration:
 - Class names and sections are trimmed on every write (trigger).
 - Students see a course only while it's `assigned`.
 - Deleting a class removes its members, announcements (and reads) and assignments. Students' progress on the courses stays with the course (decision #43).
+- Deleting a course, or one of its modules (T4), removes students' progress and quiz attempts on it (cascade). T4 says so before deleting.
 
 | Table | Select | Insert / Update / Delete |
 |---|---|---|
