@@ -112,6 +112,8 @@ function cleanValue(name: string, raw: string, prefix: string): string | null {
     if (name.startsWith("marker-")) return null;
     const lower = value.toLowerCase().replace(/\s+/g, "");
     if (lower === "none" || lower === "currentcolor" || lower === "transparent") return value;
+    // The theme accent (docs/theming.md); the only CSS variable allowed.
+    if (lower === "var(--accent)") return "var(--accent)";
     // Fixed white or black would vanish in one of the themes (docs/theming.md).
     if (whites.has(lower)) return name === "fill" ? "none" : "currentColor";
     if (blacks.has(lower)) return "currentColor";
