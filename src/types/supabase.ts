@@ -116,6 +116,45 @@ export type RosterRow = {
   quiz_first_total: number;
 };
 
+export type QuizAnswerRow = { module_id: string; answer_index: number; explanation: string };
+
+export type StudentCourse = {
+  course_id: string;
+  title: string;
+  content_locale: string;
+  class_id: string;
+  class_name: string;
+  due_date: string | null;
+  module_count: number;
+  modules_done: number;
+  quiz_correct: number;
+  quiz_answered: number;
+  last_done_at: string | null;
+};
+
+export type StudentModuleState = {
+  module_id: string;
+  position: number;
+  heading: string;
+  done: boolean;
+  quiz_correct: boolean | null;
+  has_quiz: boolean;
+};
+
+export type StudentClass = { class_id: string; name: string; section: string; teacher_name: string; joined_at: string };
+
+export type StudentAnnouncement = {
+  id: string;
+  class_id: string;
+  class_name: string;
+  teacher_name: string;
+  body: string;
+  created_at: string;
+  seen: boolean;
+};
+
+export type QuizResult = { is_correct: boolean; answer_index: number; explanation: string; first_try: boolean };
+
 type ReadOnly<R> = { Row: R; Insert: never; Update: never; Relationships: [] };
 
 export type TeacherInviteRow = {
@@ -160,6 +199,7 @@ export type Database = {
       modules: ReadOnly<ModuleRow>;
       module_progress: ReadOnly<ModuleProgressRow>;
       quiz_attempts: ReadOnly<QuizAttemptRow>;
+      quiz_answers: ReadOnly<QuizAnswerRow>;
     };
     Views: Record<string, never>;
     Functions: {
@@ -180,6 +220,17 @@ export type Database = {
       teacher_class_summaries: { Args: Record<string, never>; Returns: ClassSummary[] };
       class_course_stats: { Args: { p_class: string }; Returns: ClassCourseStat[] };
       class_roster: { Args: { p_class: string; p_course?: string | null }; Returns: RosterRow[] };
+      answer_quiz: { Args: { p_module: string; p_choice: number }; Returns: QuizResult[] };
+      my_quiz_result: {
+        Args: { p_module: string };
+        Returns: { chosen_index: number; is_correct: boolean; answer_index: number; explanation: string }[];
+      };
+      complete_module: { Args: { p_module: string }; Returns: { course_id: string; done: number; total: number }[] };
+      mark_announcements_seen: { Args: { p_ids: string[] }; Returns: undefined };
+      student_classes: { Args: Record<string, never>; Returns: StudentClass[] };
+      student_courses: { Args: Record<string, never>; Returns: StudentCourse[] };
+      student_course_modules: { Args: { p_course: string }; Returns: StudentModuleState[] };
+      student_announcements: { Args: { p_class?: string | null; p_limit?: number }; Returns: StudentAnnouncement[] };
     };
     Enums: {
       user_role: UserRole;
