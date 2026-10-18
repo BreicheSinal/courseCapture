@@ -71,3 +71,81 @@ a.cc-course:focus-visible {
 .cc-btn[aria-disabled="true"]:hover {
   filter: none;
 }
+
+/* T1–T5 course steps ("1 · Source, 2 · Generate, 3 · Review & assign"). */
+.cc-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+.cc-steps__item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cc-steps__bar {
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--line);
+}
+.cc-steps__label {
+  font: var(--text-caption);
+  color: var(--ink-muted);
+}
+.cc-steps__item.is-done .cc-steps__bar,
+.cc-steps__item.is-current .cc-steps__bar {
+  background: var(--accent);
+}
+.cc-steps__item.is-done .cc-steps__label {
+  color: var(--ink);
+}
+.cc-steps__item.is-current .cc-steps__label {
+  color: var(--accent-text);
+  font-weight: 600;
+}
+
+/* T1/T2/T3 notices: tinted info box, and a warning box with an outline (canvas). */
+.cc-notice {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+.cc-notice--warning {
+  background: var(--surface);
+  border: 1px solid var(--warning);
+  color: var(--warning);
+}
+.cc-notice > svg {
+  flex: none;
+  width: 17px;
+  height: 17px;
+  margin-top: 2px;
+}
+
+/* T2 step list: a word and a mark per state, never colour alone. */
+.cc-joblist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.cc-joblist > li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--spacing-control);
+  border-bottom: 1px solid var(--line);
+}
+.cc-joblist > li:last-child {
+  border-bottom: 0;
+}
+
+/* T4 diagram preview: same frame as the reader's diagram. */
+.cc-diagram--edit {
+  background: var(--surface);
+}

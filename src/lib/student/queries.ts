@@ -35,7 +35,7 @@ export const getCourseModules = cache(async (courseId: string): Promise<StudentM
   return data ?? [];
 });
 
-export type ModuleContent = Omit<ModuleRow, "visual_svg"> & { visual_svg: string | null };
+export type ModuleContent = Omit<ModuleRow, "visual_svg" | "review_note" | "checked_at"> & { visual_svg: string | null };
 
 /** S3: one module's content. The SVG is sanitised again on the way out (defence in depth). */
 export async function getModule(courseId: string, position: number): Promise<ModuleContent | null> {

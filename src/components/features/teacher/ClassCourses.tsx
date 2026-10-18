@@ -13,11 +13,14 @@ export function ClassCourses({
   className,
   courses,
   studentCount,
+  assigned = null,
 }: {
   classId: string;
   className: string;
   courses: ClassCourseStat[];
   studentCount: number;
+  /** Title of a course just assigned here (T5), for the confirmation line. */
+  assigned?: string | null;
 }) {
   const t = useTranslations("teacher.classPage");
   const format = useFormatter();
@@ -25,6 +28,12 @@ export function ClassCourses({
 
   return (
     <div className="flex flex-col gap-8">
+      {assigned && (
+        <p role="status" className="subhead -mb-4 flex items-center gap-1 font-semibold text-success">
+          <Icon name="check" width={16} height={16} />
+          {t.rich("assigned", { ...isolate, title: assigned })}
+        </p>
+      )}
       {courses.length === 0 ? (
         <EmptyState
           icon="courses"
@@ -49,7 +58,7 @@ export function ClassCourses({
                 : t("started", { done: c.students_started, total: studentCount });
             return (
               <li key={c.course_id}>
-                <div className="cc-card cc-card--stack h-full">
+                <Link href={`/teacher/courses/${c.course_id}/review`} className="cc-card cc-card--stack cc-course h-full">
                   <div className="cc-course__top items-center">
                     <span className="headline min-w-0 truncate">
                       <bdi>{c.title}</bdi>
@@ -71,7 +80,7 @@ export function ClassCourses({
                     <span className="tabular-nums">{progressText}</span>
                   </div>
                   <Progress value={c.students_complete} max={studentCount} label={t("progressLabel", { title: c.title })} />
-                </div>
+                </Link>
               </li>
             );
           })}

@@ -72,15 +72,13 @@ export function AccountMenu({ name, role }: AccountMenuProps) {
         aria-haspopup="dialog"
         aria-expanded={open}
         aria-controls={panelId}
-        aria-label={t("auth.menu.trigger", { name })}
         onClick={() => setOpen((o) => !o)}
       >
-        <Avatar name={name} />
+        <Avatar name={name} decorative />
         {/* Phones show just the avatar (canvas X1); wider screens add the name and role. */}
-        <span className="truncate max-sm:hidden" aria-hidden="true">
-          {name}
-        </span>
-        <Badge variant="info" className="max-sm:hidden">
+        {/* The visible name and role are the button's name (WCAG 2.5.3); phones keep them for screen readers. */}
+        <span className="truncate max-sm:sr-only">{name}</span>
+        <Badge variant="info" className="max-sm:sr-only">
           {t(`roles.${role}`)}
         </Badge>
       </button>
