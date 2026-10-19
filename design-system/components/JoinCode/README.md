@@ -6,3 +6,5 @@ Provide the code string, a Copy handler and a New code handler. The label reads 
 - Use two IconButtons at the right: copy (`aria-label="Copy code"`) and refresh (`aria-label="Generate new code"`).
 - Make New code a two-step action: the first press swaps the refresh icon for the text "Sure?", the second press issues a new code and invalidates the old one.
 - Show a short Toast ("Code copied") after Copy. Do not use the code as a secret; anyone with it can join the class.
+
+- **Large.** Right after a class is created, show the code alone at `join-code join-code--lg` (34/41), above "Students type this code to join".

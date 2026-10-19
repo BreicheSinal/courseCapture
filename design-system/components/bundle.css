@@ -474,3 +474,82 @@ a.cc-book:focus-visible,button.cc-book:focus-visible{outline:2px solid var(--acc
 
 @media (prefers-reduced-motion:reduce){.cc-btn,.cc-option,.cc-iconbtn,.cc-course,.cc-flash,.cc-progress>i{transition:none}.cc-skel::after,.cc-search__spin,.cc-btn__spin,.cc-dot--building .cc-dot__mark::after{animation:none}.cc-search__spin{border-top-color:var(--line-strong)}}
 @media (prefers-reduced-motion:reduce){.cc-toggle__track,.cc-toggle__track::after,.cc-tip__bubble,.cc-seg__opt span,.cc-drop,.cc-tab{transition:none}}
+
+/* ---- Added 2026-10-19 from the app (CourseCapture repo, docs/design-system-proposals.md, #41) ---- */
+
+/* Stepper */
+.cc-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:var(--space-2)}
+.cc-steps__item{display:flex;flex-direction:column;gap:var(--space-2)}
+.cc-steps__bar{height:4px;border-radius:var(--radius-pill);background:var(--line)}
+.cc-steps__label{font:400 12px/16px var(--font-sans);color:var(--ink-muted)}
+.cc-steps__item.is-done .cc-steps__bar,.cc-steps__item.is-current .cc-steps__bar{background:var(--accent)}
+.cc-steps__item.is-done .cc-steps__label{color:var(--ink)}
+.cc-steps__item.is-current .cc-steps__label{color:var(--accent-text);font-weight:600}
+
+/* TabBar (phones) */
+:root{--tabbar-h:53px}
+.cc-tabbar{position:fixed;inset-inline:0;bottom:0;z-index:10;border-top:1px solid var(--line);background:var(--surface);padding-bottom:env(safe-area-inset-bottom)}
+.cc-tabbar__list{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;list-style:none;margin:0;padding:0}
+.cc-tabbar__tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-1);min-height:52px;color:var(--ink-muted);font:400 12px/16px var(--font-sans);text-decoration:none}
+.cc-tabbar__tab svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.cc-tabbar__tab[aria-current="page"]{color:var(--accent-text);font-weight:600}
+.cc-tabbar__tab:focus-visible{outline:2px solid var(--accent);outline-offset:-4px;border-radius:var(--radius-sm)}
+.cc-actionbar{bottom:calc(var(--tabbar-h) + env(safe-area-inset-bottom))}
+@media (min-width:1024px){.cc-tabbar{display:none}.cc-actionbar{bottom:0}}
+
+/* DiagramFrame */
+.cc-diagram-frame{margin:0;display:flex;flex-direction:column;gap:var(--space-3)}
+.cc-diagram{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius-md);padding:var(--space-3);color:var(--ink)}
+.cc-diagram svg{display:block;max-width:100%;height:auto;margin-inline:auto}
+.cc-diagram--edit{background:var(--surface)}
+.cc-diagram-frame figcaption{display:flex;flex-direction:column;gap:var(--space-1)}
+.cc-diagram-frame__caption{font:400 15px/22px var(--font-sans)}
+.cc-diagram-frame__ai{font:400 12px/16px var(--font-sans);color:var(--ink-muted)}
+
+/* Large wordmark */
+.cc-wordmark--lg{font:700 34px/41px var(--font-sans);letter-spacing:-.02em}
+
+/* DateInput: the native date input, styled as Input */
+input[type="date"].cc-input{font-variant-numeric:tabular-nums}
+input[type="date"].cc-input:disabled{color:var(--ink-muted);background:var(--bg);cursor:not-allowed}
+
+/* ClassPicker: a list of classes, each with its own due date */
+.cc-classpick{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.cc-classpick__row{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-3);padding-block:var(--space-3);border-bottom:1px solid var(--line)}
+.cc-classpick__row:last-child{border-bottom:0}
+.cc-classpick__row .cc-check{flex:1;min-width:12rem}
+.cc-classpick__date{width:auto;flex:none}
+
+/* Notice */
+.cc-notice{display:flex;gap:var(--space-3);padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);background:var(--accent-soft);color:var(--accent-text);font:400 14px/20px var(--font-sans)}
+.cc-notice--warning{background:var(--surface);border:1px solid var(--warning);color:var(--warning)}
+.cc-notice>svg{flex:none;width:17px;height:17px;margin-block-start:2px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* JobList */
+.cc-joblist{list-style:none;margin:0;padding:0}
+.cc-joblist>li{display:flex;align-items:center;gap:var(--space-3);min-height:var(--control-height);border-bottom:1px solid var(--line);font:400 15px/22px var(--font-sans)}
+.cc-joblist>li:last-child{border-bottom:0}
+.cc-joblist__state{margin-inline-start:auto;font:400 13px/18px var(--font-sans);color:var(--ink-muted)}
+.cc-joblist>li.is-done .cc-joblist__state{color:var(--success)}
+.cc-joblist>li.is-current{font-weight:600}
+.cc-joblist>li.is-current .cc-joblist__state{color:var(--accent-text)}
+.cc-joblist>li.is-failed .cc-joblist__state{color:var(--danger)}
+
+/* Tabs as links (sections with their own URL) */
+a.cc-tab{text-decoration:none}
+.cc-tab[aria-current="page"]{color:var(--ink)}
+.cc-tab[aria-current="page"]::after{content:"";position:absolute;inset-inline:var(--space-3);bottom:-1px;height:2px;border-radius:2px;background:var(--accent)}
+
+/* CourseCard as a link */
+a.cc-course{color:var(--ink);text-decoration:none}
+
+/* JoinCode, large (class just created) */
+.join-code--lg{font-size:34px;line-height:41px}
+
+/* Controls that stay focusable while off */
+.cc-btn[aria-disabled="true"],.cc-iconbtn[aria-disabled="true"],.cc-option[aria-disabled="true"]{opacity:.45;cursor:not-allowed}
+.cc-btn[aria-disabled="true"][aria-busy="true"]{opacity:1;cursor:progress}
+.cc-btn[aria-disabled="true"]:hover{filter:none}
+
+/* Touch screens: small controls grow to the 44px target */
+@media (pointer:coarse){.cc-iconbtn,.cc-theme__opt{min-width:var(--control-height);min-height:var(--control-height)}}

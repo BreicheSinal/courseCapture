@@ -6,7 +6,7 @@ Every proposal keeps the system's rules: tokens only, Light and Dark, logical pr
 
 How to send them: start a design-system sync (`/design-sync`) and push one component at a time, each as a `components/<Name>/README.md` and `preview.html`, in the system's own format. After the next `/sync-design-system`, swap the app over to the system's class and delete the local CSS listed under **Remove here**.
 
-**Sent 2026-10-19:** the approved pieces are now in the CourseCapture design system (Stepper, TabBar, DiagramFrame, DateInput, ClassPicker, Notice, JobList; the `display`, `display-sm` and `tabbar-height` tokens; link, large and touch variants of Tabs, CourseCard, JoinCode, Button and IconButton). Next: `/sync-design-system` into `design-system/`, then delete the local CSS each section lists under **Remove here**. AskClaudePanel waits on the tutor prototype decision.
+**Sent 2026-10-19:** the approved pieces are now in the CourseCapture design system (Stepper, TabBar, DiagramFrame, DateInput, ClassPicker, Notice, JobList; the `display`, `display-sm` and `tabbar-height` tokens; link, large and touch variants of Tabs, CourseCard, JoinCode, Button and IconButton). Synced into `design-system/` in #101, which also deleted the local CSS listed under **Remove here** (except `.cc-mk-display`, which stays fluid). AskClaudePanel waits on the tutor prototype decision.
 
 Owner's decisions, 2026-10-19: everything **send as written**, except AskClaudePanel, **send with changes** (a widget that opens; section 5 is the revised spec).
 

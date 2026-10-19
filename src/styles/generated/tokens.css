@@ -78,9 +78,12 @@
   --control-height: 44px;
   --control-height-sm: 32px;
   --avatar: 28px;
+  --tabbar-height: 53px;
   --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", system-ui, Roboto, sans-serif;
   --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
   --font-sans-ar: "SF Arabic", "Geeza Pro", "Segoe UI", "Noto Sans Arabic", -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", system-ui, Roboto, sans-serif;
+  --text-display: 700 64px/0.95 var(--font-sans);
+  --text-display-sm: 700 40px/1 var(--font-sans);
   --text-large-title: 700 34px/41px var(--font-sans);
   --text-title: 700 28px/34px var(--font-sans);
   --text-headline: 600 20px/25px var(--font-sans);
@@ -98,6 +101,8 @@
 
 /* In the components layer so Tailwind utilities (e.g. font-semibold) can override. */
 @layer components {
+.display{font-family:var(--font-sans);font-size:64px;line-height:0.95;font-weight:700;letter-spacing:-0.025em}
+.display-sm{font-family:var(--font-sans);font-size:40px;line-height:1;font-weight:700;letter-spacing:-0.025em}
 .large-title{font-family:var(--font-sans);font-size:34px;line-height:41px;font-weight:700;letter-spacing:-0.02em}
 .title{font-family:var(--font-sans);font-size:28px;line-height:34px;font-weight:700;letter-spacing:-0.015em}
 .headline{font-family:var(--font-sans);font-size:20px;line-height:25px;font-weight:600;letter-spacing:-0.01em}

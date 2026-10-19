@@ -11,3 +11,5 @@ Render a `div.cc-tabs` with `role="tablist"` and an `aria-label`. Each `button.c
 - **Disabled.** Only for permission or empty reasons; explain why in a Tooltip.
 - **Secondary.** `cc-tabs--secondary` is a boxed, pill style for a toolbar inside a card.
 - **Not for.** Going between unrelated pages (use navigation links) or choosing a mode of the same content in a form (use Switch).
+
+- **As links.** When each section has its own URL (a class's Courses, Roster and Announcements), render `a.cc-tab` links in a `nav` and mark the current one with `aria-current="page"`; it gets the same underline as a selected tab.

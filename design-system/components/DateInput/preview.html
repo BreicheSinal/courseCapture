@@ -1,0 +1,11 @@
+<!-- @dsCard group="Forms" height=300 subtitle="Empty, set and disabled" -->
+<style>
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans)}
+.pv{display:flex;flex-direction:column;gap:20px;padding:24px;max-width:360px}
+.cap{font:12px/16px var(--font-sans);color:var(--ink-muted);margin:0 0 -10px}
+</style>
+<div class="pv">
+  <div class="cc-field"><label class="cc-field__label" for="d1">Due date</label><input class="cc-input" id="d1" type="date"><span class="cc-field__hint">Leave empty for no due date.</span></div>
+  <div class="cc-field"><label class="cc-field__label" for="d2">Due date</label><input class="cc-input" id="d2" type="date" value="2026-11-04"></div>
+  <div class="cc-field"><label class="cc-field__label" for="d3">Due date for Chemistry 11</label><input class="cc-input" id="d3" type="date" disabled></div>
+</div>

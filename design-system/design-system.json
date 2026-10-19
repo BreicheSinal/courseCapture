@@ -137,10 +137,10 @@
     "AppIcons"
   ],
   "lastChange": {
-    "at": "2026-10-16T23:55:00Z",
-    "by": "Claude",
-    "note": "Added Tabs, Modal, Sheet, Checkbox, Radio, Toggle, Switch, Select, Tooltip and FileDropzone",
-    "via": "Claude chat"
+    "at": "2026-10-19T13:50:00Z",
+    "by": "Sinal Breiche",
+    "via": "Claude Code",
+    "note": "Added Stepper, TabBar, DiagramFrame, DateInput, ClassPicker, Notice and JobList, the display type and tabbar-height tokens, and link, large and touch variants (approved proposals, CourseCapture #41)"
   },
   "layout": "files",
   "libraries": [],

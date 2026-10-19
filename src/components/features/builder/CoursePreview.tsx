@@ -7,6 +7,7 @@ import { Icon } from "@/components/ui/Icon";
 import { Flashcards } from "@/components/features/student/Flashcards";
 import type { BuilderModule } from "@/lib/courses/queries";
 import { cn } from "@/lib/utils/cn";
+import { DiagramFrame } from "@/components/ui/DiagramFrame";
 
 /**
  * Preview (routes.md): the module as a student reads it, read-only, with the
@@ -90,20 +91,12 @@ export function CoursePreview({
               <Badge variant="info" tint size="sm" className="self-start">
                 {te("aiDrawn")}
               </Badge>
-              <figure className="m-0 flex flex-col gap-3">
-                <div
-                  role="img"
-                  aria-label={current.visual_alt || current.visual_caption || te("diagram")}
-                  className="cc-diagram overflow-x-auto rounded-md border border-line p-3 text-ink"
-                  // Sanitised when stored and again when read (src/lib/svg/sanitize.ts).
-                  dangerouslySetInnerHTML={{ __html: current.visual_svg }}
-                />
-                {current.visual_caption && (
-                  <figcaption className="callout" dir="auto">
-                    {current.visual_caption}
-                  </figcaption>
-                )}
-              </figure>
+              {/* Sanitised when stored and again when read (src/lib/svg/sanitize.ts). */}
+              <DiagramFrame
+                svg={current.visual_svg}
+                alt={current.visual_alt || current.visual_caption || te("diagram")}
+                caption={current.visual_caption}
+              />
             </Card>
           )}
           {current.flashcards.length > 0 && <Flashcards cards={current.flashcards} lang={lang} />}

@@ -15,3 +15,5 @@ Provide a short label that names the outcome, in sentence case: "Assign to Biolo
 - **Links.** An `a` with `cc-btn` looks like a button but navigates. Use a button for an action that changes state, a link for going to another page.
 - **Full width.** `cc-btn--block` in a narrow card, such as "Join" under the code field.
 - **Do not** put two primary buttons side by side, put an `aria-label` on a button that already has visible text, or rely on color alone to mark a destructive action.
+
+- **Off but focusable.** While saving, or until a choice is made ("Pick an answer first"), set `aria-disabled="true"` instead of `disabled` so focus stays on the button, and point `aria-describedby` at the hint. It dims to 45%; with `aria-busy` too it stays at full strength.

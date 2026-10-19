@@ -24,6 +24,7 @@ import {
 } from "@/lib/courses/actions";
 import type { BuilderModule } from "@/lib/courses/queries";
 import { FALLBACK_NOTE } from "@/lib/generation/fallback";
+import { DiagramWell } from "@/components/ui/DiagramFrame";
 
 type Quiz = NonNullable<EditorPayload["quiz"]>;
 const emptyQuiz = (): Quiz => ({ question: "", options: ["", "", "", ""], answer_index: 0, explanation: "" });
@@ -198,13 +199,12 @@ export function ModuleEditor({
           </div>
           {m.visual_svg ? (
             <>
-              <div
-                role="img"
-                aria-label={alt || m.visual_alt || caption || t("diagram")}
+              {/* Sanitised when stored and again when read (src/lib/svg/sanitize.ts). */}
+              <DiagramWell
+                svg={m.visual_svg}
+                alt={alt || m.visual_alt || caption || t("diagram")}
                 lang={contentLocale}
-                className="cc-diagram cc-diagram--edit rounded-md border border-line p-3 text-ink"
-                // Sanitised when stored and again when read (src/lib/svg/sanitize.ts).
-                dangerouslySetInnerHTML={{ __html: m.visual_svg }}
+                edit
               />
               <Field
                 label={t("caption")}
