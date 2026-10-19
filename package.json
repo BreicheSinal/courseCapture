@@ -14,6 +14,7 @@
     "i18n:check": "node scripts/check-messages.mjs",
     "test": "vitest run",
     "test:e2e": "playwright test",
+    "test:e2e:ci": "playwright test --project=chromium --project=phone",
     "media:capture": "playwright test --project=media",
     "media": "node scripts/build-marketing-media.mjs",
     "check": "pnpm tokens && pnpm i18n:check && pnpm lint && pnpm typecheck && pnpm test",
