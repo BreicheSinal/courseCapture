@@ -8,7 +8,7 @@ import { THEME_COOKIE } from "@/lib/theme/theme";
  * Where sign-in email links land.
  * Verifies the one-time link (token hash or PKCE code), then sends the person on:
  * - wrong role for what they picked at sign-in → /wrong-account (T7c)
- * - otherwise → /{locale}, which routes them to the right home.
+ * - otherwise → /{locale}/app, which routes them to the right home.
  */
 export async function GET(request: NextRequest) {
   const url = request.nextUrl;
@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
         p_full_name: profile.full_name,
         p_role: wanted,
       });
-      if (!onboardError) return to("");
+      if (!onboardError) return to("/app");
     }
     return to(`/onboarding/profile?role=${wanted}`);
   }
@@ -70,5 +70,5 @@ export async function GET(request: NextRequest) {
     return to(`/wrong-account?area=${wanted}`);
   }
 
-  return to(safeNext(url.searchParams.get("next")) ?? "");
+  return to(safeNext(url.searchParams.get("next")) ?? "/app");
 }

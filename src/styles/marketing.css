@@ -1,0 +1,221 @@
+/*
+ * Marketing site (#58, #59): `/`, `/privacy`, `/terms`, `/contact`.
+ * Built from system tokens only. The display type and band strip follow the
+ * design system's Cover (design-system/components/Cover/preview.html).
+ */
+
+/* Screens captured in each theme: show the one that matches the page.
+   Images are lazy, so the hidden theme's files are never downloaded. */
+.cc-mk-dark {
+  display: none;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .cc-mk-dark {
+    display: block;
+  }
+  :root:not([data-theme="light"]) .cc-mk-light {
+    display: none;
+  }
+}
+:root[data-theme="dark"] .cc-mk-dark {
+  display: block;
+}
+:root[data-theme="dark"] .cc-mk-light {
+  display: none;
+}
+
+/* Cover bands: unequal rounded blocks bleeding off the top edge. */
+.cc-mk-bands {
+  display: block;
+  width: 100%;
+  height: clamp(56px, 11vw, 112px);
+}
+.cc-mk-bands .accent { fill: var(--accent); }
+.cc-mk-bands .ink { fill: var(--ink); }
+.cc-mk-bands .soft { fill: var(--accent-soft); }
+.cc-mk-bands .ok { fill: var(--success); }
+.cc-mk-bands .warn { fill: var(--warning); }
+.cc-mk-bands .cut { fill: var(--bg); }
+.cc-mk-bands .dim { opacity: 0.4; }
+[dir="rtl"] .cc-mk-bands {
+  transform: scaleX(-1);
+}
+
+/* Cover display type: the system's 64 / 0.95, scaled down on phones. */
+.cc-mk-display {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: clamp(40px, 6.4vw, 64px); /* Cover's 64 on wide screens (decision #88) */
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+:lang(ar) .cc-mk-display {
+  letter-spacing: 0;
+  line-height: 1.2;
+}
+.cc-mk-section-title {
+  font: var(--text-large-title);
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.cc-mk-lead {
+  font: var(--text-headline);
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--ink-muted);
+  max-width: 34em;
+}
+
+/* A phone around a captured screen. */
+.cc-mk-phone {
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius-lg) + var(--space-2));
+  background: var(--surface);
+  padding: var(--space-2);
+  box-shadow: var(--shadow-card);
+}
+.cc-mk-phone img {
+  vertical-align: top; /* display stays with the theme rules above */
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+}
+
+/* A computer window around a captured screen. */
+.cc-mk-window {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  padding: var(--space-2);
+  box-shadow: var(--shadow-card);
+}
+.cc-mk-window img {
+  vertical-align: top; /* display stays with the theme rules above */
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+}
+
+/* Step numbers in "How it works": a real sequence. */
+.cc-mk-step {
+  display: inline-grid;
+  place-items: center;
+  width: var(--control-height);
+  height: var(--control-height);
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  font: var(--text-headline);
+}
+
+/* Lists with a check-style pill marker (progress pills, as on the Cover). */
+.cc-mk-list > li {
+  position: relative;
+  padding-inline-start: var(--space-8);
+}
+.cc-mk-list > li::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 7px;
+  width: 20px;
+  height: 10px;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+}
+
+/* Languages: a row of phones that scrolls sideways on small screens. */
+.cc-mk-langs {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(200px, 1fr);
+  gap: var(--space-4);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-block-end: var(--space-2);
+}
+.cc-mk-langs > * {
+  scroll-snap-align: start;
+}
+.cc-mk-langs:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-md);
+}
+
+/* FAQ: native disclosure, with the system's focus ring. */
+.cc-mk-faq summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: var(--control-height);
+  padding-block: var(--space-4);
+  font: var(--text-headline);
+  cursor: pointer;
+  list-style: none;
+}
+.cc-mk-faq summary::-webkit-details-marker {
+  display: none;
+}
+.cc-mk-faq summary::after {
+  content: "";
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-inline-end: 2px solid var(--ink-muted);
+  border-block-end: 2px solid var(--ink-muted);
+  transform: rotate(45deg);
+  margin-block-start: -4px;
+}
+.cc-mk-faq details[open] summary::after {
+  transform: rotate(-135deg);
+  margin-block-start: 4px;
+}
+/* The chevron is drawn with logical borders, so turn it the other way in RTL to keep it pointing down / up. */
+[dir="rtl"] .cc-mk-faq summary::after {
+  transform: rotate(-45deg);
+}
+[dir="rtl"] .cc-mk-faq details[open] summary::after {
+  transform: rotate(135deg);
+}
+.cc-mk-faq summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* The animation's pause button; nothing to pause when motion is reduced. */
+@media (prefers-reduced-motion: reduce) {
+  .cc-mk-motion-toggle {
+    display: none;
+  }
+}
+
+/* Footer and inline text links: real links with a 44px target. */
+.cc-mk-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--control-height);
+  min-width: var(--control-height);
+  color: var(--ink);
+  text-decoration: none;
+}
+.cc-mk-link:hover {
+  text-decoration: underline;
+}
+.cc-mk-link[aria-current="page"] {
+  color: var(--accent-text);
+}
+.cc-mk-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Legal pages: readable line length. */
+.cc-mk-prose {
+  max-width: 40em;
+}

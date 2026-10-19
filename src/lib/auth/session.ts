@@ -37,7 +37,7 @@ export async function guard(page: GuardedPage): Promise<Session | null> {
 }
 
 /** Like guard() for pages that always have a session. */
-export async function requireSession(page: Exclude<GuardedPage, "sign-in" | "root">): Promise<Session> {
+export async function requireSession(page: Exclude<GuardedPage, "sign-in" | "app">): Promise<Session> {
   const session = await guard(page);
   if (!session) redirect({ href: "/sign-in", locale: await getLocale() });
   return session!;

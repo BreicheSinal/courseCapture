@@ -5,7 +5,8 @@ import tokens from "../../design-system/tokens.json";
  * Web app manifest (X5 App icon, issue #37): lets phones and computers install
  * CourseCapture. Icons come from the design system (design-system/assets/AppIcons,
  * copied to public/). Colours come from the tokens, so they follow the design system.
- * Opening the installed app goes to `/`, which sends each person to their home.
+ * Opening the installed app goes to `/app`, which sends each person to their home
+ * (`/` is the marketing page, #58). `id` stays `/` so existing installs keep working.
  */
 const color = (name: string) => tokens.color.tokens.find((c) => c.name === name)!.value;
 
@@ -14,7 +15,7 @@ export default function manifest(): MetadataRoute.Manifest {
     id: "/",
     name: "CourseCapture",
     short_name: "CourseCapture",
-    start_url: "/",
+    start_url: "/app",
     scope: "/",
     display: "standalone",
     orientation: "any",

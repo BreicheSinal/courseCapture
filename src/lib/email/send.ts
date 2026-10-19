@@ -6,10 +6,17 @@ import nodemailer from "nodemailer";
  * address; docs/setup-supabase.md). Returns false instead of throwing so a mail
  * problem never blocks the action that triggered it.
  */
-export async function sendEmail(msg: { to: string; subject: string; text: string; html: string }): Promise<boolean> {
+export async function sendEmail(msg: {
+  to: string;
+  subject: string;
+  text: string;
+  html: string;
+  /** Where replies go, e.g. the visitor who wrote through the contact form. */
+  replyTo?: string;
+}): Promise<boolean> {
   const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, EMAIL_FROM } = process.env;
   if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
-    console.warn("[email] SMTP isn't configured; skipped:", msg.subject);
+    console.warn("[email] SMTP isn't configured; skipped a message"); // no subject: it can hold visitor text
     return false;
   }
   const port = Number(SMTP_PORT || 465);

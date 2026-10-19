@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Page({ searchParams }: PageProps<"/[locale]/wrong-account">) {
   const t = await getTranslations("auth.wrongAccount");
   return (
-    <AuthScreen back={{ href: "/", label: t("back") }}>
+    <AuthScreen back={{ href: "/app", label: t("back") }}>
       <Suspense fallback={<Skeleton shape="block" />}>
         <Mismatch searchParams={searchParams} />
       </Suspense>

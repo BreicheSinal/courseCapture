@@ -5,14 +5,18 @@ All routes are prefixed with the interface locale, e.g. `/en/teacher/classes`, `
 ## Auth and onboarding
 | Canvas | Route | Notes |
 |---|---|---|
-| X6 Splash | `/` while routing | Wordmark while `/` decides where to send you. The installed app opens at `/`; Android also shows a launch screen built from the manifest (background, icon, name) |
+| — Marketing home | `/` | Public, prerendered (#58). Signed-in people get a "Go to …" button that streams in |
+| — Privacy, terms | `/privacy`, `/terms` | Public; draft wording until the owner supplies it (#59) |
+| — Contact | `/contact` | Public form, emailed to `CONTACT_EMAIL`; nothing stored (#59) |
+| X6 Splash | `/app` while routing | Wordmark while `/app` decides where to send you. Sign-in links and the installed app open at `/app`; Android also shows a launch screen built from the manifest (background, icon, name) |
 | T7 Sign in | `/sign-in?error=` | Teacher/student choice, email magic link |
 | T7b / S0b Check your email | `/sign-in/check-email?role=` | Same page, role-specific copy |
 | — Name (and role) | `/onboarding/profile?role=` | First sign-in only; role is normally picked on T7 |
 | T7e Invite code | `/onboarding/invite` | Teacher with a code |
 | T7d Pending approval | `/onboarding/pending` | Teachers waiting for admin |
 | T7c Wrong account type | `/wrong-account` | Opened the other role's area |
-| — | `/auth/callback` | Supabase redirect handler (no locale prefix) |
+| — | `/auth/callback` | Supabase redirect handler (no locale prefix); sends people on to `/app` |
+| — | `/sitemap.xml`, `/robots.txt`, `/[locale]/opengraph-image` | Search and link previews; only the public pages are listed and indexed (#59) |
 | — Foundation preview | `/design` | Dev page: tokens, components, themes |
 
 ## Teacher

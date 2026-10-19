@@ -11,7 +11,7 @@ The app uses the **CourseCapture design system** (Claude Design). Its look: calm
 4. Page layout uses Tailwind utilities on the 4px scale (`p-5` = 20px = `space-5`) and token colours only — **no hex values, no arbitrary colours**.
 5. Shorthand rules that can't be converted for RTL are fixed by hand in `src/styles/rtl.css`.
 6. All design-system CSS is in Tailwind's `components` layer, so a utility on a `cc-*` element (`p-4`, `font-semibold`, `max-sm:hidden`) overrides the component default.
-7. Pieces drawn on the canvas but not yet in the system get CSS in `src/styles/extensions.css` (from tokens), to be proposed back to the system.
+7. Pieces drawn on the canvas but not yet in the system get CSS in `src/styles/extensions.css` (from tokens), to be proposed back to the system. The public site's pieces (Cover bands, display type, phone and window frames) are in `src/styles/marketing.css`.
 
 ## Tokens
 | Group | Tokens |

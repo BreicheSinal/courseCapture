@@ -4,6 +4,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { getDirection, locales } from "@/i18n/locales";
 import { offlineScript } from "@/components/pwa/OfflineNotice";
 import { themeInitScript } from "@/lib/theme/theme";
+import { siteUrl } from "@/lib/seo";
 import tokens from "../../../design-system/tokens.json";
 import "@/styles/globals.css";
 
@@ -15,7 +16,10 @@ export function generateStaticParams() {
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("common");
   return {
+    metadataBase: new URL(siteUrl()),
     title: { default: t("appName"), template: `%s · ${t("appName")}` },
+    // App pages stay out of search results; the public pages opt in (src/lib/seo.ts, #59).
+    robots: { index: false, follow: false },
     applicationName: t("appName"),
     // X5 App icon (#37): the design system's icons, in public/.
     icons: {

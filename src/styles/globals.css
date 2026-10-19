@@ -10,6 +10,9 @@
 /* Canvas pieces not yet in the design system. */
 @import "./extensions.css" layer(components);
 
+/* The public marketing pages (#58, #59). */
+@import "./marketing.css" layer(components);
+
 /* Tailwind variants that match our theme mechanism (docs/theming.md). */
 @custom-variant dark {
   :root[data-theme="dark"] &,

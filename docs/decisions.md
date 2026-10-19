@@ -82,6 +82,15 @@
 | 77 | No custom "Install" button; browsers show their own prompt | `beforeinstallprompt` doesn't exist on iOS, and Next's guide advises against it |
 | 78 | The offline notice is shown by an inline script, not React | A saved page may be opened before its scripts load; the notice must still appear |
 | 79 | The manifest uses the Light `bg` for its colours, and has no description | A manifest can't use media queries; a one-language description would show in install dialogs. The page's per-scheme `theme-color` takes over once loaded |
+| 80 | `/` is the public marketing page; the old dispatcher moved to `/app` | Sign-in links, the installed app (`start_url`) and the in-app wordmark go to `/app`. The manifest `id` stays `/`, so existing installs keep working (#58) |
+| 81 | Marketing screens are real captures of the app, committed as WebP in both themes | `pnpm media:capture` seeds a sample course and screenshots it; `pnpm media` builds animated WebP (site), GIFs (sharing) and stills. CSS shows the page's theme and the images are lazy, so only that theme downloads |
+| 82 | The animations can be paused; with reduced motion they're a still | WCAG 2.2.2 for anything moving longer than five seconds; `<picture>` serves the poster for `prefers-reduced-motion` |
+| 83 | Marketing copy says "AI", not a provider's name | The provider is configurable (Anthropic, Google, OpenAI, Mistral; `docs/ai.md`) |
+| 84 | The contact form stores nothing about the message; its rate limit keeps an HMAC of the sender's IP (key `CONTACT_SALT`; IPv6 grouped by /64) and a time, 5 an hour, in `contact_attempts`. In production it fails closed without the service role, the salt or a client IP | Works across serverless instances without another service; rows older than a day are removed on the next claim. An exception to "service role only in jobs and admin code": anonymous visitors trigger one narrow function with a fixed-length hash (#59) |
+| 85 | App pages send `noindex`; only `/`, `/privacy`, `/terms` and `/contact` opt in, and robots.txt disallows app paths | Search results show only the public site (#59) |
+| 86 | One neutral social preview for every language: Cover bands, wordmark, two Light screens, no sentence | next/og can't shape Arabic reliably; each page's own title and description carry the language |
+| 87 | Privacy and terms show a "Draft" note until the site owner supplies the final text | The wording describes what the app does today; the owner decides the legal text (#59) |
+| 88 | Marketing display type is the Cover's 64 / 0.95 on wide screens, scaled down to 40px on phones (`clamp`) | 64px headlines don't fit a 390px screen; no display token exists yet, so it's proposed back with the other marketing pieces |
 
 ## Open questions
 1. **Due date per class** when one course is assigned to several classes — assumed yes.
