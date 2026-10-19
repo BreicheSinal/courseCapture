@@ -5,7 +5,7 @@ const UPDATED = new Date(Date.UTC(2026, 9, 19));
 import { Link } from "@/i18n/navigation";
 
 const sections = {
-  privacy: ["collect", "files", "ai", "cookies", "rights"],
+  privacy: ["collect", "files", "ai", "cookies", "analytics", "rights"],
   terms: ["accounts", "content", "ai", "use", "changes"],
 } as const;
 

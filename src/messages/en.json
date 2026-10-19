@@ -1027,6 +1027,10 @@
           "title": "Cookies",
           "text": "We use cookies to keep you signed in and to remember your language and theme. We don't use advertising or tracking cookies."
         },
+        "analytics": {
+          "title": "Visit statistics",
+          "text": "We count which pages are visited, using Vercel Web Analytics. It sets no cookies, and it never sees your name, your classes or your courses."
+        },
         "rights": {
           "title": "Your choices",
           "text": "You can ask us to correct or delete your account and its data at any time."
