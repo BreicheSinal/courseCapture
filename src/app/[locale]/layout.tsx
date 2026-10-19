@@ -1,8 +1,11 @@
 import type { Metadata, Viewport } from "next";
+import { Suspense } from "react";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getTranslations } from "next-intl/server";
 import { getDirection, locales } from "@/i18n/locales";
+import { SiteAnalytics } from "@/components/analytics/SiteAnalytics";
 import { offlineScript } from "@/components/pwa/OfflineNotice";
+import { analyticsEnabled } from "@/lib/analytics";
 import { themeInitScript } from "@/lib/theme/theme";
 import { siteUrl } from "@/lib/seo";
 import tokens from "../../../design-system/tokens.json";
@@ -63,6 +66,12 @@ export default async function RootLayout({ children }: LayoutProps<"/[locale]">)
           {t("skipToContent")}
         </a>
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        {/* Cookieless page views on Vercel only (#39); it reads the route, so it streams in. */}
+        {analyticsEnabled() && (
+          <Suspense fallback={null}>
+            <SiteAnalytics />
+          </Suspense>
+        )}
       </body>
     </html>
   );

@@ -52,6 +52,11 @@ Rules:
 - **Contact:** `sendContact` (`src/lib/contact/actions.ts`) validates with Zod, drops honeypot submissions, checks the rate limit (`claim_contact_slot`, the one service-role call an anonymous visitor can trigger; decision #84) and emails `CONTACT_EMAIL` (else `SMTP_USER`) with Reply-To set to the visitor.
 - **Search and previews:** `src/lib/seo.ts` gives public pages `index`, a canonical URL, hreflang alternates and the Open Graph / Twitter image (`src/app/[locale]/opengraph-image.tsx`). Every other page inherits `noindex` from the root layout. `src/app/sitemap.ts` lists the 4 × 4 public URLs; `src/app/robots.ts` disallows app paths.
 
+## Analytics (#39)
+- **Vercel Web Analytics**, cookieless (decision #30): `SiteAnalytics` in the root layout, rendered only when the app was built on Vercel (`VERCEL=1`) and `ANALYTICS` isn't `off`. Local runs, CI and other hosts load no script.
+- **What it sees:** screens, not people. `redactAnalyticsUrl` (`src/lib/analytics.ts`) runs in `beforeSend`: ids in the path become `:id`, the query string and fragment are dropped, and `/auth/*` and `/design` aren't reported (decision #89). No custom events.
+- **Turning it on:** Vercel project → Analytics → Enable. The script and its endpoint are served from the app's own domain (`/_vercel/insights/*`), and the service worker ignores them (only pages and static files are handled).
+
 ## Request trace: a teacher builds a course
 1. Teacher uploads a file on T1 → Server Action stores it in the private `sources` bucket and creates a `courses` row (`status = draft`) and a `generation_jobs` row.
 2. The action checks the session and that the user is an **approved teacher** who owns the target class.
@@ -82,4 +87,5 @@ INNGEST_SIGNING_KEY
 NEXT_PUBLIC_APP_URL              # also the base for canonical URLs, the sitemap and previews
 CONTACT_EMAIL                    # /contact messages go here (default SMTP_USER)
 CONTACT_SALT                     # server only, required in production: HMAC key for the contact rate limit
+ANALYTICS                        # "off" turns Vercel Web Analytics off on Vercel (#39)
 ```
