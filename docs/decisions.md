@@ -89,7 +89,7 @@
 | 84 | The contact form stores nothing about the message; its rate limit keeps an HMAC of the sender's IP (key `CONTACT_SALT`; IPv6 grouped by /64) and a time, 5 an hour, in `contact_attempts`. In production it fails closed without the service role, the salt or a client IP | Works across serverless instances without another service; rows older than a day are removed on the next claim. An exception to "service role only in jobs and admin code": anonymous visitors trigger one narrow function with a fixed-length hash (#59) |
 | 85 | App pages send `noindex`; only `/`, `/privacy`, `/terms` and `/contact` opt in, and robots.txt disallows app paths | Search results show only the public site (#59) |
 | 86 | One neutral social preview for every language: Cover bands, wordmark, two Light screens, no sentence | next/og can't shape Arabic reliably; each page's own title and description carry the language |
-| 87 | Privacy and terms show a "Draft" note until the site owner supplies the final text | The wording describes what the app does today; the owner decides the legal text (#59) |
+| 87 | Privacy and terms use the wording drafted from what the app does today, approved by the site owner on 2026-10-19; the "Draft" note is gone | The owner decides the legal text; the page shows "Last updated" from `UPDATED` in `LegalPage.tsx` (#59) |
 | 88 | Marketing display type is the Cover's 64 / 0.95 on wide screens, scaled down to 40px on phones (`clamp`) | 64px headlines don't fit a 390px screen; no display token exists yet, so it's proposed back with the other marketing pieces |
 
 ## Open questions

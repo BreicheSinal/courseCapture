@@ -1044,7 +1044,6 @@
     }
   },
   "legal": {
-    "draft": "Borrador. El texto definitivo se está preparando y reemplazará esta versión.",
     "updated": "Última actualización: {date}",
     "questions": "¿Preguntas sobre esta página? Contáctanos.",
     "privacy": {
