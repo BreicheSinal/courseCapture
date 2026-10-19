@@ -6,6 +6,7 @@ import { Icon } from "@/components/ui/Icon";
 import { Steps } from "@/components/ui/Steps";
 import { localeNames, type Locale } from "@/i18n/locales";
 import type { BuilderCourse, BuilderModule } from "@/lib/courses/queries";
+import { cn } from "@/lib/utils/cn";
 import { FALLBACK_NOTE } from "@/lib/generation/fallback";
 import { AI_REJECTED } from "@/lib/generation/constants";
 import { CourseMenu, MoveButtons, RenameCourse } from "./ReviewControls";
@@ -106,13 +107,15 @@ export function ReviewCourse({
                   className="flex min-h-control min-w-0 flex-1 items-center gap-3 text-ink no-underline"
                 >
                   <span className="subhead w-6 flex-none text-ink-muted tabular-nums">{m.position}</span>
-                  <span className="flex min-w-0 flex-1 flex-col">
-                    <span className="callout truncate font-semibold" dir="auto">
+                  <span className="flex min-w-0 flex-1 flex-col gap-1 py-1">
+                    <span className="callout line-clamp-2 font-semibold break-words" dir="auto">
                       {m.heading}
                     </span>
                     <span className="footnote text-ink-muted">{contents}</span>
+                    {/* Phones: the state goes under the text, so the title keeps the width. */}
+                    <ReviewState module={m} className="sm:hidden" />
                   </span>
-                  <ReviewState module={m} />
+                  <ReviewState module={m} className="hidden sm:flex" />
                 </Link>
                 <MoveButtons moduleId={m.id} heading={m.heading} first={i === 0} last={i === modules.length - 1} />
               </li>
@@ -126,23 +129,23 @@ export function ReviewCourse({
   );
 }
 
-function ReviewState({ module: m }: { module: BuilderModule }) {
+function ReviewState({ module: m, className }: { module: BuilderModule; className?: string }) {
   const t = useTranslations("teacher.review");
   if (m.checked_at)
     return (
-      <span className="footnote flex flex-none items-center gap-1 font-semibold text-success">
+      <span className={cn("footnote flex flex-none items-center gap-1 font-semibold text-success", className)}>
         <Icon name="check" width={14} height={14} />
         {t("state_checked")}
       </span>
     );
   if (m.review_note)
     return (
-      <span className="footnote flex max-w-56 flex-none items-center gap-1 font-semibold text-warning">
+      <span className={cn("footnote flex max-w-56 flex-none items-center gap-1 font-semibold text-warning", className)}>
         <Icon name="alert" width={14} height={14} className="flex-none" />
         <span className="truncate" title={m.review_note === FALLBACK_NOTE ? t("fallbackModule") : m.review_note}>
           {m.review_note === FALLBACK_NOTE ? t("state_fallback") : t("state_check")}
         </span>
       </span>
     );
-  return <span className="footnote flex-none text-ink-muted">{t("state_notReviewed")}</span>;
+  return <span className={cn("footnote flex flex-none text-ink-muted", className)}>{t("state_notReviewed")}</span>;
 }

@@ -24,7 +24,21 @@ export default defineConfig({
     trace: "retain-on-failure",
     launchOptions: process.env.E2E_CHROME ? { executablePath: process.env.E2E_CHROME } : undefined,
   },
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  projects: [
+    { name: "chromium", testIgnore: /phone\.spec\.ts/, use: { ...devices["Desktop Chrome"] } },
+    // A 390px phone (#61): the main flows again, plus the phone layout checks.
+    {
+      name: "phone",
+      testMatch: /(builder|phone)\.spec\.ts/,
+      use: {
+        ...devices["Desktop Chrome"],
+        viewport: { width: 390, height: 844 },
+        deviceScaleFactor: 3,
+        isMobile: true,
+        hasTouch: true,
+      },
+    },
+  ],
   webServer: [
     {
       command: "node tests/e2e/stack/supabase-standin.mjs",

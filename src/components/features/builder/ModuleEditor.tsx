@@ -3,6 +3,7 @@
 import { useActionState, useId, useState, useTransition } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { cn } from "@/lib/utils/cn";
 import { Badge } from "@/components/ui/Badge";
 import { Button, buttonClasses } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -329,7 +330,7 @@ export function ModuleEditor({
           </p>
         )}
 
-        <div className="sticky bottom-0 z-10 -mx-4 flex flex-wrap gap-2 border-t border-line bg-surface px-4 py-3 sm:mx-0 sm:rounded-md sm:border">
+        <div className="cc-actionbar sticky z-10 -mx-4 flex flex-wrap gap-2 border-t border-line bg-surface px-4 py-3 sm:mx-0 sm:rounded-md sm:border">
           <Button
             type="submit"
             name="intent"
@@ -350,14 +351,23 @@ export function ModuleEditor({
           >
             {t("save")}
           </Button>
+          {/* Phones keep only the two main actions in the bar; the preview link is under the form. */}
           <Link
             href={`/teacher/courses/${courseId}/preview?module=${m.position}`}
-            className={buttonClasses({ variant: "ghost" })}
+            className={cn(buttonClasses({ variant: "ghost" }), "max-sm:hidden")}
           >
             {t("preview")}
           </Link>
-          <span className="footnote ms-auto self-center text-ink-muted">{t("position", { n: m.position, total })}</span>
+          <span className="footnote ms-auto self-center text-ink-muted max-sm:hidden">
+            {t("position", { n: m.position, total })}
+          </span>
         </div>
+        <Link
+          href={`/teacher/courses/${courseId}/preview?module=${m.position}`}
+          className={cn(buttonClasses({ variant: "ghost" }), "self-start sm:hidden")}
+        >
+          {t("preview")}
+        </Link>
       </form>
 
       <DeleteModule courseId={courseId} moduleId={m.id} only={total <= 1} />

@@ -48,6 +48,15 @@ From the system (37): Button, IconButton, Menu, ThemeSwitcher · Field, Input, S
 | DiagramFrame (AI label, caption, alt text) | T4, S3 |
 | AskClaudePanel (Sheet + input + answer cards) | S5 |
 | TabBar (phone, 3 tabs, 52px targets) | T6, S2 and all phone screens |
+
+**Phones (#61).** Rules the screens follow:
+- Every control is at least 44px to tap. `IconButton` always is, whatever its drawn size.
+- Input text is at least 16px.
+- Nothing scrolls sideways. A page grid starts as `grid-cols-[minmax(0,1fr)]`, so a wide child (the modules row that scrolls on its own below 640px) can't stretch the page.
+- Long dialogs use `Dialog sticky`: the title stays at the top, the body scrolls, and the buttons stay at the bottom. Below 480px, dialogs become bottom sheets.
+- Sticky action bars (`.cc-actionbar`) sit above the TabBar on phones.
+- Card titles wrap to two lines rather than being cut to one.
+- `tests/e2e/phone.spec.ts` checks all of this on every screen.
 | Large wordmark | T7, X6 |
 
 ## Logo and icons

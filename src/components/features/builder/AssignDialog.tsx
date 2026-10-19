@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useCallback, useState } from "react";
+import { useActionState, useCallback, useId, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import { Button, buttonClasses } from "@/components/ui/Button";
@@ -59,28 +59,53 @@ export function AssignDialog({
           ? t("assignToCount", { count: ticked.size })
           : t("assign");
   const failedClass = state?.className ? classes.find((c) => c.id === state.className) : null;
+  const formId = useId();
+  const blocked = !changed || (ticked.size === 0 && was.length === 0);
+
+  // The buttons sit in the dialog's sticky footer, outside the scrolling form,
+  // so they stay in reach on a phone; `form` ties the submit button to the form.
+  const actions =
+    classes.length === 0 ? (
+      <>
+        <Button variant="secondary" onClick={close}>
+          {t("cancel")}
+        </Button>
+        <Link href="/teacher/classes/new" className={buttonClasses({ variant: "primary" })}>
+          {t("createClass")}
+        </Link>
+      </>
+    ) : (
+      <>
+        <Button variant="secondary" onClick={close} disabled={saving}>
+          {t("cancel")}
+        </Button>
+        <Button
+          type="submit"
+          form={formId}
+          variant="primary"
+          busy={saving}
+          aria-disabled={blocked || undefined}
+          onClick={(e) => {
+            if (blocked) e.preventDefault();
+          }}
+        >
+          {submitLabel}
+        </Button>
+      </>
+    );
 
   return (
     <Dialog
       onClose={saving ? () => {} : close}
       title={t("title", { title: course.title })}
       description={t("subtitle", { count: course.moduleCount, unchecked })}
-      className="cc-dialog--sticky"
+      sticky
+      actions={actions}
     >
       {classes.length === 0 ? (
-        <div className="flex flex-col gap-4">
-          <p className="body">{t("noClasses")}</p>
-          <div className="cc-dialog__actions">
-            <Button variant="secondary" onClick={close}>
-              {t("cancel")}
-            </Button>
-            <Link href="/teacher/classes/new" className={buttonClasses({ variant: "primary" })}>
-              {t("createClass")}
-            </Link>
-          </div>
-        </div>
+        <p className="body">{t("noClasses")}</p>
       ) : (
-        <form action={action} className="flex flex-col gap-4">
+        <form id={formId} action={action} className="flex flex-col gap-4">
           <input type="hidden" name="locale" value={locale} />
           <input type="hidden" name="course" value={course.id} />
           {was.map((id) => (
@@ -102,7 +127,7 @@ export function AssignDialog({
               const dueId = `due-${c.id}`;
               return (
                 <div key={c.id} className="flex flex-wrap items-center gap-3 rounded-md border border-line p-3">
-                  <label className="cc-check min-w-48 flex-1">
+                  <label className="cc-check min-h-control min-w-48 flex-1 items-center">
                     <input
                       type="checkbox"
                       className="cc-check__input"
@@ -152,22 +177,6 @@ export function AssignDialog({
             </p>
           )}
           <p className="footnote text-ink-muted">{t("help")}</p>
-          <div className="cc-dialog__actions">
-            <Button variant="secondary" onClick={close} disabled={saving}>
-              {t("cancel")}
-            </Button>
-            <Button
-              type="submit"
-              variant="primary"
-              busy={saving}
-              aria-disabled={!changed || (ticked.size === 0 && was.length === 0) || undefined}
-              onClick={(e) => {
-                if (!changed || (ticked.size === 0 && was.length === 0)) e.preventDefault();
-              }}
-            >
-              {submitLabel}
-            </Button>
-          </div>
         </form>
       )}
     </Dialog>

@@ -68,7 +68,7 @@ export function AccountMenu({ name, role }: AccountMenuProps) {
       <button
         ref={trigger}
         type="button"
-        className="cc-chip min-h-control max-w-64 cursor-pointer max-sm:p-1"
+        className="cc-chip min-h-control max-w-64 min-w-control cursor-pointer justify-center max-sm:p-1"
         aria-haspopup="dialog"
         aria-expanded={open}
         aria-controls={panelId}

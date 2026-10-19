@@ -71,7 +71,7 @@ export function StudentCourseCard({
   return (
     <Link href={`/student/courses/${course.course_id}`} className="cc-card cc-course h-full">
       <span className="cc-course__top items-center">
-        <span className="headline min-w-0 truncate">
+        <span className="headline line-clamp-2 min-w-0 break-words">
           <bdi lang={course.content_locale}>{course.title}</bdi>
         </span>
         <CourseStatus course={course} today={today} />

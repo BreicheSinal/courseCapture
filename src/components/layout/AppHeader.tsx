@@ -16,7 +16,7 @@ export function AppHeader({ person, menu }: AppHeaderProps) {
   const t = useTranslations();
   return (
     <header className="cc-header px-4 pt-4 pb-6">
-      <Link href="/" className="cc-wordmark no-underline" dir="ltr">
+      <Link href="/" className="cc-wordmark inline-flex min-h-control items-center no-underline" dir="ltr">
         Course<span>Capture</span>
       </Link>
       <div className="flex min-w-0 items-center gap-2">

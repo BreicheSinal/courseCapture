@@ -38,7 +38,8 @@ export function ClassList({ classes, notice }: { classes: ClassSummary[]; notice
       )}
       <div className="flex items-center gap-2">
         <div className="cc-search flex-1" role="search">
-          <div className="cc-inputbox">
+          {/* A label, so a tap anywhere in the 44px box focuses the field (CLAUDE.md rule 7). */}
+          <label className="cc-inputbox">
             <span className="cc-inputbox__affix" aria-hidden="true">
               <Icon name="search" />
             </span>
@@ -62,7 +63,7 @@ export function ClassList({ classes, notice }: { classes: ClassSummary[]; notice
                 <Icon name="close" />
               </button>
             )}
-          </div>
+          </label>
         </div>
         <Link href="/teacher/classes/new" className={buttonClasses({ variant: "primary" })}>
           {t("create")}

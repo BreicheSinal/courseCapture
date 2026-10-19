@@ -29,7 +29,7 @@ export function TeacherApprovals({ pending, decided }: { pending: Teacher[]; dec
             {pending.map((p) => (
               <li key={p.id} className="flex flex-wrap items-center gap-3 border-t border-line py-3 first:border-t-0">
                 <Avatar name={p.full_name || p.email} tone="soft" />
-                <div className="flex min-w-0 flex-1 flex-col">
+                <div className="flex min-w-0 flex-1 basis-48 flex-col">
                   <span className="callout truncate font-semibold">{p.full_name || p.email}</span>
                   <span className="footnote truncate text-ink-muted" dir="ltr">
                     {p.email}
@@ -52,7 +52,7 @@ export function TeacherApprovals({ pending, decided }: { pending: Teacher[]; dec
             {decided.map((p) => (
               <li key={p.id} className="flex flex-wrap items-center gap-3 border-t border-line py-3 first:border-t-0">
                 <Avatar name={p.full_name || p.email} tone="soft" />
-                <div className="flex min-w-0 flex-1 flex-col">
+                <div className="flex min-w-0 flex-1 basis-48 flex-col">
                   <span className="callout truncate">{p.full_name || p.email}</span>
                   <span className="footnote truncate text-ink-muted" dir="ltr">
                     {p.email}
