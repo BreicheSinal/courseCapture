@@ -50,7 +50,7 @@ pnpm test:db        # migrations + RLS against Postgres (TEST_DATABASE_URL)
 pnpm build
 pnpm test:e2e       # Playwright (added with the first real screens)
 pnpm media:capture  # Marketing screenshots and frames → tmp/media (Playwright project `media`)
-pnpm media          # tmp/media → public/marketing/ (animated WebP, GIFs, stills)
+pnpm media          # tmp/media → public/marketing/ (animated WebP) and docs/media/ (GIFs)
 pnpm db:start       # Supabase local (Docker); pnpm db:reset reapplies migrations
 pnpm inngest:dev    # Inngest dev server (stage 5)
 ```

@@ -114,7 +114,8 @@ async function build(theme, name) {
   const anim = await sequence(files, PLAN[name], ANIM_WIDTH);
   await anim.strip.webp({ quality: 74, effort: 4, loop: 0, delay: anim.delay }).toFile(join(OUT, theme, `${name}.webp`));
   const gif = await sequence(files, PLAN[name], GIF_WIDTH);
-  await gif.strip.gif({ loop: 0, delay: gif.delay, effort: 7, colours: 128, dither: 0.6 }).toFile(join(OUT, theme, `${name}.gif`));
+  mkdirSync("docs/media", { recursive: true }); // GIFs are for sharing (README, chats), not served by the site
+  await gif.strip.gif({ loop: 0, delay: gif.delay, effort: 7, colours: 128, dither: 0.6 }).toFile(join("docs/media", `${name}-${theme}.gif`));
   await sharp(files[POSTER[name]]).resize({ width: ANIM_WIDTH }).webp({ quality: 80 }).toFile(join(OUT, theme, `${name}-poster.webp`));
   return { name, w: anim.w, h: anim.h, frames: anim.delay.length };
 }
