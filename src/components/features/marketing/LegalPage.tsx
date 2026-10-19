@@ -21,7 +21,7 @@ export function LegalPage({ kind }: { kind: keyof typeof sections }) {
       ? sections.privacy.map((k) => ({ k, title: t(`privacy.sections.${k}.title`), text: t(`privacy.sections.${k}.text`) }))
       : sections.terms.map((k) => ({ k, title: t(`terms.sections.${k}.title`), text: t(`terms.sections.${k}.text`) }));
   return (
-    <article className="mx-auto w-full max-w-6xl px-4 pt-6 pb-8 md:px-8 md:pt-8">
+    <article className="mx-auto w-full max-w-5xl px-4 pt-6 pb-8 md:px-8 md:pt-8">
       <div className="cc-mk-prose flex flex-col gap-4">
         <h1 className="cc-mk-display">{t(`${kind}.title`)}</h1>
         <p className="text-ink-muted">{t("updated", { date: format.dateTime(UPDATED, { year: "numeric", month: "long", timeZone: "UTC" }) })}</p>

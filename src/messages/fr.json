@@ -938,8 +938,8 @@
       "pending": "Voir l’état de votre compte"
     },
     "hero": {
-      "title": "Transformez articles et diapositives en cours que votre classe peut suivre",
-      "lead": "Importez un PDF, des diapositives ou des notes. CourseCapture rédige des modules avec points clés, fiches, vérifications rapides et schémas, dans la langue et le niveau de votre choix. Vous vérifiez chaque module, puis vous l’attribuez à votre classe."
+      "title": "Transformez articles et diapositives en cours interactifs",
+      "lead": "Importez un PDF ou des diapositives. Obtenez des modules, des fiches, des vérifications rapides et des schémas. Vérifiez-les, puis attribuez-les à votre classe."
     },
     "motion": {
       "pauseCreate": "Mettre en pause l’enregistrement de l’enseignante",
@@ -950,79 +950,45 @@
     "how": {
       "title": "Comment ça marche",
       "upload": {
-        "title": "Importez votre support",
-        "text": "Un PDF (pages scannées comprises), un fichier PowerPoint, texte ou Markdown jusqu’à 20 Mo, ou du texte collé. Choisissez la langue et le niveau du cours."
+        "title": "Importer",
+        "text": "Un PDF, des diapositives, du texte ou des notes. Choisissez la langue et le niveau."
       },
       "check": {
-        "title": "Vérifiez ce qui a été rédigé",
-        "text": "Lisez chaque module, modifiez le texte, les fiches et les questions, redessinez un schéma et marquez-le comme vérifié. Les élèves ne voient jamais un cours non vérifié."
+        "title": "Vérifier",
+        "text": "Modifiez tout. Les élèves ne voient que les modules vérifiés."
       },
       "assign": {
-        "title": "Attribuez-le à une classe",
-        "text": "Choisissez une ou plusieurs classes et une date limite. Les élèves voient le cours sur leur Accueil immédiatement."
-      }
-    },
-    "teachers": {
-      "title": "Pour les enseignants",
-      "items": {
-        "join": "Chaque classe a un code d’accès : les élèves la rejoignent en quelques secondes.",
-        "roster": "La liste des élèves montre la progression et le score de chacun, cours par cours.",
-        "announce": "Publiez des annonces pour toute la classe.",
-        "export": "Exportez n’importe quel cours en une seule page HTML à partager ou archiver."
+        "title": "Attribuer",
+        "text": "Choisissez une classe et une date limite, puis suivez la progression et les scores."
       }
     },
     "students": {
       "title": "Pour les élèves",
       "items": {
-        "join": "Rejoindre une classe avec le code de leur enseignant.",
-        "learn": "Lire chaque module, retourner les fiches et faire une vérification rapide.",
-        "certificate": "Recevoir un certificat de réussite à la fin.",
-        "offline": "L’installer sur un téléphone et continuer à lire les modules hors ligne."
+        "join": "Rejoindre une classe avec un code.",
+        "learn": "Lire, retourner les fiches et faire une vérification rapide après chaque module.",
+        "certificate": "Recevoir un certificat à la fin.",
+        "offline": "Fonctionne sur téléphone, même hors ligne."
       }
     },
-    "languages": {
-      "title": "Quatre langues, y compris de droite à gauche",
-      "text": "Les enseignants choisissent la langue du cours en le créant. Chacun choisit la langue de l’interface pour soi. Les pages en arabe se lisent de droite à gauche, des menus aux vérifications rapides.",
-      "region": "Le même module en quatre langues"
-    },
-    "privacy": {
-      "title": "La confidentialité, dès la conception",
+    "facts": {
+      "label": "Langues et confidentialité",
+      "languages": {
+        "title": "Quatre langues",
+        "text": "Français, anglais, arabe et espagnol. L’arabe se lit de droite à gauche."
+      },
       "files": {
-        "title": "Votre fichier est supprimé une fois le cours créé",
-        "text": "Seul le nom du fichier reste avec le cours. Si la génération échoue, le fichier est conservé pour que vous puissiez réessayer."
+        "title": "Les fichiers sont supprimés",
+        "text": "Votre fichier est effacé une fois le cours créé."
       },
       "students": {
-        "title": "Les données des élèves ne sont pas envoyées à l’IA",
-        "text": "Seul votre support de cours est envoyé à l’IA. Les noms, réponses et progressions restent dans CourseCapture."
-      },
-      "checked": {
-        "title": "Les enseignants vérifient tout d’abord",
-        "text": "Rien de ce que l’IA rédige n’arrive aux élèves avant qu’un enseignant ait vérifié chaque module."
-      },
-      "more": "Lire la politique de confidentialité"
-    },
-    "faq": {
-      "title": "Questions",
-      "files": {
-        "q": "Que puis-je importer ?",
-        "a": "Des PDF, y compris des pages scannées, des fichiers PowerPoint (.pptx), du texte brut et du Markdown, jusqu’à 20 Mo. Vous pouvez aussi coller du texte."
-      },
-      "edit": {
-        "q": "Puis-je modifier ce que l’IA a rédigé ?",
-        "a": "Oui. Vous pouvez modifier le texte, les points clés, les fiches et la vérification rapide de chaque module, réordonner ou supprimer des modules, et redessiner ou retirer les schémas."
-      },
-      "phones": {
-        "q": "Est-ce que ça fonctionne sur téléphone ?",
-        "a": "Oui, pour les enseignants comme pour les élèves. On peut l’installer comme une application, et les élèves peuvent lire les modules déjà ouverts même sans connexion."
-      },
-      "accounts": {
-        "q": "Comment se connecte-t-on ?",
-        "a": "Avec son adresse e-mail. CourseCapture envoie un lien de connexion : aucun mot de passe à retenir."
-      },
-      "start": {
-        "q": "Comment notre établissement peut-il commencer ?",
-        "a": "Envoyez-nous un message. Nous configurerons votre établissement et enverrons des codes d’invitation à vos enseignants."
+        "title": "Les données des élèves restent ici",
+        "text": "Les noms, réponses et progressions ne sont jamais envoyés à l’IA."
       }
+    },
+    "cta": {
+      "title": "Proposez CourseCapture à votre établissement",
+      "text": "Parlez-nous de votre établissement, nous le configurerons."
     },
     "footer": {
       "label": "Pied de page",
@@ -1035,12 +1001,7 @@
       "create": "Enregistrement d’écran : une enseignante colle ses notes, CourseCapture crée le cours étape par étape, puis elle vérifie un module et son schéma.",
       "createPoster": "L’écran de vérification d’un nouveau cours sur la photosynthèse, avec ses quatre modules prêts à vérifier.",
       "learn": "Enregistrement d’écran : une élève ouvre le cours, lit un module avec un schéma, retourne une fiche, répond à une vérification rapide et obtient un certificat.",
-      "learnPoster": "Une élève lit le premier module du cours sur la photosynthèse.",
-      "upload": "L’écran de nouveau cours avec une zone de dépôt pour un article ou des diapositives.",
-      "check": "L’écran de vérification listant les modules du cours, chacun marqué comme vérifié.",
-      "assign": "La fenêtre d’attribution avec la classe Biology 10 sélectionnée et une date limite.",
-      "roster": "La liste d’une classe sur ordinateur : six élèves, chacun avec une barre de progression et un score.",
-      "lang": "Le premier module du cours en {language}."
+      "learnPoster": "Une élève lit le premier module du cours sur la photosynthèse."
     }
   },
   "legal": {

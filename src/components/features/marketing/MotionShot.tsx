@@ -46,7 +46,7 @@ export function MotionShot({ name, alt, posterAlt }: Props) {
       </div>
       <button
         type="button"
-        className={`${buttonClasses({ variant: "tertiary" })} cc-mk-motion-toggle`}
+        className={`${buttonClasses({ variant: "ghost" })} cc-mk-motion-toggle`}
         onClick={() => setPaused((p) => !p)}
       >
         {label}

@@ -938,8 +938,8 @@
       "pending": "Ver el estado de tu cuenta"
     },
     "hero": {
-      "title": "Convierte artículos y diapositivas en cursos que tu clase puede seguir",
-      "lead": "Sube un PDF, diapositivas o apuntes. CourseCapture escribe módulos con puntos clave, tarjetas, comprobaciones rápidas y diagramas, en el idioma y nivel que elijas. Tú revisas cada módulo y luego lo asignas a tu clase."
+      "title": "Convierte artículos y diapositivas en cursos interactivos",
+      "lead": "Sube un PDF o diapositivas. Obtén módulos, tarjetas, comprobaciones rápidas y diagramas. Revísalos y asígnalos a tu clase."
     },
     "motion": {
       "pauseCreate": "Pausar la grabación de la docente",
@@ -950,79 +950,45 @@
     "how": {
       "title": "Cómo funciona",
       "upload": {
-        "title": "Sube tu material",
-        "text": "Un PDF (también páginas escaneadas), un archivo de PowerPoint, texto o Markdown de hasta 20 MB, o pega texto. Elige el idioma y el nivel del curso."
+        "title": "Sube",
+        "text": "Un PDF, diapositivas, texto o apuntes. Elige el idioma y el nivel."
       },
       "check": {
-        "title": "Revisa lo que escribió",
-        "text": "Lee cada módulo, edita el texto, las tarjetas y las preguntas, vuelve a dibujar un diagrama y márcalo como revisado. Los estudiantes nunca ven un curso sin revisar."
+        "title": "Revisa",
+        "text": "Edita lo que quieras. Los estudiantes solo ven los módulos revisados."
       },
       "assign": {
-        "title": "Asígnalo a una clase",
-        "text": "Elige una o varias clases y una fecha de entrega. Los estudiantes ven el curso en su Inicio al momento."
-      }
-    },
-    "teachers": {
-      "title": "Para docentes",
-      "items": {
-        "join": "Cada clase tiene un código de acceso, así que los estudiantes se unen en segundos.",
-        "roster": "La lista de estudiantes muestra el progreso y la puntuación de cada uno, curso por curso.",
-        "announce": "Publica avisos para toda la clase.",
-        "export": "Exporta cualquier curso como una sola página HTML para compartirlo o archivarlo."
+        "title": "Asigna",
+        "text": "Elige una clase y una fecha de entrega, y sigue el progreso y las puntuaciones."
       }
     },
     "students": {
       "title": "Para estudiantes",
       "items": {
-        "join": "Unirse a una clase con el código de su docente.",
-        "learn": "Leer cada módulo, girar las tarjetas y hacer una comprobación rápida.",
-        "certificate": "Recibir un certificado de finalización al terminar.",
-        "offline": "Instalarlo en el teléfono y seguir leyendo módulos sin conexión."
+        "join": "Unirse a una clase con un código.",
+        "learn": "Leer, girar tarjetas y hacer una comprobación rápida tras cada módulo.",
+        "certificate": "Recibir un certificado al terminar.",
+        "offline": "Funciona en el teléfono, incluso sin conexión."
       }
     },
-    "languages": {
-      "title": "Cuatro idiomas, incluido de derecha a izquierda",
-      "text": "Los docentes eligen el idioma del curso al crearlo. Cada persona elige el idioma de la interfaz. Las páginas en árabe se leen de derecha a izquierda, desde los menús hasta las comprobaciones rápidas.",
-      "region": "El mismo módulo en cuatro idiomas"
-    },
-    "privacy": {
-      "title": "Privacidad desde el diseño",
+    "facts": {
+      "label": "Idiomas y privacidad",
+      "languages": {
+        "title": "Cuatro idiomas",
+        "text": "Español, inglés, árabe y francés. El árabe se lee de derecha a izquierda."
+      },
       "files": {
-        "title": "Tu archivo se borra cuando el curso está listo",
-        "text": "Solo el nombre del archivo queda con el curso. Si la generación falla, el archivo se guarda para que puedas intentarlo de nuevo."
+        "title": "Los archivos se borran",
+        "text": "Tu archivo se elimina cuando el curso está listo."
       },
       "students": {
-        "title": "Los datos de los estudiantes no se envían a la IA",
-        "text": "Solo tu material del curso va a la IA. Los nombres, respuestas y el progreso se quedan en CourseCapture."
-      },
-      "checked": {
-        "title": "Los docentes revisan todo primero",
-        "text": "Nada de lo que escribe la IA llega a los estudiantes hasta que un docente revisa cada módulo."
-      },
-      "more": "Leer la política de privacidad"
-    },
-    "faq": {
-      "title": "Preguntas",
-      "files": {
-        "q": "¿Qué puedo subir?",
-        "a": "Archivos PDF, incluidas páginas escaneadas, PowerPoint (.pptx), texto plano y Markdown, de hasta 20 MB. También puedes pegar texto."
-      },
-      "edit": {
-        "q": "¿Puedo cambiar lo que escribió la IA?",
-        "a": "Sí. Puedes editar el texto, los puntos clave, las tarjetas y la comprobación rápida de cada módulo, reordenar o borrar módulos, y volver a dibujar o quitar diagramas."
-      },
-      "phones": {
-        "q": "¿Funciona en el teléfono?",
-        "a": "Sí, para docentes y estudiantes. Se puede instalar como una app, y los estudiantes pueden leer los módulos que ya abrieron incluso sin conexión."
-      },
-      "accounts": {
-        "q": "¿Cómo se inicia sesión?",
-        "a": "Con el correo electrónico. CourseCapture envía un enlace para iniciar sesión, así que no hay contraseñas que recordar."
-      },
-      "start": {
-        "q": "¿Cómo empieza nuestro centro?",
-        "a": "Envíanos un mensaje. Configuraremos tu centro y enviaremos códigos de invitación para tus docentes."
+        "title": "Los datos de los estudiantes se quedan aquí",
+        "text": "Los nombres, respuestas y el progreso nunca se envían a la IA."
       }
+    },
+    "cta": {
+      "title": "Lleva CourseCapture a tu centro",
+      "text": "Cuéntanos sobre tu centro y lo configuramos."
     },
     "footer": {
       "label": "Pie de página",
@@ -1035,12 +1001,7 @@
       "create": "Grabación de pantalla: una docente pega sus apuntes, CourseCapture crea el curso paso a paso y ella revisa un módulo y su diagrama.",
       "createPoster": "La pantalla de revisión de un curso nuevo sobre la fotosíntesis, con sus cuatro módulos listos para revisar.",
       "learn": "Grabación de pantalla: una estudiante abre el curso, lee un módulo con un diagrama, gira una tarjeta, responde una comprobación rápida y recibe un certificado.",
-      "learnPoster": "Una estudiante lee el primer módulo del curso sobre la fotosíntesis.",
-      "upload": "La pantalla de curso nuevo con una zona para soltar un artículo o diapositivas.",
-      "check": "La pantalla de revisión con los módulos del curso, cada uno marcado como revisado.",
-      "assign": "El diálogo de asignación con la clase Biology 10 seleccionada y una fecha de entrega.",
-      "roster": "La lista de una clase en un ordenador: seis estudiantes, cada uno con su barra de progreso y puntuación.",
-      "lang": "El primer módulo del curso en {language}."
+      "learnPoster": "Una estudiante lee el primer módulo del curso sobre la fotosíntesis."
     }
   },
   "legal": {
