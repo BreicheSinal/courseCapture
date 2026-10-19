@@ -10,7 +10,8 @@ type EmptyStateProps = {
   actions?: ReactNode;
   tone?: "default" | "error";
   inline?: boolean;
-  headingLevel?: 2 | 3;
+  /** 1 only on a page with no other heading (the offline page). */
+  headingLevel?: 1 | 2 | 3;
 };
 
 /** Blank-slate, informational and error states (design-system EmptyState, canvas X2/X3). */
@@ -23,7 +24,7 @@ export function EmptyState({
   inline,
   headingLevel = 3,
 }: EmptyStateProps) {
-  const Heading = headingLevel === 2 ? "h2" : "h3";
+  const Heading = headingLevel === 1 ? "h1" : headingLevel === 2 ? "h2" : "h3";
   return (
     <div
       className={cn("cc-empty", tone === "error" && "cc-empty--error", inline && "cc-empty--inline")}

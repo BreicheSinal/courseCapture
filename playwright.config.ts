@@ -10,6 +10,8 @@ const { anonKey, serviceKey } = jwt;
  */
 const db = `${(process.env.TEST_DATABASE_URL ?? "postgres://postgres:postgres@localhost:5432/postgres").replace(/\/[^/]*$/, "")}/${process.env.E2E_DB ?? "cc_e2e"}`;
 const port = Number(process.env.E2E_PORT ?? 3100);
+// Lets context.route() and setOffline() reach service-worker requests (pwa.spec.ts, #37).
+process.env.PW_EXPERIMENTAL_SERVICE_WORKER_NETWORK_EVENTS ??= "1";
 
 export default defineConfig({
   testDir: "tests/e2e",
@@ -61,6 +63,7 @@ export default defineConfig({
         INNGEST_EVENT_KEY: "",
         INNGEST_DEV: "",
         AI_DAILY_GENERATIONS_PER_TEACHER: "20",
+        NEXT_PUBLIC_SW: "1", // the service worker, so the offline tests can use it (#37)
       },
     },
   ],

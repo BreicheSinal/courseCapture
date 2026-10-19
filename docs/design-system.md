@@ -60,7 +60,7 @@ From the system (37): Button, IconButton, Menu, ThemeSwitcher · Field, Input, S
 - `tests/e2e/phone.spec.ts` checks all of this on every screen.
 
 ## Logo and icons
-Use the system's `lockup.svg` / `lockup-dark.svg`, `mark*.svg`, `app-icon.svg`, `icon-192/512.png`, `icon-maskable-512.png`, `favicon.svg`. Copied into `public/` from `design-system/`. Don't recolour, stretch or retype.
+Use the system's `lockup.svg` / `lockup-dark.svg`, `mark*.svg`, `app-icon.svg`, `icon-192/512.png`, `icon-maskable-512.png`, `favicon.svg`. Fetched from the design system's assets into `design-system/assets/`; the app icons are copied into `public/` (#37). Don't recolour, stretch or retype.
 
 ## Keeping in sync
 When the design system changes: re-sync `design-system/`, regenerate `tokens.css`, run the visual and a11y tests in both themes.

@@ -16,6 +16,7 @@
   ```
 - `color-scheme` is set per theme so native controls, scrollbars and form fields match.
 - `<meta name="theme-color">` has a light and a dark value for the browser/PWA chrome.
+- The web app manifest can't follow the scheme, so its `theme_color` and `background_color` use the Light `bg`. Android's launch screen is light even in Dark; once the page loads, the per-scheme `theme-color` takes over (decision #79).
 
 ## Rules
 - Components reference tokens only. A literal colour in a component is a bug.

@@ -14,6 +14,19 @@ const nextConfig: NextConfig = {
     // Uploads go straight to Storage; this only covers pasted text (FR-8).
     serverActions: { bodySizeLimit: "1mb" },
   },
+  // The service worker (#37) must never be served from a cache, so updates reach people promptly.
+  async headers() {
+    return [
+      {
+        source: "/sw.js",
+        headers: [
+          { key: "Cache-Control", value: "no-cache, no-store, must-revalidate" },
+          { key: "Content-Type", value: "application/javascript; charset=utf-8" },
+          { key: "Service-Worker-Allowed", value: "/" },
+        ],
+      },
+    ];
+  },
   turbopack: {
     rules: {
       "*.css": {

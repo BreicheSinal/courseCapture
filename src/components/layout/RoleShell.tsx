@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 import { requireSession } from "@/lib/auth/session";
+import { OfflineNotice } from "@/components/pwa/OfflineNotice";
+import { OfflineIdentity } from "@/components/pwa/OfflineSupport";
 import { AccountMenu } from "./AccountMenu";
 import { AppShell } from "./AppShell";
 import type { NavRole } from "./nav";
@@ -14,6 +16,8 @@ export async function RoleShell({ role, children }: { role: NavRole; children: R
   const name = profile.full_name || profile.email;
   return (
     <AppShell role={role} menu={<AccountMenu name={name} role={profile.role ?? role} />}>
+      <OfflineIdentity user={profile.id} />
+      <OfflineNotice student={role === "student"} />
       {children}
     </AppShell>
   );

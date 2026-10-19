@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getTranslations } from "next-intl/server";
 import { getDirection, locales } from "@/i18n/locales";
+import { offlineScript } from "@/components/pwa/OfflineNotice";
 import { themeInitScript } from "@/lib/theme/theme";
 import tokens from "../../../design-system/tokens.json";
 import "@/styles/globals.css";
@@ -15,6 +16,14 @@ export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("common");
   return {
     title: { default: t("appName"), template: `%s · ${t("appName")}` },
+    applicationName: t("appName"),
+    // X5 App icon (#37): the design system's icons, in public/.
+    icons: {
+      icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+      apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+    },
+    // Installed on iOS: opens full screen with the standard status bar.
+    appleWebApp: { capable: true, title: t("appName"), statusBarStyle: "default" },
   };
 }
 
@@ -40,6 +49,7 @@ export default async function RootLayout({ children }: LayoutProps<"/[locale]">)
     <html lang={locale} dir={getDirection(locale)} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <script dangerouslySetInnerHTML={{ __html: offlineScript }} />
       </head>
       <body>
         <a
