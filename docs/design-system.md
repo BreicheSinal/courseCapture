@@ -37,18 +37,15 @@ The app uses the **CourseCapture design system** (Claude Design). Its look: calm
 - Exception: the certificate PDF (`certificatePdf.ts`) can't read CSS tokens, so it uses RGB values that mirror `accent`, `ink` and `ink-muted` in Light.
 
 ## Components (`src/components/ui/`)
-From the system (37): Button, IconButton, Menu, ThemeSwitcher · Field, Input, SearchInput, Select, Checkbox, Radio, Toggle, Switch, FileDropzone · Pagination, Breadcrumbs, Tabs · Badge, QuizOption, Toast, EmptyState, Skeleton, StatusDot, Tooltip, Modal, Sheet, DestructiveActionModal · CourseCard, ModuleNav, Flashcard, Book, Table, StudentRow · JoinCode, Announcement, StatTile · AppHeader, Avatar, Entity.
+From the system (44): Button, IconButton, Menu, ThemeSwitcher · Field, Input, SearchInput, Select, Checkbox, Radio, Toggle, Switch, FileDropzone, DateInput, ClassPicker · Pagination, Breadcrumbs, Tabs, Stepper, TabBar · Badge, QuizOption, Toast, EmptyState, Skeleton, StatusDot, Tooltip, Modal, Sheet, DestructiveActionModal, Notice, JobList · CourseCard, ModuleNav, Flashcard, Book, Table, StudentRow, DiagramFrame · JoinCode, Announcement, StatTile · AppHeader, Avatar, Entity.
 
-**Sketched on the canvas, not yet in the system** — built here, then proposed back to the system:
+Stepper, TabBar, DiagramFrame, DateInput, ClassPicker, Notice and JobList, the `display` / `display-sm` and `tabbar-height` tokens, and the link, large, `aria-disabled` and touch variants were built here first and accepted into the system on 2026-10-19 (#41). DateInput is the native date input with `cc-input` (decision #63) and ClassPicker is the checkbox list with a date per class (decision #64).
+
+**Sketched on the canvas, not yet in the system:**
 | Component | Used on |
 |---|---|
-| Stepper | T1–T3 — built as `Steps` (`src/components/ui/Steps.tsx`) |
-| DatePicker | T5 — the native date input styled as `cc-input` for now (decision #63) |
-| ClassPicker (Combobox) | T5 — a checkbox list with a due date per class instead (decision #64) |
-| DiagramFrame (AI label, caption, alt text) | T4, S3 |
-| AskClaudePanel (Sheet + input + answer cards) | S5 |
-| TabBar (phone, 3 tabs, 52px targets) | T6, S2 and all phone screens |
-| Large wordmark | T7, X6 |
+| AskClaudePanel (a floating widget that opens into the panel) | S5 — spec agreed in the tutor prototype before #36 is built |
+| Marketing display type that scales with the screen | `/` — `.cc-mk-display` in `marketing.css` keeps a fluid `clamp()` between the system's `display-sm` (40px) and `display` (64px) |
 
 **Phones (#61).** Rules the screens follow:
 - Every control is at least 44px to tap. On touch screens (`pointer: coarse`) icon buttons, theme options and segmented options grow to 44px; with a mouse they keep the drawn sizes, so desktop matches the canvas (decision #72).

@@ -15,7 +15,7 @@ CourseCapture is a classroom web app where teachers turn papers and slides into 
 - **Accent.** Fill the one main action per view with `accent` and set its label in `on-accent`. Use `accent-text` for links and ghost buttons, and `accent-soft` with `accent-text` for selected and info states.
 - **Status.** Use `success`, `warning` and `danger` for text and borders only, and always add a word or mark. Do not rely on color alone.
 - **Borders.** Use `line` for decorative hairlines and `line-strong` for any border that identifies a control.
-- **Type.** Use `large-title` once per page, `title` for sections, `headline` for card and module titles, `body` for explanations, `callout` for questions and announcements, `subhead` for meta lines, `caption` for dates, `eyebrow` for uppercase labels and `join-code` for the class code. The font is the system stack, which renders as SF Pro on Apple devices.
+- **Type.** Use `display` (or `display-sm` on phones) only for a marketing headline. Use `large-title` once per page, `title` for sections, `headline` for card and module titles, `body` for explanations, `callout` for questions and announcements, `subhead` for meta lines, `caption` for dates, `eyebrow` for uppercase labels and `join-code` for the class code. The font is the system stack, which renders as SF Pro on Apple devices.
 - **Spacing.** Step in 4px units from `space-1` to `space-12`. Pad cards with `space-5`, stack items inside a card with `space-3`, and keep a `space-4` page gutter.
 - **Radius.** Use `radius-md` for controls, `radius-lg` for cards, `radius-pill` for badges, progress bars and avatars, and `radius-sm` for small chips and icon buttons.
 - **Depth.** Give cards `shadow-card` in Light and a `line` border in Dark. Do not add gradients or colored left borders.
@@ -34,19 +34,20 @@ The mark is a rounded square with a viewfinder frame around three lines of text:
 
 - **Which file.** Use `lockup.svg` (mark and wordmark) on `bg` and `surface` in Light, and `lockup-dark.svg` in Dark. Use `mark.svg` and `mark-dark.svg` where only the symbol fits, such as an avatar or a list tile, and `wordmark.svg` or `wordmark-dark.svg` next to a mark that is already on screen.
 - **One color.** `mark-ink.svg` and `mark-white.svg` have no square, for a single-color print or a photo background. Do not recolor the others.
+- **Large wordmark.** On the sign-in and splash screens, set the wordmark large with `cc-wordmark cc-wordmark--lg` (34/41), always left to right, with "Capture" in `accent-text`.
 - **Space and size.** Keep clear space of half the mark's height on every side. Do not show the mark smaller than 16px or the lockup smaller than 96px wide.
 - **App icons.** `app-icon.svg` is the full-bleed square for iOS and the home screen; `icon-maskable-512.png` keeps the symbol inside the safe zone for Android; `favicon.svg`, `icon-192.png` and `icon-512.png` cover browsers and the PWA manifest.
 - **Do not** stretch, rotate, add shadows or gradients, put the blue mark on a blue background, or retype the wordmark in another font.
 
 ## Components
 
-Thirty-seven components cover the app today, each with guidelines in its own folder.
+Forty-four components cover the app today, each with guidelines in its own folder.
 
 - **Actions:** Button, IconButton, Menu, ThemeSwitcher.
-- **Forms:** Field, Input, SearchInput, Select, Checkbox, Radio, Toggle, Switch, FileDropzone.
-- **Navigation:** Pagination, Breadcrumbs, Tabs.
-- **Status and feedback:** Badge, QuizOption, Toast, EmptyState, Skeleton, StatusDot, Tooltip, Modal, Sheet, DestructiveActionModal.
-- **Course:** CourseCard, ModuleNav, Flashcard, Book, Table (with the class roster).
+- **Forms:** Field, Input, SearchInput, Select, Checkbox, Radio, Toggle, Switch, FileDropzone, DateInput, ClassPicker.
+- **Navigation:** Pagination, Breadcrumbs, Tabs, Stepper, TabBar.
+- **Status and feedback:** Badge, QuizOption, Toast, EmptyState, Skeleton, StatusDot, Tooltip, Modal, Sheet, DestructiveActionModal, Notice, JobList.
+- **Course:** CourseCard, ModuleNav, Flashcard, Book, Table (with the class roster), DiagramFrame.
 - **Class:** JoinCode, Announcement, StatTile.
 - **Layout and people:** AppHeader, Avatar, Entity.
 

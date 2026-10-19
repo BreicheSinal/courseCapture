@@ -8,6 +8,7 @@ import type { ModuleContent } from "@/lib/student/queries";
 import type { StudentCourse, StudentModuleState } from "@/types/supabase";
 import { CompleteButton } from "./CompleteButton";
 import { Flashcards } from "./Flashcards";
+import { DiagramFrame } from "@/components/ui/DiagramFrame";
 
 /** Segmented "Module n of N" bar: done, current, to come (canvas S3 / S4). */
 export function ModuleSteps({ modules, current }: { modules: StudentModuleState[]; current: number }) {
@@ -150,24 +151,14 @@ export function Reader({
 
           {mod.visual_svg && (
             <Card as="div" className="flex flex-col gap-3">
-              <figure className="m-0 flex flex-col gap-3">
-                <div
-                  role="img"
-                  aria-label={mod.visual_alt ?? ""}
-                  lang={lang}
-                  className="cc-diagram overflow-x-auto rounded-md border border-line p-3 text-ink"
-                  // Sanitised on save and again when read (src/lib/svg/sanitize.ts).
-                  dangerouslySetInnerHTML={{ __html: mod.visual_svg }}
-                />
-                <figcaption className="flex flex-col gap-1">
-                  {mod.visual_caption && (
-                    <span className="callout" dir="auto" lang={lang}>
-                      {mod.visual_caption}
-                    </span>
-                  )}
-                  <span className="caption text-ink-muted">{t("diagramBy")}</span>
-                </figcaption>
-              </figure>
+              {/* Sanitised on save and again when read (src/lib/svg/sanitize.ts). */}
+              <DiagramFrame
+                svg={mod.visual_svg}
+                alt={mod.visual_alt ?? ""}
+                caption={mod.visual_caption}
+                aiLabel={t("diagramBy")}
+                lang={lang}
+              />
             </Card>
           )}
 

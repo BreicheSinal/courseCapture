@@ -6,3 +6,5 @@ Provide one inline SVG icon and an `aria-label` that names the action ("Copy cod
 - Use the 32px size beside course and class titles, and `cc-iconbtn--xs` (28px) inside list rows such as announcements.
 - A destructive icon (trash) confirms in place: the first press swaps the icon for the text "Sure?", the second acts.
 - Do not use an IconButton for the main action of a view; give that a labeled Button.
+
+- **Touch.** On touch screens (`pointer: coarse`) it grows to the 44px `control-height`; with a mouse it keeps 32px.

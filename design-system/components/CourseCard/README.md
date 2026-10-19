@@ -10,3 +10,5 @@ CourseCard shows a course's title, class, due date and progress, as a tappable c
 **Teacher card.** Use `cc-card cc-card--stack` as a plain container, not a button. Provide the title, a meta line such as "9 modules · due Nov 4", and two IconButtons in `cc-course__actions`: preview (eye, `aria-label="Preview course"`) and delete (trash, `aria-label="Delete course"`). Delete confirms in place with "Sure?".
 
 - Stack cards with `space-4` between them.
+
+- **As a link.** When the card opens a page, render it as `a.cc-course`; the whole card is the link, with the focus ring on the card.

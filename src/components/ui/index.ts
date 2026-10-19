@@ -3,6 +3,7 @@ export { Avatar } from "./Avatar";
 export { Badge } from "./Badge";
 export { Button, buttonClasses } from "./Button";
 export { Card } from "./Card";
+export { DiagramFrame, DiagramWell } from "./DiagramFrame";
 export { EmptyState } from "./EmptyState";
 export { Icon, type IconName } from "./Icon";
 export { IconButton } from "./IconButton";
