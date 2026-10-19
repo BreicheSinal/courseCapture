@@ -83,7 +83,7 @@ export function ThemeSwitcher({
           aria-label={t(p)}
           title={t(p)}
           tabIndex={pref === p ? 0 : -1}
-          className="cc-theme__opt min-h-control min-w-control"
+          className="cc-theme__opt"
           onClick={() => choose(p)}
         >
           <Icon name={icons[p]} />

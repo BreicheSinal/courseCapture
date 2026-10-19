@@ -72,9 +72,7 @@ export function JoinCodeBar({
   const renewLabel = confirming ? t("sureLabel") : t("renewLabel");
 
   return (
-    <div
-      className={cn("cc-codebar bg-accent-soft text-accent-text", lg && "w-full flex-col items-stretch text-center")}
-    >
+    <div className={cn("cc-codebar bg-accent-soft text-accent-text", lg && "w-full flex-col items-stretch text-center")}>
       <div className={cn("flex min-w-0 flex-col", lg && "items-center")}>
         <span className="eyebrow">{t("label")}</span>
         <span className={cn("join-code select-all", lg && "join-code--lg")} dir="ltr">
@@ -84,7 +82,7 @@ export function JoinCodeBar({
       <div className={lg ? "grid grid-cols-2 gap-2" : "flex items-center gap-2"}>
         <button
           type="button"
-          className={lg ? "cc-btn cc-btn--secondary" : "cc-iconbtn min-h-control min-w-control"}
+          className={lg ? "cc-btn cc-btn--secondary" : "cc-iconbtn"}
           onClick={copy}
           aria-label={lg ? undefined : t("copyLabel")}
           title={lg ? undefined : t("copyLabel")}
@@ -94,7 +92,7 @@ export function JoinCodeBar({
         </button>
         <button
           type="button"
-          className={lg || confirming ? "cc-btn cc-btn--secondary" : "cc-iconbtn min-h-control min-w-control"}
+          className={lg || confirming ? "cc-btn cc-btn--secondary" : "cc-iconbtn"}
           onClick={renew}
           disabled={pending}
           aria-busy={pending || undefined}

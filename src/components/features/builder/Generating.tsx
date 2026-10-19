@@ -101,7 +101,7 @@ export function Generating({
         steps={[tn("steps.source"), tn("steps.generate"), tn("steps.review")]}
         current={1}
       />
-      <div className="grid grid-cols-[minmax(0,1fr)] gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
         {failed ? (
           <Card as="section" aria-labelledby="gen-title" className="flex flex-col gap-4 border border-danger">
             <span className="subhead flex items-center gap-1 font-semibold text-danger">

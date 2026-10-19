@@ -48,8 +48,7 @@ export function Segmented<V extends string>({
               defaultChecked={defaultValue === undefined ? undefined : defaultValue === o.value}
               onChange={() => onChange?.(o.value)}
             />
-            {/* Each option is a 44px target (CLAUDE.md rule 7). */}
-            <span className="min-h-control">{o.label}</span>
+            <span>{o.label}</span>
           </label>
         ))}
       </div>

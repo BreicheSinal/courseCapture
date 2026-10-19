@@ -38,21 +38,23 @@ export function ClassList({ classes, notice }: { classes: ClassSummary[]; notice
       )}
       <div className="flex items-center gap-2">
         <div className="cc-search flex-1" role="search">
-          {/* A label, so a tap anywhere in the 44px box focuses the field (CLAUDE.md rule 7). */}
-          <label className="cc-inputbox">
-            <span className="cc-inputbox__affix" aria-hidden="true">
-              <Icon name="search" />
-            </span>
-            <input
-              ref={inputRef}
-              className="cc-input"
-              type="search"
-              aria-label={t("search")}
-              placeholder={t("search")}
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={(e) => e.key === "Escape" && clear()}
-            />
+          <div className="cc-inputbox">
+            {/* The icon and field share a label, so a tap anywhere in the 44px box reaches the field (decision #74). */}
+            <label className="flex min-w-0 flex-1 items-center gap-2 self-stretch">
+              <span className="cc-inputbox__affix" aria-hidden="true">
+                <Icon name="search" />
+              </span>
+              <input
+                ref={inputRef}
+                className="cc-input"
+                type="search"
+                aria-label={t("search")}
+                placeholder={t("search")}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => e.key === "Escape" && clear()}
+              />
+            </label>
             {query && (
               <button
                 type="button"
@@ -63,7 +65,7 @@ export function ClassList({ classes, notice }: { classes: ClassSummary[]; notice
                 <Icon name="close" />
               </button>
             )}
-          </label>
+          </div>
         </div>
         <Link href="/teacher/classes/new" className={buttonClasses({ variant: "primary" })}>
           {t("create")}

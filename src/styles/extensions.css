@@ -153,19 +153,38 @@ a.cc-course:focus-visible {
 /* Long dialogs (Dialog `sticky`): tall enough to be useful, never taller than the screen.
    On phones the sheet's buttons sit above the home indicator. (#61) */
 .cc-dialog--tall {
-  --modal-h: min(88dvh, 680px);
+  --modal-h: min(88dvh, 680px); /* 680px: room for a list of classes without filling a desktop screen */
 }
 .cc-dialog--sticky > .cc-dialog__actions {
   padding-block-end: max(var(--space-3), env(safe-area-inset-bottom));
 }
 
-/* Sticky action bars (T4): on phones they sit just above the bottom TabBar
-   (52px + its border + the home-indicator inset) instead of under it. (#61) */
-.cc-actionbar {
-  bottom: calc(var(--spacing) * 13 + 1px + env(safe-area-inset-bottom));
+/* The phone TabBar's height (TabBar.tsx: 52px tabs + 1px top border), above the home-indicator inset. */
+:root {
+  --tabbar-h: calc(var(--spacing) * 13 + 1px);
 }
-@media (min-width: 1024px) {
+
+/* Sticky action bars (T4): on phones they sit just above the TabBar instead of under it. (#61) */
+.cc-actionbar {
+  bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
+}
+@media (width >= theme(--breakpoint-lg)) {
   .cc-actionbar {
     bottom: 0;
+  }
+}
+
+/* Touch screens (#61, decision #72): icon buttons, theme options and segmented
+   options grow to 44px so they're easy to tap. With a mouse they keep the
+   design system's drawn sizes, so desktop matches the canvas. */
+@media (pointer: coarse) {
+  .cc-iconbtn,
+  .cc-theme__opt {
+    min-width: var(--control-height);
+    min-height: var(--control-height);
+  }
+  .cc-seg .cc-seg__opt span {
+    /* as specific as the size variants (.cc-seg--lg …), and later, so it wins */
+    min-height: var(--control-height);
   }
 }

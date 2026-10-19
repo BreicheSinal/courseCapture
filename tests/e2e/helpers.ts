@@ -137,9 +137,13 @@ export async function expectPhoneFriendly(page: Page, viewportWidth: number) {
         if (!label) continue;
         b = label.getBoundingClientRect();
       }
-      // A field inside a <label class="cc-inputbox">: a tap anywhere in the box reaches it.
-      const box = el.tagName === "INPUT" ? el.closest("label.cc-inputbox") : null;
-      if (box) b = box.getBoundingClientRect();
+      // A field wrapped in a label (with its icon, say): a tap anywhere on the label reaches it,
+      // and a label filling an input box makes the whole box (borders included) the target.
+      const wrap = el.tagName === "INPUT" ? el.closest("label") : null;
+      if (wrap) {
+        const target = (wrap.closest(".cc-inputbox") ?? wrap).getBoundingClientRect();
+        if (target.height > b.height || target.width > b.width) b = target;
+      }
       if (b.width === 0 || b.height === 0) continue;
       if (b.width < 43.5 || b.height < 43.5) small.push(`${desc(el)} ${Math.round(b.width)}×${Math.round(b.height)}`);
     }

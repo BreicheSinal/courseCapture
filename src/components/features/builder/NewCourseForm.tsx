@@ -160,7 +160,7 @@ export function NewCourseForm({
         </div>
       )}
 
-      <div className="grid grid-cols-[minmax(0,1fr)] gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
         <section aria-label={t("sourceLabel")} className="flex flex-col gap-3">
           {mode === "file" ? (
             <>
@@ -228,7 +228,6 @@ export function NewCourseForm({
                   </span>
                   <IconButton
                     icon="close"
-                    className="min-h-control min-w-control"
                     label={upload.state === "uploading" ? t("cancelUpload") : t("removeFile", { name: upload.name })}
                     onClick={clear}
                   />
@@ -263,8 +262,8 @@ export function NewCourseForm({
           <h2 id="course-settings" className="headline">
             {t("settingsTitle")}
           </h2>
-          {/* Side by side only where both fit; the desktop side column is too narrow. */}
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+          {/* Stacked on phones, where "Intermediate" didn't fit beside the language. */}
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <Select label={t("language")} name="content_locale" defaultValue={defaults.locale}>
               {locales.map((l) => (
                 <option key={l} value={l}>

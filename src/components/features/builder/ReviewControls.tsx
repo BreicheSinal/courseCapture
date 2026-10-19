@@ -38,13 +38,7 @@ export function RenameCourse({ courseId, title }: { courseId: string; title: str
         <h1 ref={headingRef} tabIndex={-1} className="large-title min-w-0 break-words focus:outline-none" dir="auto">
           {title}
         </h1>
-        <IconButton
-          icon="pencil"
-          label={t("rename")}
-          size="xs"
-          className="min-h-control min-w-control"
-          onClick={() => setEditing(true)}
-        />
+        <IconButton icon="pencil" label={t("rename")} size="xs" onClick={() => setEditing(true)} />
       </div>
     );
   return (
@@ -116,7 +110,7 @@ export function CourseMenu({ courseId, previewHref }: { courseId: string; previe
       <button
         ref={trigger}
         type="button"
-        className="cc-iconbtn min-h-control min-w-control"
+        className="cc-iconbtn"
         aria-label={t("more")}
         title={t("more")}
         aria-haspopup="menu"
@@ -188,7 +182,6 @@ export function MoveButtons({
       <IconButton
         icon="arrowUp"
         size="xs"
-        className="min-h-control min-w-control"
         label={t("moveUp", { heading })}
         aria-disabled={first || pending || undefined}
         onClick={() => !first && !pending && move(-1)}
@@ -196,7 +189,6 @@ export function MoveButtons({
       <IconButton
         icon="arrowDown"
         size="xs"
-        className="min-h-control min-w-control"
         label={t("moveDown", { heading })}
         aria-disabled={last || pending || undefined}
         onClick={() => !last && !pending && move(1)}

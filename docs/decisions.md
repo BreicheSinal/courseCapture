@@ -74,7 +74,7 @@
 | 69 | With `AI_PROVIDER` empty, the provider comes from the key's prefix, and every listed provider has default models | A key alone should work; the first real Google key was silently sent to Anthropic (#62) |
 | 70 | A diagram with a caption but no `ALT:` line uses the caption as its alt text | The caption describes the diagram in the course's language; dropping the whole diagram helped no one |
 | 71 | A refused AI key is shown on T3 (job `error = "ai_rejected"` on a finished job), not only logged | Teachers otherwise get a basic-splitter course with no idea why |
-| 72 | `IconButton` is always at least 44px to tap, whatever its drawn size | One fix for every icon button; the 28px and 32px design sizes broke CLAUDE.md rule 7 on phones (#61) |
+| 72 | On touch screens (`pointer: coarse`), icon buttons, theme options and segmented options grow to 44px; with a mouse they keep the design system's drawn sizes | 44px targets where fingers tap (CLAUDE.md rule 7) without changing the desktop canvas (#61) |
 | 73 | On phones the module editor's sticky bar holds only "Mark as checked" and "Save changes"; "Preview as student" moves below the form | Three actions didn't fit in Arabic, and the second row hid under the TabBar |
 | 74 | The classes search box is a `<label>`, so a tap anywhere in it focuses the field | The design system's input inside the box is only 20px tall |
 

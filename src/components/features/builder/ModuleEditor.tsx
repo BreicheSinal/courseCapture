@@ -178,7 +178,6 @@ export function ModuleEditor({
               />
               <IconButton
                 icon="trash"
-                className="min-h-control min-w-control"
                 label={t("removeKeyPoint", { n: i + 1 })}
                 onClick={() => setPoints(points.filter((_, j) => j !== i))}
               />
