@@ -50,7 +50,7 @@ All routes are prefixed with the interface locale, e.g. `/en/teacher/classes`, `
 | S8 Course overview | `/student/courses/[courseId]` |
 | S3 Module reader | `/student/courses/[courseId]/modules/[position]` |
 | S4 Quick check | `/student/courses/[courseId]/modules/[position]/check` |
-| S5 Ask Claude | Sheet over S3 (`?ask=1`), not a separate page — stage 6 |
+| S5 Ask Claude | Floating widget on S3: a launcher button that opens the panel (`?ask=1` while open), not a separate page — stage 6 (`docs/design-system-proposals.md` §5) |
 | S6 Finish | `/student/courses/[courseId]/finish` (only once every module is done; otherwise back to S8) |
 | Desktop S8 Account | `/student/account` |
 

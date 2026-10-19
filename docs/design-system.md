@@ -41,7 +41,7 @@ From the system (44): Button, IconButton, Menu, ThemeSwitcher · Field, Input, S
 
 Stepper, TabBar, DiagramFrame, DateInput, ClassPicker, Notice and JobList, the `display` / `display-sm` and `tabbar-height` tokens, and the link, large, `aria-disabled` and touch variants were built here first and accepted into the system on 2026-10-19 (#41). DateInput is the native date input with `cc-input` (decision #63) and ClassPicker is the checkbox list with a date per class (decision #64).
 
-**Sketched on the canvas, not yet in the system:**
+**Sketched on the canvas, not yet in the system** (proposals and decisions: `docs/design-system-proposals.md`):
 | Component | Used on |
 |---|---|
 | AskClaudePanel (a floating widget that opens into the panel) | S5 — spec agreed in the tutor prototype before #36 is built |
