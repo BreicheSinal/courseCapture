@@ -6,15 +6,17 @@ Every proposal keeps the system's rules: tokens only, Light and Dark, logical pr
 
 How to send them: start a design-system sync (`/design-sync`) and push one component at a time, each as a `components/<Name>/README.md` and `preview.html`, in the system's own format. After the next `/sync-design-system`, swap the app over to the system's class and delete the local CSS listed under **Remove here**.
 
-| # | Component | Status in the app | Priority |
-|---|---|---|---|
-| 1 | [Stepper](#1-stepper) | Built as `Steps` | High: on every course-building screen |
-| 2 | [TabBar](#2-tabbar) | Built in `layout/TabBar.tsx` | High: on every phone screen |
-| 3 | [DiagramFrame](#3-diagramframe) | Markup repeated in three components | High: three copies to keep in step |
-| 4 | [Large wordmark and display type](#4-large-wordmark-and-display-type) | `cc-wordmark--lg`, `cc-mk-display` | Medium |
-| 5 | [AskClaudePanel](#5-askclaudepanel) | Not built yet (#36) | Medium: needed before #36 |
-| 6 | [DatePicker](#6-datepicker) | Native date input (decision #63) | Low: propose the styled native input |
-| 7 | [ClassPicker](#7-classpicker) | Checkbox list with dates (decision #64) | Low: propose the list, not a combobox |
+Owner's decisions, 2026-10-19: everything **send as written**, except AskClaudePanel, **send with changes** (a widget that opens; section 5 is the revised spec).
+
+| # | Component | Status in the app | Priority | Decision |
+|---|---|---|---|---|
+| 1 | [Stepper](#1-stepper) | Built as `Steps` | High: on every course-building screen | As written |
+| 2 | [TabBar](#2-tabbar) | Built in `layout/TabBar.tsx` | High: on every phone screen | As written |
+| 3 | [DiagramFrame](#3-diagramframe) | Markup repeated in three components | High: three copies to keep in step | As written |
+| 4 | [Large wordmark and display type](#4-large-wordmark-and-display-type) | `cc-wordmark--lg`, `cc-mk-display` | Medium | As written |
+| 5 | [AskClaudePanel](#5-askclaudepanel) | Not built yet (#36) | Medium: needed before #36 | With changes: a widget |
+| 6 | [DatePicker](#6-datepicker) | Native date input (decision #63) | Low: propose the styled native input | As written |
+| 7 | [ClassPicker](#7-classpicker) | Checkbox list with dates (decision #64) | Low: propose the list, not a combobox | As written |
 
 ---
 
@@ -77,25 +79,29 @@ How to send them: start a design-system sync (`/design-sync`) and push one compo
 **Remove here:** `.cc-wordmark--lg` in `extensions.css`; `.cc-mk-display` in `marketing.css`.
 
 ## 5. AskClaudePanel
-**Where:** S5 Ask Claude, a sheet over S3 (`?ask=1`). Not built yet; this is the canvas spec, to agree before #36 is built.
+**Where:** S5 Ask Claude, on S3 Module reader. Not built yet (#36).
+**Decision:** send with changes. The owner wants it as a **widget that opens**: a floating button on the reader that opens into the panel, rather than a sheet reached from a link. This is the revised spec.
 
-**Anatomy:** the system's Sheet (bottom sheet on phones, side panel on desktop) with:
-- a header: title "Ask about this module" and the module's heading as a `subhead`, plus a close IconButton;
-- the conversation: the student's question as a right-aligned (end-aligned) `accent-soft` bubble, the answer as a `surface` card with an "Answer from Claude" `caption`;
-- a note under the answers: answers can be wrong, check with your teacher;
-- the composer at the bottom: a multi-line Input ("Ask a question") and a primary "Ask" button, with "n questions left today" as a `footnote`.
+**Launcher (closed):** a floating pill button, "Ask Claude", with a sparkle icon, fixed to the bottom end corner of the reader. `accent` fill, `on-accent` label, `radius-pill`, `shadow-card` (a `line` border in Dark), at least 44px tall. It clears the TabBar on phones (`--tabbar-h`) and the safe-area insets everywhere. It never covers the module's main action: on phones the reader's bottom padding grows by the launcher's height.
+
+**Panel (open):** the launcher grows into the panel from the same corner (200ms ease, or no motion with reduced motion).
+- **Desktop:** a floating card, 380px wide and up to 560px tall, `surface`, `radius-lg`, `shadow-card`, anchored to the bottom end corner. The module stays readable and scrollable beside it.
+- **Phones (below 640px):** the system's Sheet from the bottom, up to 85% of the screen, with the module dimmed behind.
+- **Inside:** a header with "Ask about this module", the module's heading as a `subhead` and a close IconButton (it turns back into the launcher); the conversation, with the student's question as an end-aligned `accent-soft` bubble and the answer as a card labelled "Answer from Claude"; a note that answers can be wrong, so check with your teacher; and the composer, a multi-line Input with a real label, a primary "Ask" button and "n questions left today" as a `footnote`.
 
 | State | What shows |
 |---|---|
-| Empty | three suggested questions as ghost buttons |
+| Closed | the launcher only |
+| Open, empty | three suggested questions as ghost buttons |
 | Thinking | Skeleton lines in the answer card, `aria-busy` on it |
 | Answered | the answer card |
-| Limit reached | composer off (`aria-disabled`), notice "No questions left today. Try again tomorrow." |
+| Limit reached | composer off (`aria-disabled`), notice "No questions left today. Try again tomorrow." The launcher stays, so earlier answers can still be read |
 | Error | warning notice with "Try again" |
 
-**Accessibility:** focus moves into the sheet on open and back to the "Ask Claude" button on close; Escape closes; new answers are announced through a polite live region; the composer has a real `<label>`.
-**Right to left:** bubbles align to the end edge, so they swap sides with the direction.
-**Remove here:** nothing yet; build it from the system's version.
+**Accessibility:** the launcher is a real button with `aria-expanded` and `aria-controls`. On desktop the panel is a non-modal dialog (`role="dialog"`, labelled by its title), so the student can go back to the module with Tab; on phones it's modal, like the Sheet. Focus moves to the composer on open and back to the launcher on close; Escape closes; new answers are announced through a polite live region.
+**State in the URL:** `?ask=1` while open, so a reload or the back button keeps or closes it (`docs/routes.md`).
+**Right to left:** "end" corner and end-aligned bubbles swap sides with the direction.
+**Remove here:** nothing yet; #36 builds it from the system's version.
 
 ## 6. DatePicker
 **Where:** T5 Assign, one due date per class.

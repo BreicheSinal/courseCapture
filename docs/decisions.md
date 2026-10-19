@@ -92,6 +92,7 @@
 | 87 | Privacy and terms use the wording drafted from what the app does today, approved by the site owner on 2026-10-19; the "Draft" note is gone | The owner decides the legal text; the page shows "Last updated" from `UPDATED` in `LegalPage.tsx` (#59) |
 | 88 | Marketing display type is the Cover's 64 / 0.95 on wide screens, scaled down to 40px on phones (`clamp`) | 64px headlines don't fit a 390px screen; no display token exists yet, so it's proposed back with the other marketing pieces |
 | 89 | Analytics reports screens, not records: ids in the path become `:id`, query strings and fragments are dropped, sign-in callbacks and `/design` aren't counted, and it loads only on Vercel builds | Page counts are enough for the PRD's success metrics (§8); a class or course id, or a sign-in code in a URL, has no place in a third-party dashboard (#39). The privacy policy says so under "Visit statistics", added with the owner's approval on 2026-10-19 |
+| 90 | Ask Claude (S5) is a floating widget on the module reader: a launcher button that opens a panel (a floating card on desktop, a sheet on phones) | Owner's call on the design-system proposals, 2026-10-19 (#41); the other six proposals and the smaller variants go to the system as written |
 
 ## Open questions
 1. **Due date per class** when one course is assigned to several classes — assumed yes.
