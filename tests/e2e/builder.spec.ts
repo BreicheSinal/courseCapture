@@ -50,6 +50,10 @@ async function generateFromPaste(
   return /courses\/([0-9a-f-]{36})\//.exec(page.url())![1];
 }
 
+// The first visit to a page in `next dev` compiles it, which can take most of a
+// minute on a cold run; give each flow room for that (seen as a rare timeout).
+test.describe.configure({ timeout: 150_000 });
+
 test.afterAll(closeDb);
 
 test("paste text → generating → review with modules, flashcards, quiz and diagrams", async ({ page }) => {
