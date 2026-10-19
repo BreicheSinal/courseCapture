@@ -16,7 +16,7 @@ export async function sendEmail(msg: {
 }): Promise<boolean> {
   const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, EMAIL_FROM } = process.env;
   if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
-    console.warn("[email] SMTP isn't configured; skipped:", msg.subject);
+    console.warn("[email] SMTP isn't configured; skipped a message"); // no subject: it can hold visitor text
     return false;
   }
   const port = Number(SMTP_PORT || 465);

@@ -38,8 +38,19 @@ describe("contact rate limit", () => {
     expect(ok).toBe(true);
   });
 
-  it("rejects malformed senders", async () => {
-    expect(await errorOf(db.asService((c) => c.query("select public.claim_contact_slot('short', 3, interval '1 hour')")))).toMatch(/bad_request/);
+  it("removes attempts older than a day (nothing is kept longer)", async () => {
+    const left = await db.asService(async (c) => {
+      await c.query("insert into public.contact_attempts (sender_hash, created_at) values ($1, now() - interval '25 hours')", ["c".repeat(64)]);
+      await c.query("select public.claim_contact_slot($1, 3, interval '1 hour')", [sender]);
+      return (await c.query("select count(*)::int as n from public.contact_attempts where sender_hash = $1", ["c".repeat(64)])).rows[0].n;
+    });
+    expect(left).toBe(0);
+  });
+
+  it("rejects malformed arguments", async () => {
+    for (const args of ["'short', 3, interval '1 hour'", `'${sender}', null, interval '1 hour'`, `'${sender}', 3, null`, `'${sender}', 3, interval '-1 hour'`]) {
+      expect(await errorOf(db.asService((c) => c.query(`select public.claim_contact_slot(${args})`)))).toMatch(/bad_request/);
+    }
   });
 
   it("is closed to visitors and signed-in people", async () => {
@@ -47,6 +58,7 @@ describe("contact rate limit", () => {
       expect(await errorOf(db.as(uid, (c) => c.query("select public.claim_contact_slot($1, 3, interval '1 hour')", [sender])))).toMatch(/permission denied/);
       expect(await errorOf(db.as(uid, (c) => c.query("select * from public.contact_attempts")))).toMatch(/permission denied/);
       expect(await errorOf(db.as(uid, (c) => c.query("insert into public.contact_attempts (sender_hash) values ($1)", [sender])))).toMatch(/permission denied/);
+      expect(await errorOf(db.as(uid, (c) => c.query("select nextval('public.contact_attempts_id_seq')")))).toMatch(/permission denied/);
     }
   });
 });

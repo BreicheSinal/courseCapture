@@ -229,7 +229,7 @@ Written only by server code (service role):
 | Column | Type | Notes |
 |---|---|---|
 | `id` | bigint identity PK | |
-| `sender_hash` | text | SHA-256 of a salt and the sender's IP; never the IP or the message |
+| `sender_hash` | text | HMAC-SHA-256 of the sender's IP (key `CONTACT_SALT`; IPv6 by /64); never the IP or the message |
 | `created_at` | timestamptz | |
 
 RLS on, no policies, no grants: nobody but the service role touches it. `claim_contact_slot(sender, limit, window)` (service role only) removes rows older than a day, then returns false if the sender already has `limit` in `window`, else records one and returns true. The server allows 5 an hour.

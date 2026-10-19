@@ -38,7 +38,7 @@ const wrap = "mx-auto w-full max-w-6xl px-4 md:px-8";
 function Hero() {
   const t = useTranslations("marketing");
   return (
-    <section aria-labelledby="hero-title" className={`${wrap} grid items-center gap-10 pt-6 pb-16 md:grid-cols-[1fr_auto] md:gap-16 md:pt-10`}>
+    <section aria-labelledby="hero-title" className={`${wrap} grid items-center gap-8 pt-6 pb-12 md:grid-cols-[1fr_auto] md:gap-12 md:pt-8`}>
       <div className="flex flex-col gap-6">
         <h1 id="hero-title" className="cc-mk-display">
           {t("hero.title")}
@@ -66,12 +66,12 @@ function HowItWorks() {
     { key: "assign", shot: "teacher-assign" },
   ];
   return (
-    <section aria-labelledby="how-title" className="bg-surface py-16">
+    <section aria-labelledby="how-title" className="bg-surface py-12">
       <div className={wrap}>
         <h2 id="how-title" className="cc-mk-section-title">
           {t("how.title")}
         </h2>
-        <ol className="mt-10 grid gap-12 md:grid-cols-3 md:gap-8">
+        <ol className="mt-8 grid gap-12 md:grid-cols-3 md:gap-8">
           {steps.map((s, i) => (
             <li key={s.key} className="flex flex-col gap-4">
               <div className="flex items-center gap-3">
@@ -98,7 +98,7 @@ function Audiences() {
   const student = ["join", "learn", "certificate", "offline"] as const;
   return (
     <>
-      <section aria-labelledby="teachers-title" className={`${wrap} grid items-center gap-10 py-16 md:grid-cols-[2fr_3fr] md:gap-16`}>
+      <section aria-labelledby="teachers-title" className={`${wrap} grid items-center gap-8 py-12 md:grid-cols-[2fr_3fr] md:gap-12`}>
         <div className="flex flex-col gap-6">
           <h2 id="teachers-title" className="cc-mk-section-title">
             {t("teachers.title")}
@@ -113,7 +113,7 @@ function Audiences() {
           <Shot name="teacher-roster-desktop" alt={t("alt.roster")} />
         </div>
       </section>
-      <section aria-labelledby="students-title" className={`${wrap} grid items-center gap-10 py-16 md:grid-cols-[auto_1fr] md:gap-16`}>
+      <section aria-labelledby="students-title" className={`${wrap} grid items-center gap-8 py-12 md:grid-cols-[auto_1fr] md:gap-12`}>
         <div className="mx-auto w-full max-w-72 md:order-first md:w-72">
           <MotionShot name="learn" alt={t("alt.learn")} posterAlt={t("alt.learnPoster")} />
         </div>
@@ -137,7 +137,7 @@ function Languages() {
   const locale = useLocale();
   const names = new Intl.DisplayNames([locale], { type: "language" });
   return (
-    <section aria-labelledby="languages-title" className="bg-surface py-16">
+    <section aria-labelledby="languages-title" className="bg-surface py-12">
       <div className={wrap}>
         <div className="flex max-w-3xl flex-col gap-4">
           <h2 id="languages-title" className="cc-mk-section-title">
@@ -146,7 +146,7 @@ function Languages() {
           <p className="cc-mk-lead">{t("languages.text")}</p>
         </div>
         {/* Scrolls sideways on phones; focusable so keyboard users can scroll it too. */}
-        <div className="cc-mk-langs mt-10" role="region" aria-label={t("languages.region")} tabIndex={0}>
+        <div className="cc-mk-langs mt-8" role="region" aria-label={t("languages.region")} tabIndex={0}>
           {locales.map((l) => {
             const name = names.of(l) ?? l;
             return (
@@ -170,13 +170,13 @@ function Privacy() {
   const t = useTranslations("marketing.privacy");
   const items = ["files", "students", "checked"] as const;
   return (
-    <section aria-labelledby="privacy-title" className={`${wrap} py-16`}>
+    <section aria-labelledby="privacy-title" className={`${wrap} py-12`}>
       <h2 id="privacy-title" className="cc-mk-section-title">
         {t("title")}
       </h2>
-      <ul className="mt-10 grid gap-8 md:grid-cols-3">
+      <ul className="mt-8 grid gap-8 md:grid-cols-3">
         {items.map((k) => (
-          <li key={k} className="flex flex-col gap-2 border-t-4 border-accent pt-4">
+          <li key={k} className="flex flex-col gap-2 border-t border-line pt-4">
             <h3 className="headline">{t(`${k}.title`)}</h3>
             <p className="text-ink-muted">{t(`${k}.text`)}</p>
           </li>
@@ -195,7 +195,7 @@ function Faq() {
   const t = useTranslations("marketing.faq");
   const items = ["files", "edit", "phones", "accounts", "start"] as const;
   return (
-    <section aria-labelledby="faq-title" className={`${wrap} py-16`}>
+    <section aria-labelledby="faq-title" className={`${wrap} py-12`}>
       <h2 id="faq-title" className="cc-mk-section-title">
         {t("title")}
       </h2>

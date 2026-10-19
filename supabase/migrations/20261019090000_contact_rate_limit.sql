@@ -14,6 +14,7 @@ create index contact_attempts_sender_time on public.contact_attempts (sender_has
 -- No client access at all: RLS on, no policies, no grants.
 alter table public.contact_attempts enable row level security;
 revoke all on public.contact_attempts from public, anon, authenticated;
+revoke all on sequence public.contact_attempts_id_seq from public, anon, authenticated;
 
 -- Records one attempt for the sender unless they already have p_limit within
 -- p_window. Returns true when the message may be sent.
@@ -24,7 +25,8 @@ security definer
 set search_path = ''
 as $$
 begin
-  if p_sender is null or char_length(p_sender) not between 32 and 128 or p_limit < 1 then
+  if p_sender is null or char_length(p_sender) not between 32 and 128
+     or p_limit is null or p_limit < 1 or p_window is null or p_window <= interval '0' then
     raise exception 'bad_request' using errcode = '22023';
   end if;
   -- Serialise per sender so parallel posts can't all slip under the limit.

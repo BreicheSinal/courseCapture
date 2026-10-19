@@ -51,7 +51,7 @@ export default async function Image() {
         {band(1150, 140, 84, color("warning"))}
         <div style={{ position: "absolute", left: 72, top: 290, display: "flex", fontFamily: "Noto Sans", fontSize: 72, fontWeight: 700, letterSpacing: -2 }}>
           <span style={{ color: color("ink") }}>Course</span>
-          <span style={{ color: color("accent") }}>Capture</span>
+          <span style={{ color: color("accent-text") }}>Capture</span>
         </div>
         <div style={{ position: "absolute", left: 76, top: 400, display: "flex", gap: 14 }}>
           {[0, 1, 2, 3, 4, 5].map((i) => (

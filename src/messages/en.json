@@ -928,7 +928,6 @@
       "title": "CourseCapture: turn papers and slides into interactive courses",
       "description": "Teachers upload a PDF, slides or notes and get a course with modules, flashcards, quick checks and diagrams, in English, Arabic, French or Spanish. Check it, then assign it to your class."
     },
-    "nav": "Site",
     "signIn": "Sign in",
     "talkToUs": "Talk to us",
     "account": {
@@ -943,7 +942,10 @@
       "lead": "Upload a PDF, slides or notes. CourseCapture writes modules with key points, flashcards, quick checks and diagrams, in the language and level you choose. You check every module, then assign it to your class."
     },
     "motion": {
-      "pause": "Pause animation"
+      "pauseCreate": "Pause the teacher recording",
+      "playCreate": "Play the teacher recording",
+      "pauseLearn": "Pause the student recording",
+      "playLearn": "Play the student recording"
     },
     "how": {
       "title": "How it works",
@@ -1043,7 +1045,7 @@
   },
   "legal": {
     "draft": "Draft. The final text is being prepared and will replace this version.",
-    "updated": "Last updated: October 2026",
+    "updated": "Last updated: {date}",
     "questions": "Questions about this page? Contact us.",
     "privacy": {
       "title": "Privacy policy",
@@ -1112,13 +1114,13 @@
     "sending": "Sending",
     "sent": {
       "title": "Message sent",
-      "text": "Thanks. We'll reply to {email}."
+      "text": "Thanks. We'll reply to <email>{email}</email>."
     },
     "sendAnother": "Send another message",
     "errors": {
       "name": "Enter your name.",
       "school": "Enter your school's name.",
-      "email": "Enter an email address like name@school.edu.",
+      "email": "Enter an email address like <email>name@school.edu</email>.",
       "message": "Write at least 20 characters so we know how to help.",
       "tooMany": "You've sent several messages in a short time. Try again in an hour.",
       "failed": "Your message couldn't be sent. Try again in a few minutes."

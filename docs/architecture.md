@@ -49,7 +49,7 @@ Rules:
 ## Public site (#58, #59)
 - **Pages:** `src/app/[locale]/(marketing)/` — `/` (marketing), `/privacy`, `/terms`, `/contact` — with their own header (Cover bands, wordmark, Talk to us, Sign in) and footer (legal links, languages). Prerendered; the only dynamic part is the account button (`AccountAction`), which streams "Go to Classes" / "Go to my courses" for signed-in people. The app's dispatcher is `/app`.
 - **Screens and animations:** real captures, in `public/marketing/{light,dark}/`. `pnpm media:capture` (Playwright project `media`, best against a production build on :3100) seeds a sample Biology class and screenshots it, then `pnpm media` (`scripts/build-marketing-media.mjs`, sharp) builds animated WebP with slide and scroll transitions, GIFs, posters, stills, `og/` PNGs and `sizes.json`. CSS shows the page's theme only, and the images are lazy, so the other theme is never downloaded.
-- **Contact:** `sendContact` (`src/lib/contact/actions.ts`) validates with Zod, drops honeypot submissions, checks the rate limit (`claim_contact_slot`) and emails `CONTACT_EMAIL` (else `SMTP_USER`) with Reply-To set to the visitor.
+- **Contact:** `sendContact` (`src/lib/contact/actions.ts`) validates with Zod, drops honeypot submissions, checks the rate limit (`claim_contact_slot`, the one service-role call an anonymous visitor can trigger; decision #84) and emails `CONTACT_EMAIL` (else `SMTP_USER`) with Reply-To set to the visitor.
 - **Search and previews:** `src/lib/seo.ts` gives public pages `index`, a canonical URL, hreflang alternates and the Open Graph / Twitter image (`src/app/[locale]/opengraph-image.tsx`). Every other page inherits `noindex` from the root layout. `src/app/sitemap.ts` lists the 4 × 4 public URLs; `src/app/robots.ts` disallows app paths.
 
 ## Request trace: a teacher builds a course
@@ -81,5 +81,5 @@ INNGEST_EVENT_KEY
 INNGEST_SIGNING_KEY
 NEXT_PUBLIC_APP_URL              # also the base for canonical URLs, the sitemap and previews
 CONTACT_EMAIL                    # /contact messages go here (default SMTP_USER)
-CONTACT_SALT                     # optional salt for the contact rate limit's IP hash
+CONTACT_SALT                     # server only, required in production: HMAC key for the contact rate limit
 ```

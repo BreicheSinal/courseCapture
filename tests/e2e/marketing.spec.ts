@@ -33,13 +33,13 @@ test("a visitor sees the marketing page with Sign in and Talk to us", async ({ p
 
 test("the animations can be paused, and only the page's theme is downloaded", async ({ page }) => {
   await page.goto("/en");
-  const pause = page.getByRole("button", { name: "Pause animation" }).first();
-  await expect(pause).toHaveAttribute("aria-pressed", "false");
   const img = page.locator("picture.cc-mk-light img").first();
   await expect(img).toHaveAttribute("src", "/marketing/light/create.webp");
-  await pause.click();
-  await expect(pause).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("button", { name: "Pause the teacher recording" }).click();
   await expect(img).toHaveAttribute("src", "/marketing/light/create-poster.webp");
+  await page.getByRole("button", { name: "Play the teacher recording" }).click();
+  await expect(img).toHaveAttribute("src", "/marketing/light/create.webp");
+  await expect(page.getByRole("button", { name: "Pause the student recording" })).toBeVisible();
 
   // Scroll everything into view, then check no dark screen was fetched in Light.
   const fetched: string[] = [];
@@ -118,6 +118,7 @@ test("contact: says what's missing, ignores bots, and reports a failed send", as
   await expectAccessible(page);
   await page.getByRole("button", { name: "Send message" }).click();
   await expect(page.getByText("Enter your name.")).toBeVisible();
+  await expect(page.getByLabel("Your name")).toBeFocused();
   await expect(page.getByText("Enter your school's name.")).toBeVisible();
   await expect(page.getByText("Enter an email address like name@school.edu.")).toBeVisible();
   await expect(page.getByText("Write at least 20 characters so we know how to help.")).toBeVisible();
@@ -132,7 +133,7 @@ test("contact: says what's missing, ignores bots, and reports a failed send", as
   await expect(page.getByLabel("School")).toHaveValue("Lycée Saint-Joseph");
 
   // A bot fills the hidden field: it looks sent, nothing is.
-  await page.locator('input[name="website"]').fill("https://spam.example", { force: true });
+  await page.locator('input[name="cc_hp"]').fill("https://spam.example", { force: true });
   await page.getByRole("button", { name: "Send message" }).click();
   await expect(page.getByRole("heading", { name: "Message sent" })).toBeFocused();
   await page.getByRole("button", { name: "Send another message" }).click();

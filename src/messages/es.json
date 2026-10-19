@@ -928,7 +928,6 @@
       "title": "CourseCapture: convierte artículos y diapositivas en cursos interactivos",
       "description": "Los docentes suben un PDF, diapositivas o apuntes y obtienen un curso con módulos, tarjetas, comprobaciones rápidas y diagramas, en español, inglés, árabe o francés. Revísalo y asígnalo a tu clase."
     },
-    "nav": "Sitio",
     "signIn": "Iniciar sesión",
     "talkToUs": "Habla con nosotros",
     "account": {
@@ -943,7 +942,10 @@
       "lead": "Sube un PDF, diapositivas o apuntes. CourseCapture escribe módulos con puntos clave, tarjetas, comprobaciones rápidas y diagramas, en el idioma y nivel que elijas. Tú revisas cada módulo y luego lo asignas a tu clase."
     },
     "motion": {
-      "pause": "Pausar la animación"
+      "pauseCreate": "Pausar la grabación de la docente",
+      "playCreate": "Reproducir la grabación de la docente",
+      "pauseLearn": "Pausar la grabación de la estudiante",
+      "playLearn": "Reproducir la grabación de la estudiante"
     },
     "how": {
       "title": "Cómo funciona",
@@ -1037,13 +1039,13 @@
       "upload": "La pantalla de curso nuevo con una zona para soltar un artículo o diapositivas.",
       "check": "La pantalla de revisión con los módulos del curso, cada uno marcado como revisado.",
       "assign": "El diálogo de asignación con la clase Biology 10 seleccionada y una fecha de entrega.",
-      "roster": "La lista de una clase en una computadora: seis estudiantes, cada uno con su barra de progreso y puntuación.",
+      "roster": "La lista de una clase en un ordenador: seis estudiantes, cada uno con su barra de progreso y puntuación.",
       "lang": "El primer módulo del curso en {language}."
     }
   },
   "legal": {
     "draft": "Borrador. El texto definitivo se está preparando y reemplazará esta versión.",
-    "updated": "Última actualización: octubre de 2026",
+    "updated": "Última actualización: {date}",
     "questions": "¿Preguntas sobre esta página? Contáctanos.",
     "privacy": {
       "title": "Política de privacidad",
@@ -1112,13 +1114,13 @@
     "sending": "Enviando",
     "sent": {
       "title": "Mensaje enviado",
-      "text": "Gracias. Responderemos a {email}."
+      "text": "Gracias. Responderemos a <email>{email}</email>."
     },
     "sendAnother": "Enviar otro mensaje",
     "errors": {
       "name": "Escribe tu nombre.",
       "school": "Escribe el nombre de tu centro.",
-      "email": "Escribe un correo como nombre@escuela.edu.",
+      "email": "Escribe un correo como <email>nombre@escuela.edu</email>.",
       "message": "Escribe al menos 20 caracteres para saber cómo ayudarte.",
       "tooMany": "Has enviado varios mensajes en poco tiempo. Inténtalo de nuevo en una hora.",
       "failed": "No se pudo enviar tu mensaje. Inténtalo de nuevo en unos minutos."

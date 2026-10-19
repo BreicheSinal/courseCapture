@@ -8,6 +8,7 @@ import { LanguageLinks } from "./LanguageLinks";
 /** Top of every marketing page: the Cover bands, then the wordmark and the two ways in. */
 export function SiteHeader() {
   const t = useTranslations("marketing");
+  const common = useTranslations("common");
   return (
     <>
       <CoverBands />
@@ -15,7 +16,7 @@ export function SiteHeader() {
         <Link href="/" className="cc-wordmark inline-flex min-h-control items-center no-underline" dir="ltr">
           Course<span>Capture</span>
         </Link>
-        <nav aria-label={t("nav")} className="flex items-center gap-2">
+        <nav aria-label={common("mainNavigation")} className="flex items-center gap-2">
           <Link href="/contact" className={`${buttonClasses({ variant: "tertiary" })} max-sm:hidden`}>
             {t("talkToUs")}
           </Link>
@@ -30,7 +31,7 @@ export function SiteHeader() {
 export function SiteFooter() {
   const t = useTranslations("marketing.footer");
   return (
-    <footer className="mt-16 border-t border-line">
+    <footer className="mt-12 border-t border-line">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 md:flex-row md:items-start md:justify-between md:px-8">
         <div className="flex flex-col gap-1">
           <Link href="/" className="cc-wordmark inline-flex min-h-control items-center no-underline" dir="ltr">

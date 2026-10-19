@@ -925,10 +925,9 @@
   },
   "marketing": {
     "meta": {
-      "title": "CourseCapture : transformez articles et diapositives en cours interactifs",
+      "title": "CourseCapture : transformez articles et diapositives en cours interactifs",
       "description": "Les enseignants importent un PDF, des diapositives ou des notes et obtiennent un cours avec modules, fiches, vérifications rapides et schémas, en français, anglais, arabe ou espagnol. Vérifiez-le, puis attribuez-le à votre classe."
     },
-    "nav": "Site",
     "signIn": "Se connecter",
     "talkToUs": "Nous contacter",
     "account": {
@@ -943,7 +942,10 @@
       "lead": "Importez un PDF, des diapositives ou des notes. CourseCapture rédige des modules avec points clés, fiches, vérifications rapides et schémas, dans la langue et le niveau de votre choix. Vous vérifiez chaque module, puis vous l’attribuez à votre classe."
     },
     "motion": {
-      "pause": "Mettre l’animation en pause"
+      "pauseCreate": "Mettre en pause l’enregistrement de l’enseignante",
+      "playCreate": "Lire l’enregistrement de l’enseignante",
+      "pauseLearn": "Mettre en pause l’enregistrement de l’élève",
+      "playLearn": "Lire l’enregistrement de l’élève"
     },
     "how": {
       "title": "Comment ça marche",
@@ -963,7 +965,7 @@
     "teachers": {
       "title": "Pour les enseignants",
       "items": {
-        "join": "Chaque classe a un code d’accès : les élèves la rejoignent en quelques secondes.",
+        "join": "Chaque classe a un code d’accès : les élèves la rejoignent en quelques secondes.",
         "roster": "La liste des élèves montre la progression et le score de chacun, cours par cours.",
         "announce": "Publiez des annonces pour toute la classe.",
         "export": "Exportez n’importe quel cours en une seule page HTML à partager ou archiver."
@@ -1002,23 +1004,23 @@
     "faq": {
       "title": "Questions",
       "files": {
-        "q": "Que puis-je importer ?",
+        "q": "Que puis-je importer ?",
         "a": "Des PDF, y compris des pages scannées, des fichiers PowerPoint (.pptx), du texte brut et du Markdown, jusqu’à 20 Mo. Vous pouvez aussi coller du texte."
       },
       "edit": {
-        "q": "Puis-je modifier ce que l’IA a rédigé ?",
+        "q": "Puis-je modifier ce que l’IA a rédigé ?",
         "a": "Oui. Vous pouvez modifier le texte, les points clés, les fiches et la vérification rapide de chaque module, réordonner ou supprimer des modules, et redessiner ou retirer les schémas."
       },
       "phones": {
-        "q": "Est-ce que ça fonctionne sur téléphone ?",
+        "q": "Est-ce que ça fonctionne sur téléphone ?",
         "a": "Oui, pour les enseignants comme pour les élèves. On peut l’installer comme une application, et les élèves peuvent lire les modules déjà ouverts même sans connexion."
       },
       "accounts": {
-        "q": "Comment se connecte-t-on ?",
-        "a": "Avec son adresse e-mail. CourseCapture envoie un lien de connexion : aucun mot de passe à retenir."
+        "q": "Comment se connecte-t-on ?",
+        "a": "Avec son adresse e-mail. CourseCapture envoie un lien de connexion : aucun mot de passe à retenir."
       },
       "start": {
-        "q": "Comment notre établissement peut-il commencer ?",
+        "q": "Comment notre établissement peut-il commencer ?",
         "a": "Envoyez-nous un message. Nous configurerons votre établissement et enverrons des codes d’invitation à vos enseignants."
       }
     },
@@ -1030,21 +1032,21 @@
       "languages": "Langues"
     },
     "alt": {
-      "create": "Enregistrement d’écran : une enseignante colle ses notes, CourseCapture crée le cours étape par étape, puis elle vérifie un module et son schéma.",
+      "create": "Enregistrement d’écran : une enseignante colle ses notes, CourseCapture crée le cours étape par étape, puis elle vérifie un module et son schéma.",
       "createPoster": "L’écran de vérification d’un nouveau cours sur la photosynthèse, avec ses quatre modules prêts à vérifier.",
-      "learn": "Enregistrement d’écran : une élève ouvre le cours, lit un module avec un schéma, retourne une fiche, répond à une vérification rapide et obtient un certificat.",
+      "learn": "Enregistrement d’écran : une élève ouvre le cours, lit un module avec un schéma, retourne une fiche, répond à une vérification rapide et obtient un certificat.",
       "learnPoster": "Une élève lit le premier module du cours sur la photosynthèse.",
       "upload": "L’écran de nouveau cours avec une zone de dépôt pour un article ou des diapositives.",
       "check": "L’écran de vérification listant les modules du cours, chacun marqué comme vérifié.",
       "assign": "La fenêtre d’attribution avec la classe Biology 10 sélectionnée et une date limite.",
-      "roster": "La liste d’une classe sur ordinateur : six élèves, chacun avec une barre de progression et un score.",
+      "roster": "La liste d’une classe sur ordinateur : six élèves, chacun avec une barre de progression et un score.",
       "lang": "Le premier module du cours en {language}."
     }
   },
   "legal": {
     "draft": "Brouillon. Le texte définitif est en préparation et remplacera cette version.",
-    "updated": "Dernière mise à jour : octobre 2026",
-    "questions": "Des questions sur cette page ? Contactez-nous.",
+    "updated": "Dernière mise à jour : {date}",
+    "questions": "Des questions sur cette page ? Contactez-nous.",
     "privacy": {
       "title": "Politique de confidentialité",
       "description": "Ce que CourseCapture collecte, pourquoi, et ce que nous en faisons.",
@@ -1112,13 +1114,13 @@
     "sending": "Envoi en cours",
     "sent": {
       "title": "Message envoyé",
-      "text": "Merci. Nous répondrons à {email}."
+      "text": "Merci. Nous répondrons à <email>{email}</email>."
     },
     "sendAnother": "Envoyer un autre message",
     "errors": {
       "name": "Saisissez votre nom.",
       "school": "Saisissez le nom de votre établissement.",
-      "email": "Saisissez une adresse e-mail comme nom@ecole.fr.",
+      "email": "Saisissez une adresse e-mail comme <email>nom@ecole.fr</email>.",
       "message": "Écrivez au moins 20 caractères pour que nous sachions comment vous aider.",
       "tooMany": "Vous avez envoyé plusieurs messages en peu de temps. Réessayez dans une heure.",
       "failed": "Votre message n’a pas pu être envoyé. Réessayez dans quelques minutes."

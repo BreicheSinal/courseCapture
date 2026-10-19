@@ -16,10 +16,12 @@ type Props = {
  * A screen recording of a flow, as an animated image in the page's theme.
  * People who prefer reduced motion get a still; everyone else can pause it
  * (WCAG 2.2.2: anything that moves for more than five seconds can be paused).
+ * The button names what it does next: "Pause the teacher recording" / "Play …".
  */
 export function MotionShot({ name, alt, posterAlt }: Props) {
   const t = useTranslations("marketing.motion");
   const [paused, setPaused] = useState(false);
+  const label = name === "create" ? (paused ? t("playCreate") : t("pauseCreate")) : paused ? t("playLearn") : t("pauseLearn");
   const { width, height } = sizes[name];
 
   return (
@@ -45,10 +47,9 @@ export function MotionShot({ name, alt, posterAlt }: Props) {
       <button
         type="button"
         className={`${buttonClasses({ variant: "tertiary" })} cc-mk-motion-toggle`}
-        aria-pressed={paused}
         onClick={() => setPaused((p) => !p)}
       >
-        {t("pause")}
+        {label}
       </button>
     </div>
   );

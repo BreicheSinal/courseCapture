@@ -1,4 +1,7 @@
-import { useTranslations } from "next-intl";
+import { useFormatter, useTranslations } from "next-intl";
+
+/** When the draft wording last changed. */
+const UPDATED = new Date(Date.UTC(2026, 9, 19));
 import { Link } from "@/i18n/navigation";
 
 const sections = {
@@ -12,15 +15,16 @@ const sections = {
  */
 export function LegalPage({ kind }: { kind: keyof typeof sections }) {
   const t = useTranslations("legal");
+  const format = useFormatter();
   const items =
     kind === "privacy"
       ? sections.privacy.map((k) => ({ k, title: t(`privacy.sections.${k}.title`), text: t(`privacy.sections.${k}.text`) }))
       : sections.terms.map((k) => ({ k, title: t(`terms.sections.${k}.title`), text: t(`terms.sections.${k}.text`) }));
   return (
-    <article className="mx-auto w-full max-w-6xl px-4 pt-6 pb-8 md:px-8 md:pt-10">
+    <article className="mx-auto w-full max-w-6xl px-4 pt-6 pb-8 md:px-8 md:pt-8">
       <div className="cc-mk-prose flex flex-col gap-4">
         <h1 className="cc-mk-display">{t(`${kind}.title`)}</h1>
-        <p className="text-ink-muted">{t("updated")}</p>
+        <p className="text-ink-muted">{t("updated", { date: format.dateTime(UPDATED, { year: "numeric", month: "long", timeZone: "UTC" }) })}</p>
         <p className="rounded-md bg-accent-soft px-4 py-3" role="note">
           {t("draft")}
         </p>
