@@ -1044,7 +1044,6 @@
     }
   },
   "legal": {
-    "draft": "Brouillon. Le texte définitif est en préparation et remplacera cette version.",
     "updated": "Dernière mise à jour : {date}",
     "questions": "Des questions sur cette page ? Contactez-nous.",
     "privacy": {

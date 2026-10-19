@@ -6,7 +6,7 @@ All routes are prefixed with the interface locale, e.g. `/en/teacher/classes`, `
 | Canvas | Route | Notes |
 |---|---|---|
 | — Marketing home | `/` | Public, prerendered (#58). Signed-in people get a "Go to …" button that streams in |
-| — Privacy, terms | `/privacy`, `/terms` | Public; draft wording until the owner supplies it (#59) |
+| — Privacy, terms | `/privacy`, `/terms` | Public; wording approved by the site owner (#59) |
 | — Contact | `/contact` | Public form, emailed to `CONTACT_EMAIL`; nothing stored (#59) |
 | X6 Splash | `/app` while routing | Wordmark while `/app` decides where to send you. Sign-in links and the installed app open at `/app`; Android also shows a launch screen built from the manifest (background, icon, name) |
 | T7 Sign in | `/sign-in?error=` | Teacher/student choice, email magic link |

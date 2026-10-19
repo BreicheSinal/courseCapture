@@ -105,7 +105,8 @@ test("phone: marketing, legal and contact pages fit a 390px screen", async ({ pa
 test("privacy and terms in every language", async ({ page }) => {
   await page.goto("/en/privacy");
   await expect(page.getByRole("heading", { level: 1, name: "Privacy policy" })).toBeVisible();
-  await expect(page.getByRole("note")).toContainText("Draft");
+  await expect(page.getByText("Last updated: October 2026")).toBeVisible();
+  await expect(page.getByRole("note")).toHaveCount(0);
   await expectAccessible(page);
   await page.goto("/ar/terms");
   await expect(page.getByRole("heading", { level: 1, name: "شروط الاستخدام" })).toBeVisible();

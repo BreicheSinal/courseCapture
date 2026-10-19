@@ -1,6 +1,6 @@
 import { useFormatter, useTranslations } from "next-intl";
 
-/** When the draft wording last changed. */
+/** When the wording last changed (approved by the site owner, October 2026). */
 const UPDATED = new Date(Date.UTC(2026, 9, 19));
 import { Link } from "@/i18n/navigation";
 
@@ -10,8 +10,8 @@ const sections = {
 } as const;
 
 /**
- * `/privacy` and `/terms` (#59). The wording is a draft until the site owner
- * supplies the final text; the draft note says so on the page.
+ * `/privacy` and `/terms` (#59). Wording approved by the site owner; change
+ * `UPDATED` whenever it changes.
  */
 export function LegalPage({ kind }: { kind: keyof typeof sections }) {
   const t = useTranslations("legal");
@@ -25,9 +25,6 @@ export function LegalPage({ kind }: { kind: keyof typeof sections }) {
       <div className="cc-mk-prose flex flex-col gap-4">
         <h1 className="cc-mk-display">{t(`${kind}.title`)}</h1>
         <p className="text-ink-muted">{t("updated", { date: format.dateTime(UPDATED, { year: "numeric", month: "long", timeZone: "UTC" }) })}</p>
-        <p className="rounded-md bg-accent-soft px-4 py-3" role="note">
-          {t("draft")}
-        </p>
         {items.map(({ k, title, text }) => (
           <section key={k} aria-labelledby={`${kind}-${k}`} className="mt-6 flex flex-col gap-2">
             <h2 id={`${kind}-${k}`} className="headline">
