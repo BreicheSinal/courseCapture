@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
  * Turns the frames captured by tests/e2e/media/capture.spec.ts into the images on
- * the marketing page (#58): animated WebP for the site, GIFs for sharing, and WebP
- * stills of single screens. In Light and Dark.
+ * the marketing page (#58): animated WebP for the site, GIFs for sharing, and the
+ * PNG screens in the social preview. In Light and Dark.
  *
  *   pnpm media:capture   # frames → tmp/media (needs the e2e stack, see tests/e2e/README.md)
  *   pnpm media           # tmp/media → public/marketing/
@@ -119,18 +119,6 @@ async function build(theme, name) {
   return { name, w: anim.w, h: anim.h, frames: anim.delay.length };
 }
 
-async function stills(theme) {
-  const dir = join(SRC, theme, "views");
-  const out = [];
-  for (const f of readdirSync(dir).filter((x) => x.endsWith(".png")).sort()) {
-    const desktop = f.includes("desktop");
-    const target = join(OUT, theme, f.replace(/\.png$/, ".webp"));
-    const info = await sharp(join(dir, f)).resize({ width: desktop ? 1600 : ANIM_WIDTH }).webp({ quality: 80 }).toFile(target);
-    out.push({ file: f.replace(/\.png$/, ""), w: info.width, h: info.height });
-  }
-  return out;
-}
-
 if (!existsSync(SRC)) {
   console.error(`No frames in ${SRC}. Run \`pnpm media:capture\` first.`);
   process.exit(1);
@@ -143,7 +131,6 @@ for (const theme of ["light", "dark"]) {
     sizes[r.name] = { width: r.w, height: r.h };
     console.log(`${theme}/${name}: ${r.frames} frames`);
   }
-  for (const s of await stills(theme)) sizes[s.file] = { width: s.w, height: s.h };
 }
 // Social preview screens (src/app/[locale]/opengraph-image.tsx): PNG, since next/og can't read WebP.
 mkdirSync(join(OUT, "og"), { recursive: true });

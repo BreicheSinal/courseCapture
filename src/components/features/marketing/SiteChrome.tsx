@@ -12,7 +12,7 @@ export function SiteHeader() {
   return (
     <>
       <CoverBands />
-      <header className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 py-4 md:px-8">
+      <header className="mx-auto flex w-full max-w-5xl items-center justify-between gap-3 px-4 py-4 md:px-8">
         <Link href="/" className="cc-wordmark inline-flex min-h-control items-center no-underline" dir="ltr">
           Course<span>Capture</span>
         </Link>
@@ -32,7 +32,7 @@ export function SiteFooter() {
   const t = useTranslations("marketing.footer");
   return (
     <footer className="mt-12 border-t border-line">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 md:flex-row md:items-start md:justify-between md:px-8">
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-8 md:flex-row md:items-start md:justify-between md:px-8">
         <div className="flex flex-col gap-1">
           <Link href="/" className="cc-wordmark inline-flex min-h-control items-center no-underline" dir="ltr">
             Course<span>Capture</span>

@@ -10,11 +10,11 @@ test.afterAll(closeDb);
 test("a visitor sees the marketing page with Sign in and Talk to us", async ({ page }) => {
   await page.goto("/");
   await expect(page).toHaveURL(/\/en$/);
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText(/Turn papers and slides into courses/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Turn papers and slides into interactive courses");
   const hero = page.locator("section", { has: page.locator("#hero-title") });
   await expect(hero.getByRole("link", { name: "Sign in" })).toHaveAttribute("href", "/en/sign-in");
   await expect(hero.getByRole("link", { name: "Talk to us" })).toHaveAttribute("href", "/en/contact");
-  for (const name of ["How it works", "For teachers", "For students", "Four languages, right to left included", "Privacy, built in", "Questions"]) {
+  for (const name of ["How it works", "For students", "Four languages", "Files are deleted", "Students' data stays here", "Bring CourseCapture to your school"]) {
     await expect(page.getByRole("heading", { level: 2, name })).toBeVisible();
   }
   const footer = page.getByRole("contentinfo");
@@ -45,9 +45,9 @@ test("the animations can be paused, and only the page's theme is downloaded", as
   const fetched: string[] = [];
   page.on("request", (r) => fetched.push(new URL(r.url()).pathname));
   await page.reload();
-  for (let y = 0; y < 9000; y += 700) await page.evaluate((top) => window.scrollTo({ top }), y);
+  for (let y = 0; y < 5000; y += 500) await page.evaluate((top) => window.scrollTo({ top }), y);
   await page.waitForLoadState("networkidle");
-  expect(fetched.filter((p) => p.startsWith("/marketing/light/")).length).toBeGreaterThan(5);
+  expect(fetched.filter((p) => p.startsWith("/marketing/light/")).sort()).toEqual(["/marketing/light/create.webp", "/marketing/light/learn.webp"]);
   expect(fetched.filter((p) => p.startsWith("/marketing/dark/"))).toEqual([]);
 });
 
@@ -57,7 +57,7 @@ test("Dark and Arabic: no axe violations, right to left", async ({ page, context
   await expectAccessible(page);
   await page.goto("/ar");
   await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("حوّل الأوراق والشرائح إلى دورات يتابعها صفّك");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("حوّل الأوراق والشرائح إلى دورات تفاعلية");
   await expectAccessible(page);
 });
 

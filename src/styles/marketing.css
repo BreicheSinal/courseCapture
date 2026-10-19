@@ -82,21 +82,6 @@
   border-radius: var(--radius-lg);
 }
 
-/* A computer window around a captured screen. */
-.cc-mk-window {
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: var(--surface);
-  padding: var(--space-2);
-  box-shadow: var(--shadow-card);
-}
-.cc-mk-window img {
-  vertical-align: top; /* display stays with the theme rules above */
-  width: 100%;
-  height: auto;
-  border-radius: var(--radius-md);
-}
-
 /* Step numbers in "How it works": a real sequence. */
 .cc-mk-step {
   display: inline-grid;
@@ -123,67 +108,6 @@
   height: 10px;
   border-radius: var(--radius-pill);
   background: var(--accent);
-}
-
-/* Languages: a row of phones that scrolls sideways on small screens. */
-.cc-mk-langs {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(200px, 1fr);
-  gap: var(--space-4);
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding-block-end: var(--space-2);
-}
-.cc-mk-langs > * {
-  scroll-snap-align: start;
-}
-.cc-mk-langs:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  border-radius: var(--radius-md);
-}
-
-/* FAQ: native disclosure, with the system's focus ring. */
-.cc-mk-faq summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
-  min-height: var(--control-height);
-  padding-block: var(--space-4);
-  font: var(--text-headline);
-  cursor: pointer;
-  list-style: none;
-}
-.cc-mk-faq summary::-webkit-details-marker {
-  display: none;
-}
-.cc-mk-faq summary::after {
-  content: "";
-  flex: none;
-  width: 10px;
-  height: 10px;
-  border-inline-end: 2px solid var(--ink-muted);
-  border-block-end: 2px solid var(--ink-muted);
-  transform: rotate(45deg);
-  margin-block-start: -4px;
-}
-.cc-mk-faq details[open] summary::after {
-  transform: rotate(-135deg);
-  margin-block-start: 4px;
-}
-/* The chevron is drawn with logical borders, so turn it the other way in RTL to keep it pointing down / up. */
-[dir="rtl"] .cc-mk-faq summary::after {
-  transform: rotate(-45deg);
-}
-[dir="rtl"] .cc-mk-faq details[open] summary::after {
-  transform: rotate(135deg);
-}
-.cc-mk-faq summary:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
 }
 
 /* The animation's pause button; nothing to pause when motion is reduced. */

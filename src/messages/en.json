@@ -938,8 +938,8 @@
       "pending": "See your account status"
     },
     "hero": {
-      "title": "Turn papers and slides into courses your class can work through",
-      "lead": "Upload a PDF, slides or notes. CourseCapture writes modules with key points, flashcards, quick checks and diagrams, in the language and level you choose. You check every module, then assign it to your class."
+      "title": "Turn papers and slides into interactive courses",
+      "lead": "Upload a PDF or slides. Get modules, flashcards, quick checks and diagrams. Check them, then assign them to your class."
     },
     "motion": {
       "pauseCreate": "Pause the teacher recording",
@@ -950,79 +950,45 @@
     "how": {
       "title": "How it works",
       "upload": {
-        "title": "Upload your material",
-        "text": "A PDF (scanned pages too), PowerPoint, text or Markdown file up to 20 MB, or paste text. Pick the course language and level."
+        "title": "Upload",
+        "text": "A PDF, slides, text or notes. Pick the language and level."
       },
       "check": {
-        "title": "Check what it wrote",
-        "text": "Read each module, edit the text, flashcards and questions, redraw a diagram, and mark it checked. Students never see an unchecked course."
+        "title": "Check",
+        "text": "Edit anything. Students only see modules you've checked."
       },
       "assign": {
-        "title": "Assign it to a class",
-        "text": "Pick one or more classes and a due date. Students see the course on their Home right away."
-      }
-    },
-    "teachers": {
-      "title": "For teachers",
-      "items": {
-        "join": "Each class has a join code, so students join in seconds.",
-        "roster": "The roster shows every student's progress and quiz score, course by course.",
-        "announce": "Post announcements to the whole class.",
-        "export": "Export any course as a single HTML page to share or archive."
+        "title": "Assign",
+        "text": "Pick a class and a due date, then follow progress and scores."
       }
     },
     "students": {
       "title": "For students",
       "items": {
-        "join": "Join a class with the code from their teacher.",
-        "learn": "Read each module, flip the flashcards and take a quick check.",
-        "certificate": "Get a certificate of completion when they finish.",
-        "offline": "Install it on a phone and keep reading modules offline."
+        "join": "Join a class with a code.",
+        "learn": "Read, flip flashcards and take a quick check after each module.",
+        "certificate": "Get a certificate at the end.",
+        "offline": "Works on phones, even offline."
       }
     },
-    "languages": {
-      "title": "Four languages, right to left included",
-      "text": "Teachers pick the course language when they create it. Everyone picks the interface language for themselves. Arabic pages read right to left, from the menus to the quick checks.",
-      "region": "The same module in four languages"
-    },
-    "privacy": {
-      "title": "Privacy, built in",
+    "facts": {
+      "label": "Languages and privacy",
+      "languages": {
+        "title": "Four languages",
+        "text": "English, Arabic, French and Spanish. Arabic reads right to left."
+      },
       "files": {
-        "title": "Your file is deleted after the course is built",
-        "text": "Only the file name stays with the course. If generation fails, the file is kept so you can try again."
+        "title": "Files are deleted",
+        "text": "Your upload is removed once the course is built."
       },
       "students": {
-        "title": "Students' data isn't sent to the AI",
-        "text": "Only your course material goes to the AI. Names, answers and progress stay in CourseCapture."
-      },
-      "checked": {
-        "title": "Teachers check everything first",
-        "text": "Nothing the AI writes reaches students until a teacher has checked every module."
-      },
-      "more": "Read the privacy policy"
-    },
-    "faq": {
-      "title": "Questions",
-      "files": {
-        "q": "What can I upload?",
-        "a": "PDF files, including scanned pages, PowerPoint (.pptx), plain text and Markdown, up to 20 MB. You can also paste text."
-      },
-      "edit": {
-        "q": "Can I change what the AI wrote?",
-        "a": "Yes. You can edit every module's text, key points, flashcards and quick check, reorder or delete modules, and redraw or remove diagrams."
-      },
-      "phones": {
-        "q": "Does it work on phones?",
-        "a": "Yes, for teachers and students. It can be installed like an app, and students can read modules they've opened even without a connection."
-      },
-      "accounts": {
-        "q": "How do people sign in?",
-        "a": "With their email address. CourseCapture sends a sign-in link, so there are no passwords to remember."
-      },
-      "start": {
-        "q": "How does our school get started?",
-        "a": "Send us a message. We'll set up your school and send invite codes for your teachers."
+        "title": "Students' data stays here",
+        "text": "Names, answers and progress are never sent to the AI."
       }
+    },
+    "cta": {
+      "title": "Bring CourseCapture to your school",
+      "text": "Tell us about your school and we'll set it up."
     },
     "footer": {
       "label": "Footer",
@@ -1035,12 +1001,7 @@
       "create": "Screen recording: a teacher pastes notes, CourseCapture builds the course step by step, and the teacher reviews a module and its diagram.",
       "createPoster": "The review screen of a new course on photosynthesis, with its four modules ready to check.",
       "learn": "Screen recording: a student opens the course, reads a module with a diagram, flips a flashcard, answers a quick check and gets a certificate.",
-      "learnPoster": "A student reading the first module of the photosynthesis course.",
-      "upload": "The new course screen with a drop zone for a paper or slides.",
-      "check": "The review screen listing the course's modules, each marked checked.",
-      "assign": "The assign dialog with the class Biology 10 selected and a due date.",
-      "roster": "A class roster on a computer: six students, each with a progress bar and quiz score.",
-      "lang": "The first module of the course in {language}."
+      "learnPoster": "A student reading the first module of the photosynthesis course."
     }
   },
   "legal": {
