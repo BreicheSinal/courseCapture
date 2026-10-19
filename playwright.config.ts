@@ -20,7 +20,9 @@ export default defineConfig({
   fullyParallel: false,
   workers: 1,
   globalSetup: "./tests/e2e/global-setup.ts",
-  reporter: [["list"]],
+  // In CI (#40): one retry for a cold `next dev` compile, annotations on the PR, and an HTML report kept on failure.
+  retries: process.env.CI ? 1 : 0,
+  reporter: process.env.CI ? [["list"], ["github"], ["html", { open: "never" }]] : [["list"]],
   use: {
     baseURL: `http://localhost:${port}`,
     trace: "retain-on-failure",

@@ -107,6 +107,7 @@ test("privacy and terms in every language", async ({ page }) => {
   await expect(page.getByRole("heading", { level: 1, name: "Privacy policy" })).toBeVisible();
   await expect(page.getByText("Last updated: October 2026")).toBeVisible();
   await expect(page.getByRole("note")).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Visit statistics" })).toBeVisible(); // #39
   await expectAccessible(page);
   await page.goto("/ar/terms");
   await expect(page.getByRole("heading", { level: 1, name: "شروط الاستخدام" })).toBeVisible();
