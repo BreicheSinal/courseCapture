@@ -5,7 +5,7 @@ All routes are prefixed with the interface locale, e.g. `/en/teacher/classes`, `
 ## Auth and onboarding
 | Canvas | Route | Notes |
 |---|---|---|
-| X6 Splash | `/` while routing | Wordmark while `/` decides where to send you |
+| X6 Splash | `/` while routing | Wordmark while `/` decides where to send you. The installed app opens at `/`; Android also shows a launch screen built from the manifest (background, icon, name) |
 | T7 Sign in | `/sign-in?error=` | Teacher/student choice, email magic link |
 | T7b / S0b Check your email | `/sign-in/check-email?role=` | Same page, role-specific copy |
 | — Name (and role) | `/onboarding/profile?role=` | First sign-in only; role is normally picked on T7 |
@@ -65,7 +65,8 @@ All routes are prefixed with the interface locale, e.g. `/en/teacher/classes`, `
 | X2 Empty states | `EmptyState` component on each list |
 | X3 Error states | `error.tsx` per route group + inline field errors |
 | X4 Loading | `loading.tsx` per route group with `Skeleton` |
-| X5 App icon | `public/` icons + manifest |
+| X5 App icon | `public/` icons (`favicon.svg`, `icon-192/512.png`, `icon-maskable-512.png`, `apple-touch-icon.png`) and `/manifest.webmanifest` (`src/app/manifest.ts`) |
+| — Offline | `/[locale]/offline` (shown by the service worker when there's no connection and the page wasn't saved; public) |
 
 ## Navigation
 - **Phone:** bottom tab bar (3 tabs, 52px targets). Teacher: Classes · Courses · Settings. Student: Home · Classes · Account.

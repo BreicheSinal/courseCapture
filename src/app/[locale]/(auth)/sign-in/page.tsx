@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
 import { AuthScreen } from "@/components/features/auth/AuthScreen";
+import { OfflineIdentity } from "@/components/pwa/OfflineSupport";
 import { SignInForm } from "@/components/features/auth/SignInForm";
 import type { AuthErrorKey } from "@/lib/auth/actions";
 import { guard } from "@/lib/auth/session";
@@ -18,6 +19,8 @@ const knownErrors = new Set(["linkExpired"]);
 export default function Page({ searchParams }: PageProps<"/[locale]/sign-in">) {
   return (
     <AuthScreen>
+      {/* Signed out: saved offline pages are deleted (#37). */}
+      <OfflineIdentity user={null} />
       <Suspense fallback={<SignInForm configured={isSupabaseConfigured} />}>
         <SignedOutOnly searchParams={searchParams} />
       </Suspense>

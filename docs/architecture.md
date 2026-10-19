@@ -35,6 +35,17 @@ Rules:
 3. The **service-role key** is used only inside background jobs and admin actions, never in a request that a user's input can steer without a role check first.
 4. The AI provider key lives only in server environment variables.
 
+## Installable app and offline reading (#37)
+- **Install:** `src/app/manifest.ts` (name, colours from the tokens, the design system's icons) plus the icon and Apple tags in the root layout. Browsers show their own install prompt; there's no custom button, because `beforeinstallprompt` doesn't exist on iOS.
+- **Service worker** (`public/sw.js`, registered by `OfflineIdentity` in production, or in dev with `NEXT_PUBLIC_SW=1`). It's served with `no-store`, so updates arrive promptly. It handles three kinds of request:
+  - **Student course, module and quick-check pages:** network first. A copy is saved whenever one loads, and the copy is used only when the network fails.
+  - **The app's static files** (`/_next/static`, fonts, icons): network first, with the saved copy as fallback, so a saved page renders and its flashcards work offline.
+  - **Every other navigation:** the network, or `/[locale]/offline` when there's none.
+
+  It never saves teacher or admin pages, `/api` or `/auth` requests, or anything that isn't a GET.
+- **Privacy:** saved pages belong to one person. Signed-in shells tell the worker who is signed in, and the sign-in page tells it nobody is. When that changes, the saved pages are deleted.
+- **Offline notice:** a "You're offline" line on signed-in screens. It's rendered on the server and shown by a tiny inline script (`data-offline` on `<html>`), so it works on a saved page even before React loads. Answering a quick check or completing a module still needs the network; those actions show their usual "couldn't save" error.
+
 ## Request trace: a teacher builds a course
 1. Teacher uploads a file on T1 → Server Action stores it in the private `sources` bucket and creates a `courses` row (`status = draft`) and a `generation_jobs` row.
 2. The action checks the session and that the user is an **approved teacher** who owns the target class.

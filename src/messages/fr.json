@@ -915,5 +915,12 @@
       "tryAgain": "Réessayer",
       "backHome": "Retour à l’accueil"
     }
+  },
+  "offline": {
+    "metaTitle": "Hors ligne",
+    "title": "Vous êtes hors ligne",
+    "text": "Vous pouvez encore lire les modules déjà ouverts sur cet appareil. Connectez-vous à Internet pour tout le reste.",
+    "retry": "Réessayer",
+    "banner": "Vous êtes hors ligne. Vous pouvez encore lire les modules déjà ouverts sur cet appareil."
   }
 }

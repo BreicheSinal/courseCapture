@@ -915,5 +915,12 @@
       "tryAgain": "Try again",
       "backHome": "Back to Home"
     }
+  },
+  "offline": {
+    "metaTitle": "Offline",
+    "title": "You're offline",
+    "text": "Modules you've opened on this device can still be read. Connect to the internet for everything else.",
+    "retry": "Try again",
+    "banner": "You're offline. Modules you've opened on this device can still be read."
   }
 }

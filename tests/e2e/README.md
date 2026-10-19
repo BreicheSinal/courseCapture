@@ -17,6 +17,8 @@ Two Playwright projects run:
 
 Use `--project=phone` for just the phone run.
 
+`pwa.spec.ts` (#37) tests the manifest and icons, offline reading, and deleting saved pages on sign-out, with the service worker on (`NEXT_PUBLIC_SW=1`). Playwright only routes service-worker requests with `PW_EXPERIMENTAL_SERVICE_WORKER_NETWORK_EVENTS=1`, which `playwright.config.ts` sets, so the offline tests cut the network with `context.route()` as well as `setOffline()`.
+
 Needs Postgres at `TEST_DATABASE_URL` (default `postgres://postgres:postgres@localhost:5432/postgres`) and a Chromium. If Playwright can't download its browser, point it at one: `E2E_CHROME=/path/to/chrome pnpm test:e2e`. `E2E_PORT` and `E2E_DB` change the app port and database name.
 
 ## Writing tests

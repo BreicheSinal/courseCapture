@@ -915,5 +915,12 @@
       "tryAgain": "Intentar de nuevo",
       "backHome": "Volver a Inicio"
     }
+  },
+  "offline": {
+    "metaTitle": "Sin conexión",
+    "title": "No tienes conexión",
+    "text": "Puedes seguir leyendo los módulos que ya abriste en este dispositivo. Conéctate a internet para todo lo demás.",
+    "retry": "Reintentar",
+    "banner": "No tienes conexión. Puedes seguir leyendo los módulos que ya abriste en este dispositivo."
   }
 }
