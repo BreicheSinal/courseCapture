@@ -44,6 +44,9 @@ test.beforeAll(async ({ browser }) => {
     cls,
   ]);
   await sql("update public.courses set status = 'assigned', assigned_at = now() where id = $1", [course]);
+  // Mark every module checked, as a teacher who has reviewed the course would:
+  // the ✓ marks in the module list once stretched the page sideways.
+  await sql("update public.modules set checked_at = now(), review_note = null where course_id = $1", [course]);
   ids = { teacher, student, admin, cls, course };
 });
 
