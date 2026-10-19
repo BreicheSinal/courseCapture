@@ -1,6 +1,7 @@
 import "server-only";
 import {
   AiConfigError,
+  aiFailureKind,
   drawVisual,
   generateCourseChunk,
   InvalidOutputError,
@@ -23,6 +24,7 @@ import {
 import { serviceClient, SOURCES_BUCKET } from "@/lib/supabase/service";
 import { sanitizeSvg } from "@/lib/svg/sanitize";
 import type { CourseLevel, GenerationJobRow } from "@/types/supabase";
+import { AI_REJECTED } from "./constants";
 import { splitChunk } from "./fallback";
 
 /**
@@ -170,6 +172,7 @@ async function write(ctx: Context, usageId: number | null, chunk: string, index:
   } catch (e) {
     if (e instanceof InvalidOutputError) await track(usageId, e.usage);
     if (!(e instanceof AiConfigError)) console.error("[generation] chunk failed, using the basic splitter", e);
+    if (aiFailureKind(e) === "rejected") await updateJob(ctx.jobId, { error: AI_REJECTED });
     result = { data: splitChunk(chunk, total > 1 ? 5 : 7), fallback: true };
   }
   await updateJob(ctx.jobId, { chunks_done: index + 1 });
@@ -222,23 +225,37 @@ async function save(ctx: Context, parts: { data: GeneratedChunk; fallback: boole
   return { moduleIds: rows.sort((a, b) => a.position - b.position).map((r) => r.id), drawable };
 }
 
-/** Draws diagrams for a batch of modules. A diagram that fails is simply left out. */
+/**
+ * Draws diagrams for a batch of modules. A diagram that fails is left out, and
+ * the reason is logged (job and module position only, no course text) so a
+ * provider problem shows up in the logs (#62).
+ */
 async function draw(ctx: Context, usageId: number | null, ids: string[], doneBefore: number) {
   const client = db();
   const { data: mods } = await client.from("modules").select("id, position, heading, body").in("id", ids);
-  await Promise.allSettled(
+  const results = await Promise.allSettled(
     (mods ?? []).map(async (m) => {
       const out = await drawVisual({ language: ctx.locale, heading: m.heading, body: m.body });
       await track(usageId, out.usage);
-      const svg = out.data && sanitizeSvg(out.data.svg, { idPrefix: `m${m.position}`, rtl: RTL.has(ctx.locale) });
-      if (svg && out.data) {
-        await client
-          .from("modules")
-          .update({ visual_svg: svg, visual_caption: out.data.caption || null, visual_alt: out.data.alt })
-          .eq("id", m.id);
-      }
+      if (!out.data) return { position: m.position, miss: out.miss ?? "no_svg" };
+      const svg = sanitizeSvg(out.data.svg, { idPrefix: `m${m.position}`, rtl: RTL.has(ctx.locale) });
+      if (!svg) return { position: m.position, miss: "unsafe" };
+      const { error } = await client
+        .from("modules")
+        .update({ visual_svg: svg, visual_caption: out.data.caption || null, visual_alt: out.data.alt })
+        .eq("id", m.id);
+      if (error) throw new Error(`save failed: ${error.message}`);
+      return { position: m.position, miss: null };
     }),
   );
+  results.forEach((r, i) => {
+    const position = mods?.[i]?.position;
+    if (r.status === "rejected") {
+      console.warn(`[diagram] job ${ctx.jobId} module ${position}: ${aiFailureKind(r.reason)}`, r.reason);
+    } else if (r.value.miss) {
+      console.warn(`[diagram] job ${ctx.jobId} module ${position}: ${r.value.miss}`);
+    }
+  });
   await updateJob(ctx.jobId, { modules_drawn: doneBefore + ids.length });
 }
 

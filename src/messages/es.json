@@ -584,6 +584,7 @@
       "notice_checked": "Todos los módulos están revisados.",
       "notice_moduleDeleted": "Módulo eliminado.",
       "fallbackNote": "Claude no pudo escribir parte de este curso, así que el divisor básico creó esos módulos a partir de tu texto. Aún no tienen tarjetas ni cuestionario: añádelos o vuelve a generar.",
+      "aiRejectedNote": "El proveedor de IA rechazó la clave de este sitio, así que el divisor básico creó este curso a partir de tu texto, sin tarjetas, cuestionario ni diagramas. Pide al administrador del sitio que revise la configuración de IA y vuelve a generarlo.",
       "checkNote": "Claude escribió este curso a partir de tu archivo. Revisa cada módulo antes de que lo vean los estudiantes.",
       "flagged": "{count, plural, one {# módulo necesita revisión.} other {# módulos necesitan revisión.}}",
       "checkedCount": "{checked} de {total} módulos revisados.",
@@ -707,6 +708,7 @@
       "footer": "Hecho con CourseCapture."
     },
     "courseErrors": {
+      "aiRejected": "El proveedor de IA rechazó la clave de este sitio. Pide al administrador del sitio que revise la configuración de IA.",
       "titleRequired": "Escribe un título para el curso.",
       "titleTooLong": "El título debe tener menos de 120 caracteres.",
       "headingRequired": "Escribe un título para el módulo.",

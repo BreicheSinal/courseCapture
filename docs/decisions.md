@@ -71,6 +71,9 @@
 | 66 | An assigned course can't be regenerated (app and database) | A new run replaces every module, which would take students' progress |
 | 67 | A generation job unfinished after 30 minutes counts as dead: T2 offers "Try again" and assigning isn't blocked | An inline run that hits the time limit would otherwise leave the course stuck |
 | 68 | Teacher server actions use the service role for three things only, each after a session or RLS check: signed upload URLs and source files, `claim_ai_use()` / `add_ai_tokens()`, job rows, and the diagram a redraw produces (generated content is service-written) | These are service-only by design (#53, #54); the teacher's own reads and edits stay on their session and RLS |
+| 69 | With `AI_PROVIDER` empty, the provider comes from the key's prefix, and every listed provider has default models | A key alone should work; the first real Google key was silently sent to Anthropic (#62) |
+| 70 | A diagram with a caption but no `ALT:` line uses the caption as its alt text | The caption describes the diagram in the course's language; dropping the whole diagram helped no one |
+| 71 | A refused AI key is shown on T3 (job `error = "ai_rejected"` on a finished job), not only logged | Teachers otherwise get a basic-splitter course with no idea why |
 
 ## Open questions
 1. **Due date per class** when one course is assigned to several classes — assumed yes.

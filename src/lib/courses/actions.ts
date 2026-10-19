@@ -4,7 +4,7 @@ import { refresh } from "next/cache";
 import { z } from "zod";
 import { redirect } from "@/i18n/navigation";
 import { locales } from "@/i18n/locales";
-import { dailyLimits, drawVisual, isAiConfigured, modelChoice } from "@/lib/ai";
+import { aiFailureKind, dailyLimits, drawVisual, isAiConfigured, modelChoice } from "@/lib/ai";
 import { getSession } from "@/lib/auth/session";
 import { removeSource } from "@/lib/generation/run";
 import { createClient } from "@/lib/supabase/server";
@@ -19,6 +19,7 @@ import { RTL_LOCALES } from "./queries";
  * sanitises the SVG. Errors are keys under `teacher.review.errors.*`.
  */
 export type CourseErrorKey =
+  | "aiRejected"
   | "titleRequired"
   | "titleTooLong"
   | "headingRequired"
@@ -220,15 +221,19 @@ export async function redrawVisual(prev: VisualState, formData: FormData): Promi
     const svg =
       out.data &&
       sanitizeSvg(out.data.svg, { idPrefix: `m${mod.position}`, rtl: RTL_LOCALES.has(course.content_locale) });
-    if (!svg || !out.data) return { error: "drawFailed" };
+    if (!svg || !out.data) {
+      console.warn(`[diagram] redraw module ${mod.position}: ${out.data ? "unsafe" : (out.miss ?? "no_svg")}`);
+      return { error: "drawFailed" };
+    }
     const { error } = await service
       .from("modules")
       .update({ visual_svg: svg, visual_caption: out.data.caption || null, visual_alt: out.data.alt })
       .eq("id", mod.id);
     if (error) return { error: "generic" };
   } catch (e) {
-    console.error("[diagram] redraw failed", e);
-    return { error: "drawFailed" };
+    const kind = aiFailureKind(e);
+    console.error(`[diagram] redraw failed: ${kind}`, e);
+    return { error: kind === "rejected" ? "aiRejected" : "drawFailed" };
   }
   refresh();
   return { drawn: (prev?.drawn ?? 0) + 1 };

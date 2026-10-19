@@ -1,9 +1,9 @@
 import "server-only";
-import { generateText, type ModelMessage } from "ai";
+import { APICallError, generateText, type ModelMessage } from "ai";
 import type { CourseLevel } from "@/types/supabase";
-import { cacheableInstructions, resolveModel, type ResolvedModel } from "./providers";
+import { cacheableInstructions, resolveModel, taskOptions, type ResolvedModel } from "./providers";
 import { neutraliseTags, renderPrompt } from "./prompts";
-import { describeIssues, extractJson, generatedChunk, parseVisual, type GeneratedChunk } from "./schemas";
+import { describeIssues, extractJson, generatedChunk, readVisual, type GeneratedChunk, type VisualMiss } from "./schemas";
 
 /**
  * The provider-agnostic AI layer (docs/ai.md). App code calls these
@@ -27,7 +27,8 @@ async function call(m: ResolvedModel, instructions: string, messages: ModelMessa
     instructions: { role: "system", content: instructions, providerOptions: cacheableInstructions(m.provider) },
     messages,
     maxOutputTokens,
-    maxRetries: 2, // network and rate-limit errors; bad output is retried below
+    providerOptions: taskOptions(m.provider, m.task),
+    maxRetries: 2, // network and rate-limit errors (with backoff); bad output is retried below
     abortSignal: AbortSignal.timeout(timeoutMs),
   });
 }
@@ -102,16 +103,58 @@ export async function transcribeScan(pdf: Uint8Array): Promise<AiResult<string>>
 
 export type Visual = { svg: string; caption: string; alt: string };
 
-/** One diagram for a module. The SVG is NOT sanitised here; callers must (src/lib/svg/sanitize.ts). */
-export async function drawVisual(req: { language: string; heading: string; body: string }): Promise<AiResult<Visual | null>> {
+/**
+ * One diagram for a module. The SVG is NOT sanitised here; callers must (src/lib/svg/sanitize.ts).
+ * A reply that was cut off or has no SVG or alt text is asked for once more.
+ * `data` is null when there's still no usable diagram, and `miss` says why
+ * (for logs; never shown to students).
+ */
+export async function drawVisual(req: {
+  language: string;
+  heading: string;
+  body: string;
+}): Promise<AiResult<Visual | null> & { miss?: VisualMiss }> {
   const m = resolveModel("visual");
   const { instructions, request } = renderPrompt("draw-visual", {
     language: languageName(req.language),
     heading: neutraliseTags(req.heading),
     body: neutraliseTags(req.body),
   });
-  const res = await call(m, instructions, [{ role: "user", content: request }], 3_000, 90_000);
-  return { data: parseVisual(res.text), usage: addUsage({ input: 0, output: 0 }, res.usage), provider: m.provider, model: m.modelId };
+  const messages: ModelMessage[] = [{ role: "user", content: request }];
+  let usage: Usage = { input: 0, output: 0 };
+  let miss: VisualMiss = "no_svg";
+  for (let attempt = 0; attempt < 2; attempt++) {
+    // Room for a ~2,500-character SVG, the two lines, and any thinking the model does first.
+    const res = await call(m, instructions, messages, 8_000, 90_000);
+    usage = addUsage(usage, res.usage);
+    const read = readVisual(res.text);
+    if (read.ok) return { data: read.data, usage, provider: m.provider, model: m.modelId };
+    miss = res.finishReason === "length" ? "cut_off" : read.miss;
+    messages.push(
+      { role: "assistant", content: res.text.slice(0, 6_000) },
+      {
+        role: "user",
+        content:
+          miss === "cut_off"
+            ? "That reply was cut off. Reply again with a shorter SVG (under 2500 characters), then the CAPTION: and ALT: lines."
+            : "Reply again with only the <svg> element, then a line starting CAPTION: and a line starting ALT:, as plain text.",
+      },
+    );
+  }
+  return { data: null, miss, usage, provider: m.provider, model: m.modelId };
+}
+
+/**
+ * How a failed model call went wrong, for logs and for the teacher's notice:
+ * the provider refused the key (401/403), it was over its rate limit (429,
+ * after the SDK's own retries), or something else.
+ */
+export function aiFailureKind(e: unknown): "rejected" | "rate_limited" | "other" {
+  if (APICallError.isInstance(e)) {
+    if (e.statusCode === 401 || e.statusCode === 403) return "rejected";
+    if (e.statusCode === 429) return "rate_limited";
+  }
+  return "other";
 }
 
 /** The model kept returning output that doesn't match the schema. Carries the tokens it used. */
@@ -124,4 +167,5 @@ export class InvalidOutputError extends Error {
   }
 }
 
-export { AiConfigError, isAiConfigured, dailyLimits, modelChoice } from "./config";
+export { AiConfigError, isAiConfigured, dailyLimits, detectProvider, modelChoice } from "./config";
+export type { VisualMiss } from "./schemas";

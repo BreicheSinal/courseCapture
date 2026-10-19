@@ -1,8 +1,10 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("server-only", () => ({}));
-const { describeIssues, extractJson, generatedChunk, parseVisual } = await import("@/lib/ai/schemas");
-const { modelChoice, isAiConfigured, dailyLimits } = await import("@/lib/ai/config");
+const { describeIssues, extractJson, generatedChunk, parseVisual, readVisual } = await import("@/lib/ai/schemas");
+const { modelChoice, isAiConfigured, dailyLimits, detectProvider } = await import("@/lib/ai/config");
+const { taskOptions } = await import("@/lib/ai/providers");
+const { APICallError } = await import("ai");
 const { renderPrompt, neutraliseTags } = await import("@/lib/ai/prompts");
 const ai = await import("@/lib/ai");
 
@@ -55,8 +57,30 @@ describe("output schema", () => {
   it("parses a diagram reply and needs alt text", () => {
     const v = parseVisual('<svg viewBox="0 0 1 1"></svg>\nCAPTION: Light in\nALT: A box with an arrow.');
     expect(v).toEqual({ svg: '<svg viewBox="0 0 1 1"></svg>', caption: "Light in", alt: "A box with an arrow." });
-    expect(parseVisual("<svg></svg>\nCAPTION: x")).toBeNull();
+    expect(parseVisual("<svg></svg>")).toBeNull();
     expect(parseVisual("no picture")).toBeNull();
+  });
+
+  it("reads diagrams the way Gemini formats them (#62)", () => {
+    const fenced = '```svg\n<svg viewBox="0 0 1 1"></svg>\n```\n**CAPTION:** Light in\n**ALT:** A box with an arrow.';
+    expect(readVisual(fenced)).toEqual({
+      ok: true,
+      data: { svg: '<svg viewBox="0 0 1 1"></svg>', caption: "Light in", alt: "A box with an arrow." },
+    });
+    expect(parseVisual("<svg></svg>\n- Caption - Light\n- Alt: A sun.")).toMatchObject({
+      caption: "Light",
+      alt: "A sun.",
+    });
+  });
+
+  it("uses the caption when ALT is missing, and says why a reply can't be used", () => {
+    expect(readVisual("<svg></svg>\nCAPTION: The light reactions")).toMatchObject({
+      ok: true,
+      data: { alt: "The light reactions" },
+    });
+    expect(readVisual("<svg></svg>")).toEqual({ ok: false, miss: "no_alt" });
+    expect(readVisual('<svg viewBox="0 0 400 220"><rect')).toEqual({ ok: false, miss: "cut_off" });
+    expect(readVisual("Sorry, I can't draw that.")).toEqual({ ok: false, miss: "no_svg" });
   });
 });
 
@@ -89,13 +113,59 @@ describe("configuration", () => {
   it("needs a model for providers without defaults, and a base URL for compatible endpoints", () => {
     vi.stubEnv("AI_API_KEY", "k");
     vi.stubEnv("AI_MODEL_DEFAULT", "");
-    vi.stubEnv("AI_PROVIDER", "mistral");
+    vi.stubEnv("AI_PROVIDER", "openai-compatible");
     expect(() => modelChoice("generate")).toThrow(/AI_MODEL_DEFAULT/);
     vi.stubEnv("AI_PROVIDER", "openai-compatible");
     vi.stubEnv("AI_MODEL_DEFAULT", "m");
     expect(() => modelChoice("generate")).toThrow(/AI_BASE_URL/);
     vi.stubEnv("AI_PROVIDER", "nope");
     expect(() => modelChoice("generate")).toThrow(/Unknown/);
+  });
+
+  it("works out the provider from the key when AI_PROVIDER is empty (#62)", () => {
+    expect(detectProvider("AIzaSyExample")).toBe("google");
+    expect(detectProvider("sk-ant-api03-x")).toBe("anthropic");
+    expect(detectProvider("sk-proj-x")).toBe("openai");
+    expect(detectProvider("something-else")).toBe("anthropic");
+    vi.stubEnv("AI_PROVIDER", "");
+    vi.stubEnv("AI_MODEL_DEFAULT", "");
+    vi.stubEnv("AI_MODEL_QUICK", "");
+    vi.stubEnv("AI_API_KEY", "AIzaSyExample");
+    expect(modelChoice("generate")).toMatchObject({ provider: "google", modelId: "gemini-3.8-flash" });
+    expect(modelChoice("tutor").modelId).toBe("gemini-3.5-flash-lite");
+    vi.stubEnv("AI_PROVIDER", "anthropic"); // an explicit setting wins
+    expect(modelChoice("generate").provider).toBe("anthropic");
+  });
+
+  it("has default models for Google, OpenAI and Mistral, so a key is enough", () => {
+    vi.stubEnv("AI_API_KEY", "k");
+    vi.stubEnv("AI_MODEL_DEFAULT", "");
+    vi.stubEnv("AI_MODEL_QUICK", "");
+    for (const [provider, model] of [
+      ["google", "gemini-3.8-flash"],
+      ["openai", "gpt-6-astra"],
+      ["mistral", "mistral-large-latest"],
+    ]) {
+      vi.stubEnv("AI_PROVIDER", provider);
+      expect(modelChoice("generate").modelId).toBe(model);
+    }
+  });
+
+  it("asks Gemini to think little on diagrams and scans, and leaves course writing alone", () => {
+    expect(taskOptions("google", "visual")).toEqual({ google: { thinkingConfig: { thinkingLevel: "low" } } });
+    expect(taskOptions("google", "transcribe")).toBeDefined();
+    expect(taskOptions("google", "generate")).toBeUndefined();
+    expect(taskOptions("anthropic", "visual")).toBeUndefined();
+  });
+
+  it("tells a refused key and a rate limit apart from other failures", () => {
+    const err = (statusCode: number) =>
+      new APICallError({ message: "x", url: "u", requestBodyValues: {}, statusCode, isRetryable: false });
+    expect(ai.aiFailureKind(err(401))).toBe("rejected");
+    expect(ai.aiFailureKind(err(403))).toBe("rejected");
+    expect(ai.aiFailureKind(err(429))).toBe("rate_limited");
+    expect(ai.aiFailureKind(err(500))).toBe("other");
+    expect(ai.aiFailureKind(new Error("x"))).toBe("other");
   });
 
   it("never uses the fake provider in production", () => {
@@ -159,5 +229,65 @@ describe("the fake provider runs the whole layer", () => {
         teacherLanguage: "en",
       }),
     ).rejects.toThrow();
+  });
+});
+
+describe("diagram retries (#62)", () => {
+  afterEach(() => {
+    vi.doUnmock("@/lib/ai/providers");
+    vi.resetModules();
+  });
+
+  /** An AI layer whose diagram model gives these replies in turn (each with its finish reason). */
+  async function layerReplying(replies: { text: string; finish: "stop" | "length" }[]) {
+    const { MockLanguageModelV4 } = await import("ai/test");
+    const real = await import("@/lib/ai/providers");
+    const prompts: string[] = [];
+    let call = 0;
+    const model = new MockLanguageModelV4({
+      provider: "google",
+      modelId: "gemini-test",
+      doGenerate: async (options) => {
+        prompts.push(JSON.stringify(options.prompt));
+        const r = replies[Math.min(call++, replies.length - 1)];
+        return {
+          content: [{ type: "text", text: r.text }],
+          finishReason: { unified: r.finish, raw: undefined },
+          usage: {
+            inputTokens: { total: 10, noCache: 10, cacheRead: 0, cacheWrite: 0 },
+            outputTokens: { total: 20, text: 20, reasoning: 0 },
+          },
+          warnings: [],
+        };
+      },
+    });
+    vi.doMock("@/lib/ai/providers", () => ({
+      ...real,
+      resolveModel: () => ({ provider: "google", modelId: "gemini-test", apiKey: "k", model, task: "visual" }),
+    }));
+    vi.resetModules();
+    const layer = await import("@/lib/ai");
+    return { layer, prompts, calls: () => call };
+  }
+
+  const req = { language: "en", heading: "Light", body: "Plants use light." };
+
+  it("asks again when the reply was cut off, and keeps the second answer", async () => {
+    const { layer, prompts, calls } = await layerReplying([
+      { text: '<svg viewBox="0 0 400 220"><rect width="10"', finish: "length" },
+      { text: '<svg viewBox="0 0 400 220"></svg>\n**CAPTION:** Light in\n**ALT:** A sun over a leaf.', finish: "stop" },
+    ]);
+    const out = await layer.drawVisual(req);
+    expect(calls()).toBe(2);
+    expect(prompts[1]).toMatch(/cut off/);
+    expect(out.data).toMatchObject({ alt: "A sun over a leaf." });
+    expect(out.usage).toEqual({ input: 20, output: 40 });
+  });
+
+  it("gives up after two tries and says why", async () => {
+    const { layer, calls } = await layerReplying([{ text: "I can't draw that.", finish: "stop" }]);
+    const out = await layer.drawVisual(req);
+    expect(calls()).toBe(2);
+    expect(out).toMatchObject({ data: null, miss: "no_svg" });
   });
 });
