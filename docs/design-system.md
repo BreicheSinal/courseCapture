@@ -39,7 +39,7 @@ The app uses the **CourseCapture design system** (Claude Design). Its look: calm
 ## Components (`src/components/ui/`)
 From the system (37): Button, IconButton, Menu, ThemeSwitcher · Field, Input, SearchInput, Select, Checkbox, Radio, Toggle, Switch, FileDropzone · Pagination, Breadcrumbs, Tabs · Badge, QuizOption, Toast, EmptyState, Skeleton, StatusDot, Tooltip, Modal, Sheet, DestructiveActionModal · CourseCard, ModuleNav, Flashcard, Book, Table, StudentRow · JoinCode, Announcement, StatTile · AppHeader, Avatar, Entity.
 
-**Sketched on the canvas, not yet in the system** — built here, then proposed back to the system:
+**Sketched on the canvas, not yet in the system** — built here, then proposed back to the system. The full proposals (anatomy, states, tokens, accessibility, what to remove here) are in `docs/design-system-proposals.md` (#41):
 | Component | Used on |
 |---|---|
 | Stepper | T1–T3 — built as `Steps` (`src/components/ui/Steps.tsx`) |
