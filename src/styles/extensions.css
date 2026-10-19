@@ -188,3 +188,10 @@ a.cc-course:focus-visible {
     min-height: var(--control-height);
   }
 }
+
+/* Module lists scroll sideways on phones (design-system .cc-toc). Each item holds
+   its screen-reader text ("Checked"), which is absolutely positioned; without a
+   positioned item it escaped the scroll area and stretched the whole page. (#61) */
+.cc-toc__item {
+  position: relative;
+}
