@@ -63,7 +63,7 @@ test("installable: manifest, icons and head tags (X5)", async ({ page, request }
   const res = await request.get("/manifest.webmanifest");
   expect(res.ok()).toBe(true);
   const manifest = await res.json();
-  expect(manifest).toMatchObject({ name: "CourseCapture", start_url: "/", display: "standalone" });
+  expect(manifest).toMatchObject({ name: "CourseCapture", start_url: "/app", display: "standalone" });
   expect(manifest.icons.map((i: { purpose?: string; sizes: string }) => `${i.sizes} ${i.purpose ?? "any"}`)).toEqual(
     expect.arrayContaining(["192x192 any", "512x512 any", "512x512 maskable"]),
   );

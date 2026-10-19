@@ -922,5 +922,206 @@
     "text": "Puedes seguir leyendo los módulos que ya abriste en este dispositivo. Conéctate a internet para todo lo demás.",
     "banner": "No tienes conexión. Puedes seguir leyendo los módulos que ya abriste en este dispositivo.",
     "bannerStaff": "No tienes conexión. Vuelve a conectarte para seguir trabajando."
+  },
+  "marketing": {
+    "meta": {
+      "title": "CourseCapture: convierte artículos y diapositivas en cursos interactivos",
+      "description": "Los docentes suben un PDF, diapositivas o apuntes y obtienen un curso con módulos, tarjetas, comprobaciones rápidas y diagramas, en español, inglés, árabe o francés. Revísalo y asígnalo a tu clase."
+    },
+    "nav": "Sitio",
+    "signIn": "Iniciar sesión",
+    "talkToUs": "Habla con nosotros",
+    "account": {
+      "teacher": "Ir a Clases",
+      "student": "Ir a mis cursos",
+      "admin": "Ir a administración",
+      "onboarding": "Terminar la configuración",
+      "pending": "Ver el estado de tu cuenta"
+    },
+    "hero": {
+      "title": "Convierte artículos y diapositivas en cursos que tu clase puede seguir",
+      "lead": "Sube un PDF, diapositivas o apuntes. CourseCapture escribe módulos con puntos clave, tarjetas, comprobaciones rápidas y diagramas, en el idioma y nivel que elijas. Tú revisas cada módulo y luego lo asignas a tu clase."
+    },
+    "motion": {
+      "pause": "Pausar la animación"
+    },
+    "how": {
+      "title": "Cómo funciona",
+      "upload": {
+        "title": "Sube tu material",
+        "text": "Un PDF (también páginas escaneadas), un archivo de PowerPoint, texto o Markdown de hasta 20 MB, o pega texto. Elige el idioma y el nivel del curso."
+      },
+      "check": {
+        "title": "Revisa lo que escribió",
+        "text": "Lee cada módulo, edita el texto, las tarjetas y las preguntas, vuelve a dibujar un diagrama y márcalo como revisado. Los estudiantes nunca ven un curso sin revisar."
+      },
+      "assign": {
+        "title": "Asígnalo a una clase",
+        "text": "Elige una o varias clases y una fecha de entrega. Los estudiantes ven el curso en su Inicio al momento."
+      }
+    },
+    "teachers": {
+      "title": "Para docentes",
+      "items": {
+        "join": "Cada clase tiene un código de acceso, así que los estudiantes se unen en segundos.",
+        "roster": "La lista de estudiantes muestra el progreso y la puntuación de cada uno, curso por curso.",
+        "announce": "Publica avisos para toda la clase.",
+        "export": "Exporta cualquier curso como una sola página HTML para compartirlo o archivarlo."
+      }
+    },
+    "students": {
+      "title": "Para estudiantes",
+      "items": {
+        "join": "Unirse a una clase con el código de su docente.",
+        "learn": "Leer cada módulo, girar las tarjetas y hacer una comprobación rápida.",
+        "certificate": "Recibir un certificado de finalización al terminar.",
+        "offline": "Instalarlo en el teléfono y seguir leyendo módulos sin conexión."
+      }
+    },
+    "languages": {
+      "title": "Cuatro idiomas, incluido de derecha a izquierda",
+      "text": "Los docentes eligen el idioma del curso al crearlo. Cada persona elige el idioma de la interfaz. Las páginas en árabe se leen de derecha a izquierda, desde los menús hasta las comprobaciones rápidas.",
+      "region": "El mismo módulo en cuatro idiomas"
+    },
+    "privacy": {
+      "title": "Privacidad desde el diseño",
+      "files": {
+        "title": "Tu archivo se borra cuando el curso está listo",
+        "text": "Solo el nombre del archivo queda con el curso. Si la generación falla, el archivo se guarda para que puedas intentarlo de nuevo."
+      },
+      "students": {
+        "title": "Los datos de los estudiantes no se envían a la IA",
+        "text": "Solo tu material del curso va a la IA. Los nombres, respuestas y el progreso se quedan en CourseCapture."
+      },
+      "checked": {
+        "title": "Los docentes revisan todo primero",
+        "text": "Nada de lo que escribe la IA llega a los estudiantes hasta que un docente revisa cada módulo."
+      },
+      "more": "Leer la política de privacidad"
+    },
+    "faq": {
+      "title": "Preguntas",
+      "files": {
+        "q": "¿Qué puedo subir?",
+        "a": "Archivos PDF, incluidas páginas escaneadas, PowerPoint (.pptx), texto plano y Markdown, de hasta 20 MB. También puedes pegar texto."
+      },
+      "edit": {
+        "q": "¿Puedo cambiar lo que escribió la IA?",
+        "a": "Sí. Puedes editar el texto, los puntos clave, las tarjetas y la comprobación rápida de cada módulo, reordenar o borrar módulos, y volver a dibujar o quitar diagramas."
+      },
+      "phones": {
+        "q": "¿Funciona en el teléfono?",
+        "a": "Sí, para docentes y estudiantes. Se puede instalar como una app, y los estudiantes pueden leer los módulos que ya abrieron incluso sin conexión."
+      },
+      "accounts": {
+        "q": "¿Cómo se inicia sesión?",
+        "a": "Con el correo electrónico. CourseCapture envía un enlace para iniciar sesión, así que no hay contraseñas que recordar."
+      },
+      "start": {
+        "q": "¿Cómo empieza nuestro centro?",
+        "a": "Envíanos un mensaje. Configuraremos tu centro y enviaremos códigos de invitación para tus docentes."
+      }
+    },
+    "footer": {
+      "label": "Pie de página",
+      "privacy": "Privacidad",
+      "terms": "Términos",
+      "contact": "Contacto",
+      "languages": "Idiomas"
+    },
+    "alt": {
+      "create": "Grabación de pantalla: una docente pega sus apuntes, CourseCapture crea el curso paso a paso y ella revisa un módulo y su diagrama.",
+      "createPoster": "La pantalla de revisión de un curso nuevo sobre la fotosíntesis, con sus cuatro módulos listos para revisar.",
+      "learn": "Grabación de pantalla: una estudiante abre el curso, lee un módulo con un diagrama, gira una tarjeta, responde una comprobación rápida y recibe un certificado.",
+      "learnPoster": "Una estudiante lee el primer módulo del curso sobre la fotosíntesis.",
+      "upload": "La pantalla de curso nuevo con una zona para soltar un artículo o diapositivas.",
+      "check": "La pantalla de revisión con los módulos del curso, cada uno marcado como revisado.",
+      "assign": "El diálogo de asignación con la clase Biology 10 seleccionada y una fecha de entrega.",
+      "roster": "La lista de una clase en una computadora: seis estudiantes, cada uno con su barra de progreso y puntuación.",
+      "lang": "El primer módulo del curso en {language}."
+    }
+  },
+  "legal": {
+    "draft": "Borrador. El texto definitivo se está preparando y reemplazará esta versión.",
+    "updated": "Última actualización: octubre de 2026",
+    "questions": "¿Preguntas sobre esta página? Contáctanos.",
+    "privacy": {
+      "title": "Política de privacidad",
+      "description": "Qué recoge CourseCapture, para qué y qué pasa con ello.",
+      "sections": {
+        "collect": {
+          "title": "Qué recogemos",
+          "text": "Tu nombre y correo electrónico, tu rol (docente, estudiante o administrador del centro), las clases a las que perteneces y, para los estudiantes, qué módulos terminaron y sus respuestas en las comprobaciones rápidas."
+        },
+        "files": {
+          "title": "Archivos que suben los docentes",
+          "text": "Un archivo subido solo se usa para crear el curso y se borra cuando el curso está listo. Si la creación falla, se guarda para que el docente pueda intentarlo de nuevo. Solo el nombre del archivo queda con el curso."
+        },
+        "ai": {
+          "title": "El proveedor de IA",
+          "text": "Para crear un curso, su material se envía a nuestro proveedor de IA. Los nombres, respuestas y el progreso de los estudiantes no se envían."
+        },
+        "cookies": {
+          "title": "Cookies",
+          "text": "Usamos cookies para mantener tu sesión y recordar tu idioma y tema. No usamos cookies de publicidad ni de seguimiento."
+        },
+        "rights": {
+          "title": "Tus opciones",
+          "text": "Puedes pedirnos en cualquier momento que corrijamos o borremos tu cuenta y sus datos."
+        }
+      }
+    },
+    "terms": {
+      "title": "Términos de uso",
+      "description": "Las reglas para usar CourseCapture.",
+      "sections": {
+        "accounts": {
+          "title": "Cuentas",
+          "text": "Protege tu cuenta de correo, porque ahí se envían los enlaces para iniciar sesión. Los centros deciden quién puede dar clase y quién puede unirse a sus clases."
+        },
+        "content": {
+          "title": "Tu contenido",
+          "text": "Los docentes conservan los derechos sobre el material que suben y los cursos que crean. Sube solo material que tengas permiso para usar con tus clases."
+        },
+        "ai": {
+          "title": "Contenido escrito por IA",
+          "text": "Los cursos los escribe una IA y pueden contener errores. Los docentes son responsables de revisar cada módulo antes de asignarlo."
+        },
+        "use": {
+          "title": "Uso aceptable",
+          "text": "No uses CourseCapture para dañar a otros, incumplir la ley o saltarte sus límites y su seguridad."
+        },
+        "changes": {
+          "title": "Cambios",
+          "text": "Podemos actualizar estos términos. Cuando lo hagamos, cambiaremos la fecha al principio de esta página."
+        }
+      }
+    }
+  },
+  "contact": {
+    "title": "Habla con nosotros",
+    "description": "Cuéntanos sobre tu centro y te responderemos por correo.",
+    "lead": "Cuéntanos sobre tu centro y lo que enseñas. Te responderemos por correo.",
+    "name": "Tu nombre",
+    "school": "Centro educativo",
+    "email": "Correo electrónico",
+    "message": "Mensaje",
+    "messageHint": "Al menos 20 caracteres.",
+    "honeypot": "Deja este campo vacío",
+    "submit": "Enviar mensaje",
+    "sending": "Enviando",
+    "sent": {
+      "title": "Mensaje enviado",
+      "text": "Gracias. Responderemos a {email}."
+    },
+    "sendAnother": "Enviar otro mensaje",
+    "errors": {
+      "name": "Escribe tu nombre.",
+      "school": "Escribe el nombre de tu centro.",
+      "email": "Escribe un correo como nombre@escuela.edu.",
+      "message": "Escribe al menos 20 caracteres para saber cómo ayudarte.",
+      "tooMany": "Has enviado varios mensajes en poco tiempo. Inténtalo de nuevo en una hora.",
+      "failed": "No se pudo enviar tu mensaje. Inténtalo de nuevo en unos minutos."
+    }
   }
 }

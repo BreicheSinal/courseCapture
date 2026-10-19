@@ -17,6 +17,10 @@ Two Playwright projects run:
 
 Use `--project=phone` for just the phone run.
 
+`marketing.spec.ts` (#58, #59) covers `/` for a visitor, a teacher and a student, axe in Light, Dark and Arabic, the phone layout of the public pages, the contact form (validation, honeypot, failed send), the sitemap, robots.txt and the social preview.
+
+A third project, **media**, only runs when asked: `pnpm media:capture` seeds a sample class and saves screenshots and animation frames to `tmp/media` (`MEDIA_OUT` to change it), then `pnpm media` turns them into `public/marketing/`. Run it against a production build on :3100 (`next build && next start --port 3100` with the stand-in env) for steady frames; `playwright.config.ts` reuses a server that's already running.
+
 `pwa.spec.ts` (#37) tests the manifest and icons, offline reading, and deleting saved pages on sign-out, with the service worker on (`NEXT_PUBLIC_SW=1`). Playwright only routes service-worker requests with `PW_EXPERIMENTAL_SERVICE_WORKER_NETWORK_EVENTS=1`, which `playwright.config.ts` sets, so the offline tests cut the network with `context.route()` as well as `setOffline()`.
 
 Needs Postgres at `TEST_DATABASE_URL` (default `postgres://postgres:postgres@localhost:5432/postgres`) and a Chromium. If Playwright can't download its browser, point it at one: `E2E_CHROME=/path/to/chrome pnpm test:e2e`. `E2E_PORT` and `E2E_DB` change the app port and database name.

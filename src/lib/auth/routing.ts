@@ -14,7 +14,7 @@ export type GuardProfile = {
 };
 
 export type GuardedPage =
-  | "root"
+  | "app" // /app: sends everyone to their home (the installed app opens here)
   | "sign-in" // T7, T7b/S0b: signed-out pages
   | "onboarding-profile" // name (+ role if missing)
   | "pending" // T7d
@@ -43,7 +43,7 @@ export function decide(p: GuardProfile | null, page: GuardedPage): string | null
 
   const home = homeFor(p);
   switch (page) {
-    case "root":
+    case "app":
     case "sign-in":
       return home;
     case "onboarding-profile":

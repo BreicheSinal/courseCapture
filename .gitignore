@@ -15,3 +15,5 @@ supabase/.temp/
 next-env.d.ts
 *.pem
 .pnpm-debug.log*
+# Marketing capture frames and scratch scripts (pnpm media:capture)
+tmp/

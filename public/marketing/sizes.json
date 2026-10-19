@@ -1,0 +1,54 @@
+{
+  "create": {
+    "width": 600,
+    "height": 1298
+  },
+  "learn": {
+    "width": 600,
+    "height": 1298
+  },
+  "lang-ar": {
+    "width": 600,
+    "height": 1298
+  },
+  "lang-en": {
+    "width": 600,
+    "height": 1298
+  },
+  "lang-es": {
+    "width": 600,
+    "height": 1298
+  },
+  "lang-fr": {
+    "width": 600,
+    "height": 1298
+  },
+  "student-finish": {
+    "width": 600,
+    "height": 1298
+  },
+  "student-home": {
+    "width": 600,
+    "height": 1298
+  },
+  "student-reader": {
+    "width": 600,
+    "height": 1298
+  },
+  "teacher-assign": {
+    "width": 600,
+    "height": 1298
+  },
+  "teacher-new": {
+    "width": 600,
+    "height": 1298
+  },
+  "teacher-review": {
+    "width": 600,
+    "height": 1298
+  },
+  "teacher-roster-desktop": {
+    "width": 1600,
+    "height": 1000
+  }
+}

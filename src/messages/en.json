@@ -922,5 +922,206 @@
     "text": "Modules you've opened on this device can still be read. Connect to the internet for everything else.",
     "banner": "You're offline. Modules you've opened on this device can still be read.",
     "bannerStaff": "You're offline. Reconnect to keep working."
+  },
+  "marketing": {
+    "meta": {
+      "title": "CourseCapture: turn papers and slides into interactive courses",
+      "description": "Teachers upload a PDF, slides or notes and get a course with modules, flashcards, quick checks and diagrams, in English, Arabic, French or Spanish. Check it, then assign it to your class."
+    },
+    "nav": "Site",
+    "signIn": "Sign in",
+    "talkToUs": "Talk to us",
+    "account": {
+      "teacher": "Go to Classes",
+      "student": "Go to my courses",
+      "admin": "Go to admin",
+      "onboarding": "Finish setting up",
+      "pending": "See your account status"
+    },
+    "hero": {
+      "title": "Turn papers and slides into courses your class can work through",
+      "lead": "Upload a PDF, slides or notes. CourseCapture writes modules with key points, flashcards, quick checks and diagrams, in the language and level you choose. You check every module, then assign it to your class."
+    },
+    "motion": {
+      "pause": "Pause animation"
+    },
+    "how": {
+      "title": "How it works",
+      "upload": {
+        "title": "Upload your material",
+        "text": "A PDF (scanned pages too), PowerPoint, text or Markdown file up to 20 MB, or paste text. Pick the course language and level."
+      },
+      "check": {
+        "title": "Check what it wrote",
+        "text": "Read each module, edit the text, flashcards and questions, redraw a diagram, and mark it checked. Students never see an unchecked course."
+      },
+      "assign": {
+        "title": "Assign it to a class",
+        "text": "Pick one or more classes and a due date. Students see the course on their Home right away."
+      }
+    },
+    "teachers": {
+      "title": "For teachers",
+      "items": {
+        "join": "Each class has a join code, so students join in seconds.",
+        "roster": "The roster shows every student's progress and quiz score, course by course.",
+        "announce": "Post announcements to the whole class.",
+        "export": "Export any course as a single HTML page to share or archive."
+      }
+    },
+    "students": {
+      "title": "For students",
+      "items": {
+        "join": "Join a class with the code from their teacher.",
+        "learn": "Read each module, flip the flashcards and take a quick check.",
+        "certificate": "Get a certificate of completion when they finish.",
+        "offline": "Install it on a phone and keep reading modules offline."
+      }
+    },
+    "languages": {
+      "title": "Four languages, right to left included",
+      "text": "Teachers pick the course language when they create it. Everyone picks the interface language for themselves. Arabic pages read right to left, from the menus to the quick checks.",
+      "region": "The same module in four languages"
+    },
+    "privacy": {
+      "title": "Privacy, built in",
+      "files": {
+        "title": "Your file is deleted after the course is built",
+        "text": "Only the file name stays with the course. If generation fails, the file is kept so you can try again."
+      },
+      "students": {
+        "title": "Students' data isn't sent to the AI",
+        "text": "Only your course material goes to the AI. Names, answers and progress stay in CourseCapture."
+      },
+      "checked": {
+        "title": "Teachers check everything first",
+        "text": "Nothing the AI writes reaches students until a teacher has checked every module."
+      },
+      "more": "Read the privacy policy"
+    },
+    "faq": {
+      "title": "Questions",
+      "files": {
+        "q": "What can I upload?",
+        "a": "PDF files, including scanned pages, PowerPoint (.pptx), plain text and Markdown, up to 20 MB. You can also paste text."
+      },
+      "edit": {
+        "q": "Can I change what the AI wrote?",
+        "a": "Yes. You can edit every module's text, key points, flashcards and quick check, reorder or delete modules, and redraw or remove diagrams."
+      },
+      "phones": {
+        "q": "Does it work on phones?",
+        "a": "Yes, for teachers and students. It can be installed like an app, and students can read modules they've opened even without a connection."
+      },
+      "accounts": {
+        "q": "How do people sign in?",
+        "a": "With their email address. CourseCapture sends a sign-in link, so there are no passwords to remember."
+      },
+      "start": {
+        "q": "How does our school get started?",
+        "a": "Send us a message. We'll set up your school and send invite codes for your teachers."
+      }
+    },
+    "footer": {
+      "label": "Footer",
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "contact": "Contact",
+      "languages": "Languages"
+    },
+    "alt": {
+      "create": "Screen recording: a teacher pastes notes, CourseCapture builds the course step by step, and the teacher reviews a module and its diagram.",
+      "createPoster": "The review screen of a new course on photosynthesis, with its four modules ready to check.",
+      "learn": "Screen recording: a student opens the course, reads a module with a diagram, flips a flashcard, answers a quick check and gets a certificate.",
+      "learnPoster": "A student reading the first module of the photosynthesis course.",
+      "upload": "The new course screen with a drop zone for a paper or slides.",
+      "check": "The review screen listing the course's modules, each marked checked.",
+      "assign": "The assign dialog with the class Biology 10 selected and a due date.",
+      "roster": "A class roster on a computer: six students, each with a progress bar and quiz score.",
+      "lang": "The first module of the course in {language}."
+    }
+  },
+  "legal": {
+    "draft": "Draft. The final text is being prepared and will replace this version.",
+    "updated": "Last updated: October 2026",
+    "questions": "Questions about this page? Contact us.",
+    "privacy": {
+      "title": "Privacy policy",
+      "description": "What CourseCapture collects, why, and what happens to it.",
+      "sections": {
+        "collect": {
+          "title": "What we collect",
+          "text": "Your name and email address, your role (teacher, student or school admin), the classes you belong to, and, for students, which modules you've finished and your quick-check answers."
+        },
+        "files": {
+          "title": "Files teachers upload",
+          "text": "An uploaded file is used only to build the course and is deleted when the course is ready. If building fails, it's kept so the teacher can try again. Only the file name stays with the course."
+        },
+        "ai": {
+          "title": "The AI provider",
+          "text": "To build a course, its source material is sent to our AI provider. Student names, answers and progress are not sent."
+        },
+        "cookies": {
+          "title": "Cookies",
+          "text": "We use cookies to keep you signed in and to remember your language and theme. We don't use advertising or tracking cookies."
+        },
+        "rights": {
+          "title": "Your choices",
+          "text": "You can ask us to correct or delete your account and its data at any time."
+        }
+      }
+    },
+    "terms": {
+      "title": "Terms of use",
+      "description": "The rules for using CourseCapture.",
+      "sections": {
+        "accounts": {
+          "title": "Accounts",
+          "text": "Keep your email account secure, since sign-in links are sent there. Schools decide who can teach and who can join their classes."
+        },
+        "content": {
+          "title": "Your content",
+          "text": "Teachers keep the rights to the material they upload and the courses they make. Only upload material you're allowed to use with your classes."
+        },
+        "ai": {
+          "title": "AI-written content",
+          "text": "Courses are written by AI and can contain mistakes. Teachers are responsible for checking each module before assigning it."
+        },
+        "use": {
+          "title": "Acceptable use",
+          "text": "Don't use CourseCapture to harm others, break the law, or get around its limits and security."
+        },
+        "changes": {
+          "title": "Changes",
+          "text": "We may update these terms. We'll change the date at the top of this page when we do."
+        }
+      }
+    }
+  },
+  "contact": {
+    "title": "Talk to us",
+    "description": "Tell us about your school and we'll reply by email.",
+    "lead": "Tell us about your school and what you teach. We'll reply by email.",
+    "name": "Your name",
+    "school": "School",
+    "email": "Email",
+    "message": "Message",
+    "messageHint": "At least 20 characters.",
+    "honeypot": "Leave this field empty",
+    "submit": "Send message",
+    "sending": "Sending",
+    "sent": {
+      "title": "Message sent",
+      "text": "Thanks. We'll reply to {email}."
+    },
+    "sendAnother": "Send another message",
+    "errors": {
+      "name": "Enter your name.",
+      "school": "Enter your school's name.",
+      "email": "Enter an email address like name@school.edu.",
+      "message": "Write at least 20 characters so we know how to help.",
+      "tooMany": "You've sent several messages in a short time. Try again in an hour.",
+      "failed": "Your message couldn't be sent. Try again in a few minutes."
+    }
   }
 }

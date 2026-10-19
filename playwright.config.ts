@@ -27,7 +27,9 @@ export default defineConfig({
     launchOptions: process.env.E2E_CHROME ? { executablePath: process.env.E2E_CHROME } : undefined,
   },
   projects: [
-    { name: "chromium", testIgnore: /phone\.spec\.ts/, use: { ...devices["Desktop Chrome"] } },
+    { name: "chromium", testIgnore: [/phone\.spec\.ts/, /media\//], use: { ...devices["Desktop Chrome"] } },
+    // Marketing screenshots and animation frames (#58): only when asked for (`pnpm media`).
+    { name: "media", testMatch: /media\/capture\.spec\.ts/, use: { ...devices["Desktop Chrome"] } },
     // A 390px phone (#61): the main flows again, plus the phone layout checks.
     {
       name: "phone",

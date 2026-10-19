@@ -225,6 +225,15 @@ Written only by server code (service role):
 - `add_ai_tokens(use, input, output)` — adds a model call's tokens to the claimed row.
 - `my_ai_usage_today()` — the caller's counts per kind, for "n generations left today".
 
+### `contact_attempts` (contact form rate limit, #59)
+| Column | Type | Notes |
+|---|---|---|
+| `id` | bigint identity PK | |
+| `sender_hash` | text | SHA-256 of a salt and the sender's IP; never the IP or the message |
+| `created_at` | timestamptz | |
+
+RLS on, no policies, no grants: nobody but the service role touches it. `claim_contact_slot(sender, limit, window)` (service role only) removes rows older than a day, then returns false if the sender already has `limit` in `window`, else records one and returns true. The server allows 5 an hour.
+
 ## Teacher write paths (stage 5)
 Teachers create, rename and delete their own courses directly: RLS plus column grants (`insert (teacher_id, title, content_locale, level, source_name)`, `update (title, content_locale, level)`). Titles are trimmed by a trigger. Everything else goes through security-definer functions that first check the caller owns the course (`owned_module_course()`):
 - `save_module(…)` — T4 "Save": heading, body, key points, flashcards, quiz with its answer and explanation, caption and alt text, in one transaction.

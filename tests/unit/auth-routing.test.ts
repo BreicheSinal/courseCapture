@@ -19,12 +19,18 @@ describe("homeFor", () => {
 describe("decide", () => {
   it("sends signed-out visitors to sign-in, except on sign-in pages", () => {
     expect(decide(null, "teacher")).toBe("/sign-in");
-    expect(decide(null, "root")).toBe("/sign-in");
+    expect(decide(null, "app")).toBe("/sign-in");
     expect(decide(null, "sign-in")).toBeNull();
   });
 
   it("moves signed-in people off sign-in", () => {
     expect(decide(p({}), "sign-in")).toBe("/student");
+  });
+
+  it("/app sends everyone home; the marketing page on / isn't guarded (#58)", () => {
+    expect(decide(p({}), "app")).toBe("/student");
+    expect(decide(p({ role: "teacher" }), "app")).toBe("/teacher");
+    expect(decide(p({ role: null }), "app")).toBe("/onboarding/profile");
   });
 
   it("finishes onboarding before anything else", () => {
