@@ -81,6 +81,7 @@
 | 76 | A hand-written service worker (`public/sw.js`), not a library such as Serwist | About 100 lines covering three request types; no build plugin to keep in step with Next 16 and Turbopack |
 | 77 | No custom "Install" button; browsers show their own prompt | `beforeinstallprompt` doesn't exist on iOS, and Next's guide advises against it |
 | 78 | The offline notice is shown by an inline script, not React | A saved page may be opened before its scripts load; the notice must still appear |
+| 79 | The manifest uses the Light `bg` for its colours, and has no description | A manifest can't use media queries; a one-language description would show in install dialogs. The page's per-scheme `theme-color` takes over once loaded |
 
 ## Open questions
 1. **Due date per class** when one course is assigned to several classes — assumed yes.

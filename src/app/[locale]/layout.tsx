@@ -22,7 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
       icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
       apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
     },
-    // Installed on iOS: full screen, with the status bar over the page background.
+    // Installed on iOS: opens full screen with the standard status bar.
     appleWebApp: { capable: true, title: t("appName"), statusBarStyle: "default" },
   };
 }

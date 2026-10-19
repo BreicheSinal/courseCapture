@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { Card } from "@/components/ui/Card";
-import { Icon } from "@/components/ui/Icon";
+import { AppShell } from "@/components/layout/AppShell";
 import { RetryButton } from "@/components/pwa/RetryButton";
+import { Card, EmptyState } from "@/components/ui";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("offline");
@@ -11,25 +11,16 @@ export async function generateMetadata(): Promise<Metadata> {
 
 /**
  * Shown by the service worker when there's no connection and the page wasn't
- * saved for offline reading (#37). Fully static: it's saved when the worker installs.
+ * saved for offline reading (#37). Same frame as "Page not found"; fully static,
+ * so it's saved when the worker installs.
  */
 export default async function Page() {
   const t = await getTranslations("offline");
   return (
-    <main id="main" className="mx-auto flex min-h-dvh max-w-md flex-col justify-center px-4 py-12">
-      <Card as="section" aria-labelledby="offline-title" className="flex flex-col items-start gap-4">
-        <span
-          className="grid size-control place-items-center rounded-full bg-surface-sunken text-ink-muted"
-          aria-hidden="true"
-        >
-          <Icon name="alert" />
-        </span>
-        <h1 id="offline-title" className="title">
-          {t("title")}
-        </h1>
-        <p className="body text-ink-muted">{t("text")}</p>
-        <RetryButton />
+    <AppShell>
+      <Card className="mx-auto max-w-xl">
+        <EmptyState icon="alert" headingLevel={1} title={t("title")} text={t("text")} actions={<RetryButton />} />
       </Card>
-    </main>
+    </AppShell>
   );
 }

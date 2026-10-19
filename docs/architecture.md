@@ -44,7 +44,7 @@ Rules:
 
   It never saves teacher or admin pages, `/api` or `/auth` requests, or anything that isn't a GET.
 - **Privacy:** saved pages belong to one person. Signed-in shells tell the worker who is signed in, and the sign-in page tells it nobody is. When that changes, the saved pages are deleted.
-- **Offline notice:** a "You're offline" line on signed-in screens. It's rendered on the server and shown by a tiny inline script (`data-offline` on `<html>`), so it works on a saved page even before React loads. Answering a quick check or completing a module still needs the network; those actions show their usual "couldn't save" error.
+- **Offline notice:** a "You're offline" line on signed-in screens: students are told their opened modules can still be read, and teachers and admins to reconnect. It's rendered on the server and shown by a tiny inline script (`data-offline` on `<html>`), so it works on a saved page even before React loads. The live region is always in the page, so the change is announced. Answering a quick check or completing a module still needs the network; those actions show their usual "couldn't save" error.
 
 ## Request trace: a teacher builds a course
 1. Teacher uploads a file on T1 → Server Action stores it in the private `sources` bucket and creates a `courses` row (`status = draft`) and a `generation_jobs` row.

@@ -14,7 +14,6 @@ export default function manifest(): MetadataRoute.Manifest {
     id: "/",
     name: "CourseCapture",
     short_name: "CourseCapture",
-    description: "Turn papers and slides into interactive courses, and work through them with your class.",
     start_url: "/",
     scope: "/",
     display: "standalone",

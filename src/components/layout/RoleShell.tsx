@@ -17,7 +17,7 @@ export async function RoleShell({ role, children }: { role: NavRole; children: R
   return (
     <AppShell role={role} menu={<AccountMenu name={name} role={profile.role ?? role} />}>
       <OfflineIdentity user={profile.id} />
-      <OfflineNotice />
+      <OfflineNotice student={role === "student"} />
       {children}
     </AppShell>
   );
