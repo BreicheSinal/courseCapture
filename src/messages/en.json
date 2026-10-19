@@ -584,6 +584,7 @@
       "notice_checked": "Every module is checked.",
       "notice_moduleDeleted": "Module deleted.",
       "fallbackNote": "Claude couldn't write part of this course, so the basic splitter made those modules from your text. They have no flashcards or quiz yet: add them, or try generating again.",
+      "aiRejectedNote": "The AI provider refused this site's key, so the basic splitter made this course from your text, without flashcards, a quiz or diagrams. Ask your site admin to check the AI settings, then try generating again.",
       "checkNote": "Claude wrote this course from your file. Check each module before students see it.",
       "flagged": "{count, plural, one {# module needs a check.} other {# modules need a check.}}",
       "checkedCount": "{checked} of {total} modules checked.",
@@ -707,6 +708,7 @@
       "footer": "Made with CourseCapture."
     },
     "courseErrors": {
+      "aiRejected": "The AI provider refused this site's key. Ask your site admin to check the AI settings.",
       "titleRequired": "Enter a course title.",
       "titleTooLong": "Keep the title under 120 characters.",
       "headingRequired": "Enter a module title.",

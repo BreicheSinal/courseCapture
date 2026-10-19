@@ -65,13 +65,31 @@ export function describeIssues(error: unknown): string {
 }
 
 /** One diagram reply: an <svg> plus CAPTION: and ALT: lines (ai/prompts/draw-visual.md). */
-export function parseVisual(reply: string): { svg: string; caption: string; alt: string } | null {
+/** Why a diagram reply couldn't be used (logged, never shown to students). */
+export type VisualMiss = "no_svg" | "no_alt" | "cut_off" | "unsafe" | "error";
+
+/**
+ * Reads a diagram reply: the <svg>, then CAPTION: and ALT: lines. Models format
+ * these differently (Gemini often bolds the labels or wraps the SVG in a code
+ * fence), so markdown around the labels is ignored. A missing ALT falls back
+ * to the caption; with neither, there's no alt text and the diagram isn't
+ * stored (schema check, CLAUDE.md rule 7).
+ */
+export function readVisual(
+  reply: string,
+): { ok: true; data: { svg: string; caption: string; alt: string } } | { ok: false; miss: VisualMiss } {
   const svg = /<svg[\s\S]*?<\/svg>/i.exec(reply)?.[0];
-  if (!svg) return null;
-  const rest = reply.slice(reply.indexOf(svg) + svg.length);
-  const line = (key: string) => new RegExp(`^\\s*${key}\\s*:\\s*(.+)$`, "im").exec(rest)?.[1]?.trim() ?? "";
+  if (!svg) return { ok: false, miss: /<svg/i.test(reply) ? "cut_off" : "no_svg" };
+  const rest = reply.slice(reply.indexOf(svg) + svg.length).replace(/[*_`#>]/g, "");
+  const line = (key: string) =>
+    new RegExp(`^[\\s\\-–]*${key}\\s*[:：\\-–]\\s*(.+)$`, "im").exec(rest)?.[1]?.trim() ?? "";
   const caption = text(200).parse(line("CAPTION"));
-  const alt = text(400).parse(line("ALT"));
-  if (!alt) return null; // a diagram without alt text isn't stored (schema check, CLAUDE.md rule 7)
-  return { svg, caption, alt };
+  const alt = text(400).parse(line("ALT") || caption);
+  if (!alt) return { ok: false, miss: "no_alt" };
+  return { ok: true, data: { svg, caption, alt } };
+}
+
+export function parseVisual(reply: string): { svg: string; caption: string; alt: string } | null {
+  const r = readVisual(reply);
+  return r.ok ? r.data : null;
 }

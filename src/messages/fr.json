@@ -584,6 +584,7 @@
       "notice_checked": "Tous les modules sont vérifiés.",
       "notice_moduleDeleted": "Module supprimé.",
       "fallbackNote": "Claude n'a pas pu rédiger une partie de ce cours : le découpage simple a créé ces modules à partir de votre texte. Ils n'ont pas encore de fiches ni de quiz : ajoutez-en, ou relancez la génération.",
+      "aiRejectedNote": "Le fournisseur d'IA a refusé la clé de ce site : le découpage simple a donc créé ce cours à partir de votre texte, sans cartes mémoire, quiz ni schémas. Demandez à l'administrateur du site de vérifier les réglages de l'IA, puis relancez la génération.",
       "checkNote": "Claude a rédigé ce cours à partir de votre fichier. Vérifiez chaque module avant que les élèves le voient.",
       "flagged": "{count, plural, one {# module à vérifier.} other {# modules à vérifier.}}",
       "checkedCount": "{checked} module(s) vérifié(s) sur {total}.",
@@ -707,6 +708,7 @@
       "footer": "Créé avec CourseCapture."
     },
     "courseErrors": {
+      "aiRejected": "Le fournisseur d'IA a refusé la clé de ce site. Demandez à l'administrateur du site de vérifier les réglages de l'IA.",
       "titleRequired": "Saisissez un titre de cours.",
       "titleTooLong": "Limitez le titre à 120 caractères.",
       "headingRequired": "Saisissez un titre de module.",

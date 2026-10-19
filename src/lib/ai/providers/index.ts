@@ -12,7 +12,7 @@ import { fakeModel } from "./fake";
  * One adapter per vendor. App code never imports a vendor SDK; it asks for
  * the model for a task and gets back a Vercel AI SDK model (decision #15).
  */
-export type ResolvedModel = ModelChoice & { model: LanguageModel };
+export type ResolvedModel = ModelChoice & { model: LanguageModel; task: AiTask };
 
 export function resolveModel(task: AiTask): ResolvedModel {
   const choice = modelChoice(task);
@@ -33,7 +33,7 @@ export function resolveModel(task: AiTask): ResolvedModel {
         return fakeModel(task, modelId);
     }
   })();
-  return { ...choice, model };
+  return { ...choice, model, task };
 }
 
 /**
@@ -43,4 +43,17 @@ export function resolveModel(task: AiTask): ResolvedModel {
  */
 export function cacheableInstructions(provider: ModelChoice["provider"]) {
   return provider === "anthropic" ? { anthropic: { cacheControl: { type: "ephemeral" as const } } } : undefined;
+}
+
+/**
+ * Per-task options for the call itself. Gemini's thinking tokens come out of
+ * the same output budget as the answer, so a short, fixed-format job (a
+ * diagram, a transcript) thinks little and keeps its budget for the reply.
+ * Course writing keeps the model's default.
+ */
+export function taskOptions(provider: ModelChoice["provider"], task: AiTask) {
+  if (provider === "google" && (task === "visual" || task === "transcribe")) {
+    return { google: { thinkingConfig: { thinkingLevel: "low" as const } } };
+  }
+  return undefined;
 }

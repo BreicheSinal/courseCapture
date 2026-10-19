@@ -7,6 +7,7 @@ import { Steps } from "@/components/ui/Steps";
 import { localeNames, type Locale } from "@/i18n/locales";
 import type { BuilderCourse, BuilderModule } from "@/lib/courses/queries";
 import { FALLBACK_NOTE } from "@/lib/generation/fallback";
+import { AI_REJECTED } from "@/lib/generation/constants";
 import { CourseMenu, MoveButtons, RenameCourse } from "./ReviewControls";
 
 /**
@@ -32,6 +33,7 @@ export function ReviewCourse({
   const checked = modules.filter((m) => m.checked_at).length;
   const flagged = modules.filter((m) => !m.checked_at && m.review_note).length;
   const fallback = (course.job?.fallback_chunks ?? 0) > 0;
+  const aiRejected = course.job?.error === AI_REJECTED;
   const lang = localeNames[course.content_locale as Locale] ?? course.content_locale;
 
   return (
@@ -71,7 +73,7 @@ export function ReviewCourse({
       {fallback && (
         <div className="cc-notice cc-notice--warning subhead" role="note">
           <Icon name="alert" />
-          <p>{t("fallbackNote")}</p>
+          <p>{t(aiRejected ? "aiRejectedNote" : "fallbackNote")}</p>
         </div>
       )}
 
