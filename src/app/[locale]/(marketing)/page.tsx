@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/locales";
 import { buttonClasses } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
 import { AccountAction } from "@/components/features/marketing/AccountAction";
 import { MotionShot } from "@/components/features/marketing/MotionShot";
 import { publicMetadata } from "@/lib/seo";
@@ -60,20 +61,20 @@ function HowItWorks() {
   const t = useTranslations("marketing.how");
   const steps = ["upload", "check", "assign"] as const;
   return (
-    <section aria-labelledby="how-title" className={`${wrap} py-12`}>
+    <section aria-labelledby="how-title" className={`${wrap} py-8 md:py-12`}>
       <h2 id="how-title" className="cc-mk-section-title">
         {t("title")}
       </h2>
-      <ol className="mt-8 grid gap-8 md:grid-cols-3">
+      <ol className="cc-mk-stepper mt-8">
         {steps.map((k, i) => (
-          <li key={k} className="flex flex-col gap-2">
-            <div className="flex items-center gap-3">
-              <span className="cc-mk-step" aria-hidden="true">
-                {i + 1}
-              </span>
+          <li key={k}>
+            <span className="cc-mk-step" aria-hidden="true">
+              {i + 1}
+            </span>
+            <div className="flex flex-col gap-1 pt-2 md:pt-0">
               <h3 className="headline">{t(`${k}.title`)}</h3>
+              <p className="text-ink-muted">{t(`${k}.text`)}</p>
             </div>
-            <p className="text-ink-muted">{t(`${k}.text`)}</p>
           </li>
         ))}
       </ol>
@@ -85,7 +86,7 @@ function Students() {
   const t = useTranslations("marketing");
   const items = ["join", "learn", "certificate", "offline"] as const;
   return (
-    <section aria-labelledby="students-title" className={`${wrap} grid items-center gap-12 py-12 md:grid-cols-[auto_1fr]`}>
+    <section aria-labelledby="students-title" className={`${wrap} grid items-center gap-8 py-8 md:grid-cols-[auto_1fr] md:gap-12 md:py-12`}>
       <div className="mx-auto w-full max-w-64 max-md:order-last md:w-64">
         <MotionShot name="learn" alt={t("alt.learn")} posterAlt={t("alt.learnPoster")} />
       </div>
@@ -105,14 +106,23 @@ function Students() {
 
 function Facts() {
   const t = useTranslations("marketing.facts");
-  const items = ["languages", "files", "students"] as const;
+  const items = [
+    { key: "languages", icon: "globe" },
+    { key: "files", icon: "trash" },
+    { key: "students", icon: "lock" },
+  ] as const;
   return (
-    <section aria-label={t("label")} className={`${wrap} py-12`}>
-      <ul className="grid gap-8 md:grid-cols-3">
-        {items.map((k) => (
-          <li key={k} className="flex flex-col gap-2 border-t border-line pt-4">
-            <h2 className="headline">{t(`${k}.title`)}</h2>
-            <p className="text-ink-muted">{t(`${k}.text`)}</p>
+    <section aria-label={t("label")} className={`${wrap} py-8 md:py-12`}>
+      <ul className="cc-card grid gap-0 p-0 md:grid-cols-3">
+        {items.map(({ key, icon }) => (
+          <li key={key} className="flex gap-4 border-line p-6 max-md:not-last:border-b">
+            <span className="cc-mk-fact-icon">
+              <Icon name={icon} />
+            </span>
+            <div className="flex flex-col gap-1">
+              <h2 className="headline">{t(`${key}.title`)}</h2>
+              <p className="text-ink-muted">{t(`${key}.text`)}</p>
+            </div>
           </li>
         ))}
       </ul>
@@ -123,8 +133,8 @@ function Facts() {
 function CallToAction() {
   const t = useTranslations("marketing");
   return (
-    <section aria-labelledby="cta-title" className={`${wrap} py-12`}>
-      <div className="flex flex-col items-start gap-4 rounded-lg bg-accent-soft p-8 md:flex-row md:items-center md:justify-between">
+    <section aria-labelledby="cta-title" className={`${wrap} py-8 md:py-12`}>
+      <div className="flex flex-col items-start gap-4 rounded-lg bg-accent-soft p-6 md:flex-row md:p-8 md:items-center md:justify-between">
         <div className="flex flex-col gap-1">
           <h2 id="cta-title" className="title">
             {t("cta.title")}

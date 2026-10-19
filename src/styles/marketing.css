@@ -82,16 +82,75 @@
   border-radius: var(--radius-lg);
 }
 
-/* Step numbers in "How it works": a real sequence. */
+/* "How it works" stepper: numbered dots joined by a line. Vertical on phones,
+   horizontal from md up. Logical properties, so it runs right to left in Arabic. */
+.cc-mk-stepper {
+  display: grid;
+  gap: var(--space-6);
+}
+.cc-mk-stepper > li {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--control-height) 1fr;
+  column-gap: var(--space-4);
+  align-items: start;
+}
 .cc-mk-step {
+  position: relative;
+  z-index: 1;
   display: inline-grid;
   place-items: center;
   width: var(--control-height);
   height: var(--control-height);
   border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--on-accent);
+  font: var(--text-headline);
+  box-shadow: 0 0 0 var(--space-1) var(--bg);
+}
+/* The line to the next step (not after the last one). */
+.cc-mk-stepper > li:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: calc(var(--control-height) / 2 - 1px);
+  top: var(--control-height);
+  bottom: calc(-1 * var(--space-6));
+  width: 2px;
+  background: var(--line);
+}
+@media (min-width: 768px) {
+  .cc-mk-stepper {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-8);
+  }
+  .cc-mk-stepper > li {
+    grid-template-columns: 1fr;
+    row-gap: var(--space-4);
+  }
+  .cc-mk-stepper > li:not(:last-child)::before {
+    inset-inline-start: var(--control-height);
+    inset-inline-end: calc(-1 * var(--space-8));
+    top: calc(var(--control-height) / 2 - 1px);
+    bottom: auto;
+    width: auto;
+    height: 2px;
+  }
+}
+
+/* Facts: a round icon on accent-soft. */
+.cc-mk-fact-icon {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--control-height);
+  height: var(--control-height);
+  border-radius: var(--radius-pill);
   background: var(--accent-soft);
   color: var(--accent-text);
-  font: var(--text-headline);
+}
+.cc-mk-fact-icon svg {
+  width: var(--space-6);
+  height: var(--space-6);
 }
 
 /* Lists with a check-style pill marker (progress pills, as on the Cover). */
