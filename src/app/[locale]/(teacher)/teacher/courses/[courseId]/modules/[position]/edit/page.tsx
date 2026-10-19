@@ -42,7 +42,7 @@ export default async function Page({ params }: Props) {
         subtitle={t("position", { n: mod.position, total: modules.length })}
         back={{ href: `${base}/review`, label: t("backTo", { title: course.title }) }}
       />
-      <div className="grid gap-5 lg:grid-cols-[16rem_minmax(0,1fr)]">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[16rem_minmax(0,1fr)]">
         <Card as="div" className="h-fit p-2">
           <nav className="cc-toc" aria-label={t("modulesNav")}>
             {modules.map((m) => (

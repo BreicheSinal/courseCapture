@@ -13,6 +13,14 @@ type DialogProps = {
   onClose: () => void;
   children?: ReactNode;
   className?: string;
+  /**
+   * Long content (design-system "sticky" modal): the title stays at the top,
+   * `children` scroll, and `actions` stay at the bottom, so the buttons are
+   * always in reach on a phone. Give submit buttons a `form` attribute when the
+   * form is inside `children`.
+   */
+  sticky?: boolean;
+  actions?: ReactNode;
 };
 
 /**
@@ -21,7 +29,16 @@ type DialogProps = {
  * first control), Tab kept inside, Escape and a scrim click close it.
  * Phones get it as a bottom sheet (system CSS).
  */
-export function Dialog({ title, description, role = "dialog", onClose, children, className }: DialogProps) {
+export function Dialog({
+  title,
+  description,
+  role = "dialog",
+  onClose,
+  children,
+  className,
+  sticky,
+  actions,
+}: DialogProps) {
   const ref = useRef<HTMLDivElement>(null);
   // Latest onClose without re-running the setup effect on every render.
   const onCloseRef = useRef(onClose);
@@ -37,7 +54,9 @@ export function Dialog({ title, description, role = "dialog", onClose, children,
     const previous = document.activeElement as HTMLElement | null;
     const focusables = () =>
       Array.from(
-        el.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])'),
+        el.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])',
+        ),
       );
     (el.querySelector<HTMLElement>("[data-autofocus]") ?? focusables()[0] ?? el).focus();
 
@@ -86,17 +105,37 @@ export function Dialog({ title, description, role = "dialog", onClose, children,
         aria-labelledby={titleId}
         aria-describedby={description ? descId : undefined}
         tabIndex={-1}
-        className={cn("cc-dialog focus:outline-none", className)}
+        className={cn("cc-dialog focus:outline-none", sticky && "cc-dialog--sticky cc-dialog--tall", className)}
       >
-        <h2 id={titleId} className="cc-dialog__title">
-          {title}
-        </h2>
-        {description && (
-          <div id={descId} className="cc-dialog__text">
-            {description}
-          </div>
+        {sticky ? (
+          <>
+            <div className="cc-dialog__head">
+              <h2 id={titleId} className="cc-dialog__title">
+                {title}
+              </h2>
+              {description && (
+                <div id={descId} className="cc-dialog__sub">
+                  {description}
+                </div>
+              )}
+            </div>
+            <div className="cc-dialog__body">{children}</div>
+            {actions && <div className="cc-dialog__actions">{actions}</div>}
+          </>
+        ) : (
+          <>
+            <h2 id={titleId} className="cc-dialog__title">
+              {title}
+            </h2>
+            {description && (
+              <div id={descId} className="cc-dialog__text">
+                {description}
+              </div>
+            )}
+            {children}
+            {actions && <div className="cc-dialog__actions">{actions}</div>}
+          </>
         )}
-        {children}
       </div>
     </div>
   );

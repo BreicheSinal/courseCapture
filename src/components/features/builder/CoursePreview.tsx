@@ -37,7 +37,7 @@ export function CoursePreview({
         <Icon name="eye" />
         <p>{t("note")}</p>
       </div>
-      <div className="grid gap-5 lg:grid-cols-[16rem_minmax(0,1fr)]">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[16rem_minmax(0,1fr)]">
         <Card className="h-fit p-2">
           <nav className="cc-toc" aria-label={t("modulesNav")}>
             {modules.map((m) => (

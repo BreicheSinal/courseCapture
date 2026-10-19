@@ -11,10 +11,16 @@ Playwright drives the real app (`next dev`) against:
 pnpm test:db                 # optional first: the database tests
 pnpm test:e2e                # starts the stand-in and next dev on :3100, then runs tests/e2e/*.spec.ts
 ```
+Two Playwright projects run:
+- **chromium:** desktop.
+- **phone:** 390×844 with touch. It runs the course-builder flows again, plus `phone.spec.ts`, which visits every screen in English (Light) and Arabic (Dark). That spec fails on sideways scrolling or zoom-out, controls under 44px, input text under 16px, or any axe violation (#61).
+
+Use `--project=phone` for just the phone run.
+
 Needs Postgres at `TEST_DATABASE_URL` (default `postgres://postgres:postgres@localhost:5432/postgres`) and a Chromium. If Playwright can't download its browser, point it at one: `E2E_CHROME=/path/to/chrome pnpm test:e2e`. `E2E_PORT` and `E2E_DB` change the app port and database name.
 
 ## Writing tests
-- `helpers.ts`: `createUser`, `createClass`, `signIn` (sets the session cookie), `sql` (as the superuser, for setup and checks), `asUser` (runs SQL as a signed-in user, so RLS applies), `expectAccessible` (axe, no violations).
+- `helpers.ts`: `expectPhoneFriendly` (the phone layout checks), `createUser`, `createClass`, `signIn` (sets the session cookie), `sql` (as the superuser, for setup and checks), `asUser` (runs SQL as a signed-in user, so RLS applies), `expectAccessible` (axe, no violations).
 - Each test makes its own users, so tests don't share state.
 - Design-system checks and radios hide the real input: click the label, as people do.
 - Pages stream, so a not-found page can arrive with HTTP 200: check what the page shows, not the status.

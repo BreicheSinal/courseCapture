@@ -67,7 +67,7 @@ export function CourseList({ courses, deleted = false }: { courses: TeacherCours
               <li key={c.id} className="h-full">
                 <Link href={href} className="cc-card cc-card--stack cc-course h-full">
                   <span className="cc-course__top items-center">
-                    <span className="headline min-w-0 truncate">
+                    <span className="headline line-clamp-2 min-w-0 break-words">
                       <bdi>{c.title}</bdi>
                     </span>
                     {running ? (
